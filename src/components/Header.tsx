@@ -324,7 +324,10 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
                           key={dropdownItem.label}
                           to={dropdownItem.href}
                           className="block py-2 text-sm text-foreground hover:text-primary"
-                          onClick={() => setIsMenuOpen(false)}
+                          onClick={() => {
+                            setIsMenuOpen(false);
+                            setIsOfferingsDropdownOpen(false);
+                          }}
                         >
                           {dropdownItem.label}
                         </Link>
@@ -357,7 +360,10 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
                           key={dropdownItem.label}
                           to={dropdownItem.href}
                           className="block py-2 text-sm text-foreground hover:text-primary"
-                          onClick={() => setIsMenuOpen(false)}
+                          onClick={() => {
+                            setIsMenuOpen(false);
+                            setIsTeamDropdownOpen(false);
+                          }}
                         >
                           {dropdownItem.label}
                         </Link>
@@ -390,7 +396,10 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
                           key={dropdownItem.label}
                           to={dropdownItem.href}
                           className="block py-2 text-sm text-foreground hover:text-primary"
-                          onClick={() => setIsMenuOpen(false)}
+                          onClick={() => {
+                            setIsMenuOpen(false);
+                            setIsCareersDropdownOpen(false);
+                          }}
                         >
                           {dropdownItem.label}
                         </Link>

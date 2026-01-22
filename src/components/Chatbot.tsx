@@ -10,6 +10,7 @@ interface Message {
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "welcome",
@@ -24,6 +25,19 @@ const Chatbot = () => {
     "How can I join?",
     "Contact information"
   ]);
+
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkIsMobile();
+    window.addEventListener('resize', checkIsMobile);
+    
+    return () => {
+      window.removeEventListener('resize', checkIsMobile);
+    };
+  }, []);
 
   const handleQuickSuggestionClick = (suggestion: string) => {
     setInputValue(suggestion);
@@ -181,7 +195,7 @@ const Chatbot = () => {
 
       {/* Chatbot window */}
       {isOpen && (
-        <div className={`chatbot-window ${isMinimized ? 'chatbot-minimized' : ''}`}>
+        <div className={`chatbot-window ${isMinimized ? 'chatbot-minimized' : ''} ${isMobile ? 'chatbot-window-mobile' : ''}`}>
           {/* Chat header */}
           <div className="chatbot-header">
             <h3 className="font-semibold text-foreground">YANC Assistant</h3>

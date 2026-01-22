@@ -999,6 +999,10 @@
     @apply fixed bottom-4 right-4 w-[calc(100%-2rem)] max-w-sm h-[400px] sm:h-[450px] flex flex-col bg-background border border-border rounded-xl shadow-xl z-50 overflow-hidden;
   }
 
+  .chatbot-window-mobile {
+    @apply w-[calc(100%-1rem)] h-[70vh] max-h-[500px];
+  }
+
   .chatbot-header {
     @apply bg-card px-3 sm:px-4 py-2 sm:py-3 flex items-center justify-between border-b border-border;
   }
