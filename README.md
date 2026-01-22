@@ -1,4 +1,4 @@
-# YANC Demo Framework
+# YANC
 
 ## Project Overview
 
