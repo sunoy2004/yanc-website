@@ -116,7 +116,7 @@
   }
 
   .header-container {
-    @apply container mx-auto px-4 h-16 flex items-center justify-between;
+    @apply container mx-auto px-4 sm:px-6 h-16 flex items-center justify-between;
   }
 
   .header-logo {
@@ -124,15 +124,15 @@
   }
 
   .header-nav {
-    @apply hidden md:flex items-center gap-8;
+    @apply hidden md:flex items-center gap-4 lg:gap-6;
   }
 
   .header-nav-link {
-    @apply text-sm text-muted-foreground hover:text-foreground transition-colors;
+    @apply text-sm sm:text-base text-muted-foreground hover:text-foreground transition-colors py-2 px-2;
   }
 
   .header-actions {
-    @apply flex items-center gap-3;
+    @apply flex items-center gap-2 sm:gap-3;
   }
 
   .theme-toggle {
@@ -144,7 +144,7 @@
   }
 
   .mobile-nav {
-    @apply md:hidden absolute top-16 left-0 right-0 bg-background border-b border-border p-4 flex flex-col gap-2;
+    @apply md:hidden absolute top-16 left-0 right-0 bg-background border-b border-border p-4 flex flex-col gap-2 max-h-[calc(100vh-4rem)] overflow-y-auto;
   }
 
   .mobile-nav-link {
@@ -184,7 +184,7 @@
    ====================================== */
 @layer components {
   .hero-section {
-    @apply relative w-full h-screen overflow-hidden bg-background;
+    @apply relative w-full h-screen min-h-[600px] overflow-hidden bg-background;
   }
 
   .hero-carousel-container {
@@ -205,23 +205,23 @@
   }
 
   .hero-content {
-    @apply text-center z-10 px-4;
+    @apply text-center z-10 px-4 sm:px-6;
   }
 
   .hero-title {
-    @apply text-6xl md:text-8xl font-bold tracking-tight mb-4;
+    @apply text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight mb-2 sm:mb-4;
   }
 
   .hero-subtitle {
-    @apply text-xl md:text-2xl text-muted-foreground mb-4 tracking-wide;
+    @apply text-lg sm:text-xl md:text-2xl text-muted-foreground mb-2 sm:mb-4 tracking-wide;
   }
 
   .hero-description {
-    @apply text-muted-foreground mb-8 max-w-md mx-auto;
+    @apply text-sm sm:text-base md:text-lg text-muted-foreground mb-4 sm:mb-6 max-w-xs sm:max-w-md mx-auto;
   }
 
   .hero-cta {
-    @apply flex justify-center gap-4;
+    @apply flex flex-col sm:flex-row justify-center gap-3 sm:gap-4;
   }
 
   .hero-scroll-indicator {
@@ -229,12 +229,12 @@
   }
 
   .scroll-arrow {
-    @apply w-6 h-10 rounded-full border-2 border-muted-foreground relative;
+    @apply w-4 sm:w-6 h-8 sm:h-10 rounded-full border-2 border-muted-foreground relative;
   }
 
   .scroll-arrow::after {
     content: "";
-    @apply absolute left-1/2 top-2 w-1 h-3 bg-muted-foreground rounded-full -translate-x-1/2 animate-bounce;
+    @apply absolute left-1/2 top-2 w-0.5 sm:w-1 h-2 sm:h-3 bg-muted-foreground rounded-full -translate-x-1/2 animate-bounce;
   }
 }
 
@@ -474,7 +474,7 @@
    ====================================== */
 @layer components {
   .section {
-    @apply py-20 md:py-28;
+    @apply py-12 sm:py-16 md:py-20 lg:py-28;
   }
 
   .section-alt {
@@ -482,11 +482,11 @@
   }
 
   .section-title {
-    @apply text-3xl md:text-4xl font-bold text-center mb-4;
+    @apply text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-3 sm:mb-4;
   }
 
   .section-subtitle {
-    @apply text-muted-foreground text-center mb-12 max-w-2xl mx-auto;
+    @apply text-sm sm:text-base md:text-lg text-muted-foreground text-center mb-6 sm:mb-8 md:mb-12 max-w-xs sm:max-w-sm md:max-w-2xl mx-auto;
   }
 }
 
@@ -508,23 +508,23 @@
    ====================================== */
 @layer components {
   .programs-grid {
-    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6;
+    @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6;
   }
 
   .program-card {
-    @apply p-6 rounded-lg bg-card border border-border hover:border-primary/50 transition-colors;
+    @apply p-4 sm:p-6 rounded-lg bg-card border border-border hover:border-primary/50 transition-colors;
   }
 
   .program-icon {
-    @apply w-12 h-12 rounded-md bg-primary/10 text-primary flex items-center justify-center mb-4;
+    @apply w-10 h-10 sm:w-12 sm:h-12 rounded-md bg-primary/10 text-primary flex items-center justify-center mb-3 sm:mb-4;
   }
 
   .program-title {
-    @apply text-lg font-semibold mb-2;
+    @apply text-base sm:text-lg font-semibold mb-2;
   }
 
   .program-description {
-    @apply text-sm text-muted-foreground;
+    @apply text-xs sm:text-sm text-muted-foreground;
   }
 }
 
@@ -533,7 +533,7 @@
    ====================================== */
 @layer components {
   .events-grid {
-    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+    @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6;
   }
 
   .event-card {
@@ -541,19 +541,19 @@
   }
 
   .event-image {
-    @apply h-48 overflow-hidden;
+    @apply h-32 sm:h-40 md:h-48 overflow-hidden;
   }
 
   .event-content {
-    @apply p-4;
+    @apply p-3 sm:p-4;
   }
 
   .event-title {
-    @apply text-lg font-semibold mb-2;
+    @apply text-base sm:text-lg font-semibold mb-1 sm:mb-2;
   }
 
   .event-meta {
-    @apply flex flex-wrap gap-4 text-sm text-muted-foreground;
+    @apply flex flex-wrap gap-2 sm:gap-4 text-xs sm:text-sm text-muted-foreground;
   }
 
   .event-meta-item {
@@ -566,7 +566,7 @@
    ====================================== */
 @layer components {
   .team-grid {
-    @apply grid grid-cols-2 md:grid-cols-4 gap-6;
+    @apply grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-6;
   }
 
   .team-card {
@@ -574,7 +574,7 @@
   }
 
   .team-image {
-    @apply w-24 h-24 md:w-32 md:h-32 mx-auto rounded-full overflow-hidden mb-4 border-2 border-border;
+    @apply w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-32 lg:h-32 mx-auto rounded-full overflow-hidden mb-3 sm:mb-4 border-2 border-border;
   }
 
   .team-name {
@@ -582,7 +582,7 @@
   }
 
   .team-role {
-    @apply text-sm text-muted-foreground;
+    @apply text-xs sm:text-sm text-muted-foreground;
   }
 }
 
@@ -616,27 +616,27 @@
    ====================================== */
 @layer components {
   .testimonials-grid {
-    @apply grid grid-cols-1 md:grid-cols-3 gap-6;
+    @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6;
   }
 
   .testimonial-card {
-    @apply p-6 rounded-lg bg-background border border-border;
+    @apply p-4 sm:p-6 rounded-lg bg-background border border-border;
   }
 
   .testimonial-quote-icon {
-    @apply text-primary/50 mb-4;
+    @apply text-primary/50 mb-3 sm:mb-4;
   }
 
   .testimonial-text {
-    @apply text-foreground mb-6 leading-relaxed;
+    @apply text-sm sm:text-base text-foreground mb-4 sm:mb-6 leading-relaxed;
   }
 
   .testimonial-author {
-    @apply flex items-center gap-3;
+    @apply flex items-center gap-2 sm:gap-3;
   }
 
   .testimonial-avatar {
-    @apply w-10 h-10 rounded-full object-cover;
+    @apply w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover;
   }
 
   .testimonial-name {
@@ -644,7 +644,7 @@
   }
 
   .testimonial-company {
-    @apply text-xs text-muted-foreground;
+    @apply text-xs sm:text-xs text-muted-foreground;
   }
 }
 
@@ -810,23 +810,23 @@
    ====================================== */
 @layer components {
   .footer {
-    @apply py-12 bg-[#020814] border-t border-border/20;
+    @apply py-8 sm:py-12 bg-[#020814] border-t border-border/20;
   }
 
   .footer-grid {
-    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 mb-8;
+    @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-6 gap-4 sm:gap-6 lg:gap-8 mb-6 sm:mb-8;
   }
 
   .footer-brand-col {
-    @apply lg:col-span-2;
+    @apply col-span-2 sm:col-span-1 md:col-span-1 lg:col-span-2;
   }
 
   .footer-column {
-    @apply flex flex-col gap-3;
+    @apply flex flex-col gap-2 sm:gap-3;
   }
 
   .footer-social-col {
-    @apply flex flex-col gap-3;
+    @apply flex flex-col gap-2 sm:gap-3;
   }
 
   .footer-brand {
@@ -834,27 +834,27 @@
   }
 
   .footer-logo {
-    @apply text-2xl font-bold text-primary;
+    @apply text-xl sm:text-2xl font-bold text-primary;
   }
 
   .footer-tagline {
-    @apply text-sm text-muted-foreground mt-2;
+    @apply text-xs sm:text-sm text-muted-foreground mt-2;
   }
 
   .footer-heading {
-    @apply text-base font-semibold text-foreground mb-3 pb-2 border-b border-border/20;
+    @apply text-sm sm:text-base font-semibold text-foreground mb-2 sm:mb-3 pb-1 sm:pb-2 border-b border-border/20;
   }
 
   .footer-links-list {
-    @apply flex flex-col gap-2;
+    @apply flex flex-col gap-1 sm:gap-2;
   }
 
   .footer-link {
-    @apply text-sm text-muted-foreground hover:text-primary transition-colors duration-300;
+    @apply text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors duration-300;
   }
 
   .social-icons {
-    @apply flex gap-4 mt-2;
+    @apply flex gap-3 sm:gap-4 mt-2;
   }
 
   .social-icon {
@@ -862,15 +862,15 @@
   }
 
   .social-icon-svg {
-    @apply w-5 h-5;
+    @apply w-4 sm:w-5 h-4 sm:h-5;
   }
 
   .footer-bottom {
-    @apply pt-8 border-t border-border/20 text-center;
+    @apply pt-6 sm:pt-8 border-t border-border/20 text-center;
   }
 
   .footer-copyright {
-    @apply text-sm text-muted-foreground;
+    @apply text-xs sm:text-sm text-muted-foreground;
   }
 }
 
@@ -992,27 +992,27 @@
    ====================================== */
 @layer components {
   .chatbot-launcher {
-    @apply fixed bottom-6 right-6 w-14 h-14 rounded-full bg-primary text-white flex items-center justify-center shadow-lg z-50 hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
+    @apply fixed bottom-4 right-4 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-primary text-white flex items-center justify-center shadow-lg z-50 hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
   }
 
   .chatbot-window {
-    @apply fixed bottom-6 right-6 w-full max-w-sm h-[450px] flex flex-col bg-background border border-border rounded-xl shadow-xl z-50 overflow-hidden;
+    @apply fixed bottom-4 right-4 w-[calc(100%-2rem)] max-w-sm h-[400px] sm:h-[450px] flex flex-col bg-background border border-border rounded-xl shadow-xl z-50 overflow-hidden;
   }
 
   .chatbot-header {
-    @apply bg-card px-4 py-3 flex items-center justify-between border-b border-border;
+    @apply bg-card px-3 sm:px-4 py-2 sm:py-3 flex items-center justify-between border-b border-border;
   }
 
   .chatbot-messages {
-    @apply flex-1 overflow-y-auto p-4 bg-background;
+    @apply flex-1 overflow-y-auto p-3 sm:p-4 bg-background;
   }
 
   .chatbot-input-area {
-    @apply border-t border-border p-3 bg-card;
+    @apply border-t border-border p-2 sm:p-3 bg-card;
   }
 
   .chatbot-message {
-    @apply max-w-[80%] rounded-2xl px-4 py-2;
+    @apply max-w-[80%] rounded-2xl px-3 sm:px-4 py-1.5 sm:py-2 text-sm;
   }
 
   .chatbot-user-message {
@@ -1070,9 +1070,9 @@
   .preloader-text {
     @apply flex flex-wrap justify-center items-center gap-0 text-center;
     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-size: clamp(1.1rem, 3.5vw, 2.2rem);
+    font-size: clamp(0.8rem, 3.5vw, 2.2rem);
     letter-spacing: 0.02em;
-    word-spacing: 0.8em; /* Increased space between words */
+    word-spacing: 0.5em; /* Increased space between words */
     color: hsl(0 0% 95%);
     transition: opacity 500ms ease-out, transform 500ms ease-out;
   }
@@ -1105,7 +1105,7 @@
   .preloader-yanc {
     @apply absolute flex items-center justify-center;
     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-size: clamp(2.5rem, 8vw, 5rem);
+    font-size: clamp(1.5rem, 8vw, 5rem);
     font-weight: 700;
     letter-spacing: 0.15em;
     color: hsl(0 0% 95%); /* White color */
@@ -1136,3 +1136,5 @@
     transition: opacity 400ms ease-out;
   }
 }
+
+
