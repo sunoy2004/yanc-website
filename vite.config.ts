@@ -29,4 +29,20 @@ export default defineConfig(({ mode }) => ({
   },
   // Base configuration for deployment
   base: mode === "production" ? "/" : "/",
+  // Build optimizations
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: (id) => {
+          if (id.includes('node_modules')) {
+            if (id.includes('react')) return 'vendor';
+            if (id.includes('react-router-dom')) return 'router';
+            if (id.includes('@radix-ui') || id.includes('lucide-react')) return 'ui';
+            if (id.includes('three') || id.includes('@react-three')) return 'three';
+          }
+        }
+      }
+    },
+    chunkSizeWarningLimit: 1000
+  }
 }));
