@@ -67,8 +67,11 @@ const MediaPlane = ({ src, position, curve, type }: MediaPlaneProps) => {
   const meshRef = useRef<THREE.Mesh>(null);
   const [texture, setTexture] = useState<THREE.Texture | null>(null);
   const textureRef = useRef<THREE.Texture | null>(null);
+  const [loadError, setLoadError] = useState(false);
   
   useEffect(() => {
+    setLoadError(false);
+    
     if (type === "image") {
       // Handle image loading
       const loader = new THREE.TextureLoader();
@@ -87,16 +90,42 @@ const MediaPlane = ({ src, position, curve, type }: MediaPlaneProps) => {
         undefined,
         (error) => {
           console.error("Error loading image texture:", error);
+          setLoadError(true);
         }
       );
     } else if (type === "video") {
-      // Handle video loading
+      // Handle video loading with improved error handling
       const video = document.createElement("video");
       video.src = src;
       video.crossOrigin = "anonymous";
       video.muted = true;
       video.loop = true;
       video.playsInline = true;
+      video.preload = "metadata";
+      
+      // Add event listeners for better error handling
+      const handleVideoError = (e: Event) => {
+        console.error("Video loading error:", e);
+        setLoadError(true);
+      };
+      
+      const handleVideoLoad = () => {
+        console.log("Video loaded successfully:", src);
+      };
+      
+      video.addEventListener('error', handleVideoError);
+      video.addEventListener('loadeddata', handleVideoLoad);
+      
+      // Try to play the video - handle autoplay restrictions
+      const playVideo = async () => {
+        try {
+          await video.play();
+          console.log("Video playback started:", src);
+        } catch (error) {
+          console.warn("Video autoplay blocked:", error);
+          // Video will play when user interacts with the page
+        }
+      };
       
       // Create texture from video
       const videoTexture = new THREE.VideoTexture(video);
@@ -107,13 +136,13 @@ const MediaPlane = ({ src, position, curve, type }: MediaPlaneProps) => {
       setTexture(videoTexture);
       textureRef.current = videoTexture;
       
-      // Start playing the video
-      video.play().catch(error => {
-        console.error("Error playing video:", error);
-      });
+      // Start playing the video after a small delay
+      setTimeout(playVideo, 100);
       
       return () => {
         video.pause();
+        video.removeEventListener('error', handleVideoError);
+        video.removeEventListener('loadeddata', handleVideoLoad);
         video.remove();
         videoTexture.dispose();
       };
@@ -125,6 +154,16 @@ const MediaPlane = ({ src, position, curve, type }: MediaPlaneProps) => {
       }
     };
   }, [src, type]);
+
+  // Show fallback content if loading fails
+  if (loadError) {
+    return (
+      <mesh ref={meshRef} position={position}>
+        <planeGeometry args={[1.6, 1.1, 32, 32]} />
+        <meshBasicMaterial color="#333333" />
+      </mesh>
+    );
+  }
 
   const shaderMaterial = useMemo(() => {
     if (!texture) return null;

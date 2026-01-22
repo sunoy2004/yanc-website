@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
+import Faq from "./pages/Faq";
 
 // Our Offerings pages
 import ValueProposition from "./pages/offerings/ValueProposition";
@@ -37,6 +38,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signin" element={<SignIn />} />
+          <Route path="/faq" element={<Faq />} />
           
           {/* Our Offerings routes */}
           <Route path="/offerings/value-proposition" element={<ValueProposition />} />

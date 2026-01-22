@@ -16,6 +16,17 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
   const [isCareersDropdownOpen, setIsCareersDropdownOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  
+  // Timeout refs for dropdown delays
+  const dropdownTimeoutRefs = useRef<{
+    team: NodeJS.Timeout | null;
+    offerings: NodeJS.Timeout | null;
+    careers: NodeJS.Timeout | null;
+  }>({
+    team: null,
+    offerings: null,
+    careers: null
+  });
 
   const navItems = [
     { label: "Home", href: "/" },
@@ -24,6 +35,7 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
     { label: "Team", href: "/team/executive-management", hasDropdown: true },
     { label: "Careers", href: "/careers/jobs", hasDropdown: true },
     { label: "Contact", href: "#contact" },
+    { label: "FAQ", href: "/faq" },
   ];
 
   // Team dropdown items
@@ -49,13 +61,81 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
     { label: "Internships", href: "/careers/internships" },
   ];
 
+  // Clear all timeouts
+  const clearAllTimeouts = () => {
+    Object.values(dropdownTimeoutRefs.current).forEach(timeout => {
+      if (timeout) clearTimeout(timeout);
+    });
+  };
+
+  // Handle dropdown open with delay
+  const handleDropdownOpen = (dropdownType: 'team' | 'offerings' | 'careers') => {
+    clearAllTimeouts();
+    
+    // Clear the timeout for this specific dropdown
+    if (dropdownTimeoutRefs.current[dropdownType]) {
+      clearTimeout(dropdownTimeoutRefs.current[dropdownType]!);
+      dropdownTimeoutRefs.current[dropdownType] = null;
+    }
+    
+    // Close other dropdowns immediately
+    if (dropdownType !== 'team') setIsTeamDropdownOpen(false);
+    if (dropdownType !== 'offerings') setIsOfferingsDropdownOpen(false);
+    if (dropdownType !== 'careers') setIsCareersDropdownOpen(false);
+    
+    // Open this dropdown
+    switch (dropdownType) {
+      case 'team':
+        setIsTeamDropdownOpen(true);
+        break;
+      case 'offerings':
+        setIsOfferingsDropdownOpen(true);
+        break;
+      case 'careers':
+        setIsCareersDropdownOpen(true);
+        break;
+    }
+  };
+
+  // Handle dropdown close with delay
+  const handleDropdownClose = (dropdownType: 'team' | 'offerings' | 'careers') => {
+    // Clear any existing timeout for this dropdown
+    if (dropdownTimeoutRefs.current[dropdownType]) {
+      clearTimeout(dropdownTimeoutRefs.current[dropdownType]!);
+    }
+    
+    // Set timeout to close dropdown after 300ms
+    dropdownTimeoutRefs.current[dropdownType] = setTimeout(() => {
+      switch (dropdownType) {
+        case 'team':
+          setIsTeamDropdownOpen(false);
+          break;
+        case 'offerings':
+          setIsOfferingsDropdownOpen(false);
+          break;
+        case 'careers':
+          setIsCareersDropdownOpen(false);
+          break;
+      }
+      dropdownTimeoutRefs.current[dropdownType] = null;
+    }, 300);
+  };
+
   // Close all dropdowns when location changes
   useEffect(() => {
     setIsTeamDropdownOpen(false);
     setIsOfferingsDropdownOpen(false);
     setIsCareersDropdownOpen(false);
     setIsMenuOpen(false);
+    clearAllTimeouts();
   }, [location]);
+
+  // Cleanup timeouts on unmount
+  useEffect(() => {
+    return () => {
+      clearAllTimeouts();
+    };
+  }, []);
 
   return (
     <header className="header">
@@ -75,8 +155,8 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
                 <div 
                   key={item.label}
                   className="relative"
-                  onMouseEnter={() => setIsOfferingsDropdownOpen(true)}
-                  onMouseLeave={() => setIsOfferingsDropdownOpen(false)}
+                  onMouseEnter={() => handleDropdownOpen('offerings')}
+                  onMouseLeave={() => handleDropdownClose('offerings')}
                 >
                   <button
                     className="header-nav-link flex items-center"
@@ -86,7 +166,11 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
                   </button>
                   
                   {isOfferingsDropdownOpen && (
-                    <div className="dropdown-menu">
+                    <div 
+                      className="dropdown-menu"
+                      onMouseEnter={() => handleDropdownOpen('offerings')}
+                      onMouseLeave={() => handleDropdownClose('offerings')}
+                    >
                       {offeringsDropdownItems.map((dropdownItem) => (
                         <Link
                           key={dropdownItem.label}
@@ -105,8 +189,8 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
                 <div 
                   key={item.label}
                   className="relative"
-                  onMouseEnter={() => setIsTeamDropdownOpen(true)}
-                  onMouseLeave={() => setIsTeamDropdownOpen(false)}
+                  onMouseEnter={() => handleDropdownOpen('team')}
+                  onMouseLeave={() => handleDropdownClose('team')}
                 >
                   <button
                     className="header-nav-link flex items-center"
@@ -116,7 +200,11 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
                   </button>
                   
                   {isTeamDropdownOpen && (
-                    <div className="team-dropdown">
+                    <div 
+                      className="team-dropdown"
+                      onMouseEnter={() => handleDropdownOpen('team')}
+                      onMouseLeave={() => handleDropdownClose('team')}
+                    >
                       {teamDropdownItems.map((dropdownItem) => (
                         <Link
                           key={dropdownItem.label}
@@ -135,8 +223,8 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
                 <div 
                   key={item.label}
                   className="relative"
-                  onMouseEnter={() => setIsCareersDropdownOpen(true)}
-                  onMouseLeave={() => setIsCareersDropdownOpen(false)}
+                  onMouseEnter={() => handleDropdownOpen('careers')}
+                  onMouseLeave={() => handleDropdownClose('careers')}
                 >
                   <button
                     className="header-nav-link flex items-center"
@@ -146,7 +234,11 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
                   </button>
                   
                   {isCareersDropdownOpen && (
-                    <div className="dropdown-menu">
+                    <div 
+                      className="dropdown-menu"
+                      onMouseEnter={() => handleDropdownOpen('careers')}
+                      onMouseLeave={() => handleDropdownClose('careers')}
+                    >
                       {careersDropdownItems.map((dropdownItem) => (
                         <Link
                           key={dropdownItem.label}
