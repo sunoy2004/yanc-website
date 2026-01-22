@@ -69,13 +69,13 @@ export interface AboutUsContent {
 // Hero carousel media - replace src with actual CMS URLs
 export const heroMedia: HeroMediaItem[] = [
   { id: "1", type: "image", src: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=600&h=400&fit=crop", alt: "Tech workspace" },
-  { id: "2", type: "image", src: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=600&h=400&fit=crop", alt: "Community event" },
+  { id: "2", type: "video", src: "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4", alt: "Community event video" },
   { id: "3", type: "image", src: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600&h=400&fit=crop", alt: "Team collaboration" },
-  { id: "4", type: "image", src: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=600&h=400&fit=crop", alt: "Startup office" },
+  { id: "4", type: "video", src: "https://storage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4", alt: "Startup office video" },
   { id: "5", type: "image", src: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=600&h=400&fit=crop", alt: "Coding session" },
-  { id: "6", type: "image", src: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=600&h=400&fit=crop", alt: "Working remotely" },
+  { id: "6", type: "video", src: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4", alt: "Working remotely video" },
   { id: "7", type: "image", src: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&h=400&fit=crop", alt: "Developer setup" },
-  { id: "8", type: "image", src: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&h=400&fit=crop", alt: "Innovation lab" },
+  { id: "8", type: "video", src: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4", alt: "Innovation lab video" },
 ];
 
 export const programs: Program[] = [

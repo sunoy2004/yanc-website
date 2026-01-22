@@ -56,41 +56,72 @@ const fragmentShader = `
   }
 `;
 
-interface ImagePlaneProps {
+interface MediaPlaneProps {
   src: string;
   position: [number, number, number];
   curve: number;
+  type: "image" | "video";
 }
 
-const ImagePlane = ({ src, position, curve }: ImagePlaneProps) => {
+const MediaPlane = ({ src, position, curve, type }: MediaPlaneProps) => {
   const meshRef = useRef<THREE.Mesh>(null);
   const [texture, setTexture] = useState<THREE.Texture | null>(null);
-
+  
   useEffect(() => {
-    const loader = new THREE.TextureLoader();
-    // Enable CORS for external images
-    loader.setCrossOrigin("anonymous");
-    
-    loader.load(
-      src,
-      (loadedTexture) => {
-        loadedTexture.colorSpace = THREE.SRGBColorSpace;
-        loadedTexture.minFilter = THREE.LinearFilter;
-        loadedTexture.magFilter = THREE.LinearFilter;
-        setTexture(loadedTexture);
-      },
-      undefined,
-      (error) => {
-        console.error("Error loading texture:", error);
-      }
-    );
+    if (type === "image") {
+      // Handle image loading
+      const loader = new THREE.TextureLoader();
+      // Enable CORS for external images
+      loader.setCrossOrigin("anonymous");
+      
+      loader.load(
+        src,
+        (loadedTexture) => {
+          loadedTexture.colorSpace = THREE.SRGBColorSpace;
+          loadedTexture.minFilter = THREE.LinearFilter;
+          loadedTexture.magFilter = THREE.LinearFilter;
+          setTexture(loadedTexture);
+        },
+        undefined,
+        (error) => {
+          console.error("Error loading image texture:", error);
+        }
+      );
+    } else if (type === "video") {
+      // Handle video loading
+      const video = document.createElement("video");
+      video.src = src;
+      video.crossOrigin = "anonymous";
+      video.muted = true;
+      video.loop = true;
+      video.playsInline = true;
+      
+      // Create texture from video
+      const videoTexture = new THREE.VideoTexture(video);
+      videoTexture.colorSpace = THREE.SRGBColorSpace;
+      videoTexture.minFilter = THREE.LinearFilter;
+      videoTexture.magFilter = THREE.LinearFilter;
+      
+      setTexture(videoTexture);
+      
+      // Start playing the video
+      video.play().catch(error => {
+        console.error("Error playing video:", error);
+      });
+      
+      return () => {
+        video.pause();
+        video.remove();
+        videoTexture.dispose();
+      };
+    }
     
     return () => {
       if (texture) {
         texture.dispose();
       }
     };
-  }, [src]);
+  }, [src, type]);
 
   const shaderMaterial = useMemo(() => {
     if (!texture) return null;
@@ -116,28 +147,33 @@ const ImagePlane = ({ src, position, curve }: ImagePlaneProps) => {
   );
 };
 
+interface MediaItem {
+  src: string;
+  type: "image" | "video";
+}
+
 interface SliderSceneProps {
-  images: string[];
+  mediaItems: MediaItem[];
   speed: number;
   gap: number;
   curve: number;
   isPaused: boolean;
 }
 
-const SliderScene = ({ images, speed, gap, curve, isPaused }: SliderSceneProps) => {
+const SliderScene = ({ mediaItems, speed, gap, curve, isPaused }: SliderSceneProps) => {
   const groupRef = useRef<THREE.Group>(null);
   const timeRef = useRef(0);
   const { viewport } = useThree();
 
   // Calculate how many images we need to fill the viewport + buffer
   const planeWidth = 1 + gap / 100;
-  const totalImages = useMemo(() => {
+  const totalMediaItems = useMemo(() => {
     const visibleCount = Math.ceil(viewport.width / planeWidth) + 2;
-    const repeats = Math.ceil(visibleCount / images.length) + 1;
+    const repeats = Math.ceil(visibleCount / mediaItems.length) + 1;
     return Array(repeats)
-      .fill(images)
+      .fill(mediaItems)
       .flat();
-  }, [images, viewport.width, planeWidth]);
+  }, [mediaItems, viewport.width, planeWidth]);
 
   const initialOffset = useMemo(() => {
     return Math.ceil(viewport.width / (2 * planeWidth) - 0.5);
@@ -150,7 +186,7 @@ const SliderScene = ({ images, speed, gap, curve, isPaused }: SliderSceneProps) 
     groupRef.current.position.x = -timeRef.current * speed * 0.1;
 
     // Reset position for seamless loop
-    const resetPoint = planeWidth * images.length;
+    const resetPoint = planeWidth * mediaItems.length;
     if (Math.abs(groupRef.current.position.x) >= resetPoint) {
       timeRef.current = 0;
       groupRef.current.position.x = 0;
@@ -159,12 +195,13 @@ const SliderScene = ({ images, speed, gap, curve, isPaused }: SliderSceneProps) 
 
   return (
     <group ref={groupRef}>
-      {totalImages.map((src, i) => (
-        <ImagePlane
-          key={`${src}-${i}`}
-          src={src}
+      {totalMediaItems.map((mediaItem, i) => (
+        <MediaPlane
+          key={`${mediaItem.src}-${i}`}
+          src={mediaItem.src}
           position={[(i - initialOffset) * planeWidth, 0, 0]}
           curve={curve}
+          type={mediaItem.type}
         />
       ))}
     </group>
@@ -196,11 +233,13 @@ const CurvedSlider = ({
     return () => mediaQuery.removeEventListener("change", handler);
   }, []);
 
-  // Extract image sources (using only images for the 3D slider)
-  const imageSources = useMemo(() => {
+  // Extract all media items (images and videos for the 3D slider)
+  const mediaItems = useMemo(() => {
     return items
-      .filter((item) => item.type === "image")
-      .map((item) => item.src);
+      .map((item) => ({
+        src: item.src,
+        type: item.type
+      }));
   }, [items]);
 
   const effectivelyPaused = isPaused || prefersReducedMotion;
@@ -217,7 +256,7 @@ const CurvedSlider = ({
         dpr={Math.min(window.devicePixelRatio, 2)}
       >
         <SliderScene
-          images={imageSources}
+          mediaItems={mediaItems}
           speed={speed}
           gap={gap}
           curve={curve}
