@@ -2,9 +2,9 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, dev ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, dev ]
 
 jobs:
   test:
@@ -44,8 +44,8 @@ jobs:
   deploy:
     needs: test
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'  # Only run on main branch push
-    environment: production  # Define environment for deployment protection
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev'  # Run on main or dev branch push
+    environment: ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}  # Use different environments for different branches
 
     steps:
     - name: Checkout code
@@ -72,4 +72,8 @@ jobs:
 
     - name: Deploy status to Render
       run: |
-        echo "Deployment triggered. Render will automatically deploy from the repository."
+        if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+          echo "Production deployment triggered to Render."
+        elif [ "${{ github.ref }}" = "refs/heads/dev" ]; then
+          echo "Development deployment triggered to Render."
+        fi
