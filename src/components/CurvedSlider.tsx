@@ -69,6 +69,21 @@ const MediaPlane = ({ src, position, curve, type }: MediaPlaneProps) => {
   const textureRef = useRef<THREE.Texture | null>(null);
   const [loadError, setLoadError] = useState(false);
   
+  // Define shaderMaterial using useMemo first, before any conditional returns
+  const shaderMaterial = useMemo(() => {
+    if (!texture || loadError) return null;
+    return new THREE.ShaderMaterial({
+      uniforms: {
+        tex: { value: texture },
+        curve: { value: curve },
+      },
+      vertexShader,
+      fragmentShader,
+      transparent: true,
+      side: THREE.DoubleSide,
+    });
+  }, [texture, curve, loadError]);
+
   useEffect(() => {
     setLoadError(false);
     
@@ -155,7 +170,7 @@ const MediaPlane = ({ src, position, curve, type }: MediaPlaneProps) => {
     };
   }, [src, type]);
 
-  // Show fallback content if loading fails
+  // Render based on state
   if (loadError) {
     return (
       <mesh ref={meshRef} position={position}>
@@ -165,21 +180,15 @@ const MediaPlane = ({ src, position, curve, type }: MediaPlaneProps) => {
     );
   }
 
-  const shaderMaterial = useMemo(() => {
-    if (!texture) return null;
-    return new THREE.ShaderMaterial({
-      uniforms: {
-        tex: { value: texture },
-        curve: { value: curve },
-      },
-      vertexShader,
-      fragmentShader,
-      transparent: true,
-      side: THREE.DoubleSide,
-    });
-  }, [texture, curve]);
-
-  if (!shaderMaterial) return null;
+  if (!shaderMaterial) {
+    // Return a placeholder or null while loading
+    return (
+      <mesh ref={meshRef} position={position}>
+        <planeGeometry args={[1.6, 1.1, 32, 32]} />
+        <meshBasicMaterial color="#222222" transparent opacity={0.5} />
+      </mesh>
+    );
+  }
 
   return (
     <mesh ref={meshRef} position={position}>
