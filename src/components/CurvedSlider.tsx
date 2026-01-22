@@ -66,6 +66,7 @@ interface MediaPlaneProps {
 const MediaPlane = ({ src, position, curve, type }: MediaPlaneProps) => {
   const meshRef = useRef<THREE.Mesh>(null);
   const [texture, setTexture] = useState<THREE.Texture | null>(null);
+  const textureRef = useRef<THREE.Texture | null>(null);
   
   useEffect(() => {
     if (type === "image") {
@@ -81,6 +82,7 @@ const MediaPlane = ({ src, position, curve, type }: MediaPlaneProps) => {
           loadedTexture.minFilter = THREE.LinearFilter;
           loadedTexture.magFilter = THREE.LinearFilter;
           setTexture(loadedTexture);
+          textureRef.current = loadedTexture;
         },
         undefined,
         (error) => {
@@ -103,6 +105,7 @@ const MediaPlane = ({ src, position, curve, type }: MediaPlaneProps) => {
       videoTexture.magFilter = THREE.LinearFilter;
       
       setTexture(videoTexture);
+      textureRef.current = videoTexture;
       
       // Start playing the video
       video.play().catch(error => {
@@ -117,8 +120,8 @@ const MediaPlane = ({ src, position, curve, type }: MediaPlaneProps) => {
     }
     
     return () => {
-      if (texture) {
-        texture.dispose();
+      if (textureRef.current) {
+        textureRef.current.dispose();
       }
     };
   }, [src, type]);

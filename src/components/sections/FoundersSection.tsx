@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { teamMembers } from "@/data/mockData";
+import { teamMembers, TeamMember } from "@/data/mockData";
 import ScrollAnimateWrapper from "@/components/ScrollAnimateWrapper";
 import TeamMemberModal from "@/components/TeamMemberModal";
 
 const FoundersSection = () => {
-  const [selectedFounder, setSelectedFounder] = useState<any>(null);
+  const [selectedFounder, setSelectedFounder] = useState<TeamMember | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleFounderClick = (founder: any) => {
+  const handleFounderClick = (founder: TeamMember) => {
     // Use the founder data as-is, with bio field
     const founderData = {
       ...founder,

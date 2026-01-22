@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
-import { teamMembers } from "@/data/mockData";
+import { teamMembers, TeamMember } from "@/data/mockData";
 import TeamMemberModal from "@/components/TeamMemberModal";
 
 const HorizontalTeamSection = () => {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [topBeltHovered, setTopBeltHovered] = useState(false);
   const [bottomBeltHovered, setBottomBeltHovered] = useState(false);
-  const [selectedMember, setSelectedMember] = useState<any>(null);
+  const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
@@ -18,7 +18,7 @@ const HorizontalTeamSection = () => {
     return () => mediaQuery.removeEventListener("change", handler);
   }, []);
 
-  const handleCardClick = (member: any) => {
+  const handleCardClick = (member: TeamMember) => {
     setSelectedMember(member);
     setIsModalOpen(true);
   };
