@@ -26,6 +26,13 @@ import GlobalMentors from "./pages/team/GlobalMentors";
 import Jobs from "./pages/careers/Jobs";
 import Internships from "./pages/careers/Internships";
 
+// Applications pages
+import Membership from "./pages/apply/Membership";
+import DiscoverMeetRegistration from "./pages/apply/DiscoverMeetRegistration";
+import DiscoverMeetFeedback from "./pages/apply/DiscoverMeetFeedback";
+import MentorRegistration from "./pages/apply/MentorRegistration";
+import StartupPitch from "./pages/apply/StartupPitch";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -56,6 +63,13 @@ const App = () => (
           {/* Careers routes */}
           <Route path="/careers/jobs" element={<Jobs />} />
           <Route path="/careers/internships" element={<Internships />} />
+          
+          {/* Applications routes */}
+          <Route path="/apply/membership" element={<Membership />} />
+          <Route path="/apply/discover-meet-registration" element={<DiscoverMeetRegistration />} />
+          <Route path="/apply/discover-meet-feedback" element={<DiscoverMeetFeedback />} />
+          <Route path="/apply/mentor-registration" element={<MentorRegistration />} />
+          <Route path="/apply/startup-pitch" element={<StartupPitch />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

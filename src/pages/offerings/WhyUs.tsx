@@ -16,7 +16,7 @@ const WhyUs = () => {
 
   return (
     <PageTemplate 
-      title="Why Us" 
+      title="Why YANC" 
       isDarkMode={isDarkMode} 
       toggleTheme={toggleTheme} 
     />
