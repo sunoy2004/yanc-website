@@ -144,11 +144,20 @@
   }
 
   .mobile-nav {
-    @apply md:hidden absolute top-16 left-0 right-0 bg-background border-b border-border p-4 flex flex-col gap-2 max-h-[calc(100vh-4rem)] overflow-y-auto;
+    @apply md:hidden absolute top-16 left-0 right-0 bg-background border-b border-border p-4 flex flex-col gap-2 max-h-[calc(100vh-4rem)] overflow-y-auto z-50;
   }
 
   .mobile-nav-link {
     @apply py-3 px-4 text-foreground hover:bg-secondary rounded-md transition-colors;
+  }
+
+  /* Mobile dropdown specific styles */
+  .mobile-dropdown-content {
+    @apply pl-4 py-2 w-full;
+  }
+
+  .mobile-dropdown-item {
+    @apply block py-2 text-sm text-foreground hover:text-primary w-full text-left;
   }
 
   /* Team Dropdown Styles */

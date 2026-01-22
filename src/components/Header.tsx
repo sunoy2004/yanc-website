@@ -318,12 +318,12 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
                     </svg>
                   </button>
                   {isOfferingsDropdownOpen && (
-                    <div className="pl-4 py-2">
+                    <div className="mobile-dropdown-content">
                       {offeringsDropdownItems.map((dropdownItem) => (
                         <Link
                           key={dropdownItem.label}
                           to={dropdownItem.href}
-                          className="block py-2 text-sm text-foreground hover:text-primary"
+                          className="mobile-dropdown-item"
                           onClick={() => {
                             setIsMenuOpen(false);
                             setIsOfferingsDropdownOpen(false);
@@ -354,12 +354,12 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
                     </svg>
                   </button>
                   {isTeamDropdownOpen && (
-                    <div className="pl-4 py-2">
+                    <div className="mobile-dropdown-content">
                       {teamDropdownItems.map((dropdownItem) => (
                         <Link
                           key={dropdownItem.label}
                           to={dropdownItem.href}
-                          className="block py-2 text-sm text-foreground hover:text-primary"
+                          className="mobile-dropdown-item"
                           onClick={() => {
                             setIsMenuOpen(false);
                             setIsTeamDropdownOpen(false);
@@ -390,12 +390,12 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
                     </svg>
                   </button>
                   {isCareersDropdownOpen && (
-                    <div className="pl-4 py-2">
+                    <div className="mobile-dropdown-content">
                       {careersDropdownItems.map((dropdownItem) => (
                         <Link
                           key={dropdownItem.label}
                           to={dropdownItem.href}
-                          className="block py-2 text-sm text-foreground hover:text-primary"
+                          className="mobile-dropdown-item"
                           onClick={() => {
                             setIsMenuOpen(false);
                             setIsCareersDropdownOpen(false);
