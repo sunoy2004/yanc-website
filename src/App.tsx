@@ -33,6 +33,12 @@ import DiscoverMeetFeedback from "./pages/apply/DiscoverMeetFeedback";
 import MentorRegistration from "./pages/apply/MentorRegistration";
 import StartupPitch from "./pages/apply/StartupPitch";
 
+// Events pages
+import UpcomingEvents from "./pages/events/Upcoming";
+import PastEvents from "./pages/events/Past";
+import EventGallery from "./pages/events/Gallery";
+import EventHighlights from "./pages/events/Highlights";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -70,6 +76,12 @@ const App = () => (
           <Route path="/apply/discover-meet-feedback" element={<DiscoverMeetFeedback />} />
           <Route path="/apply/mentor-registration" element={<MentorRegistration />} />
           <Route path="/apply/startup-pitch" element={<StartupPitch />} />
+          
+          {/* Events routes */}
+          <Route path="/events/upcoming" element={<UpcomingEvents />} />
+          <Route path="/events/past" element={<PastEvents />} />
+          <Route path="/events/gallery" element={<EventGallery />} />
+          <Route path="/events/highlights" element={<EventHighlights />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

@@ -15,6 +15,7 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
   const [isOfferingsDropdownOpen, setIsOfferingsDropdownOpen] = useState(false);
   const [isCareersDropdownOpen, setIsCareersDropdownOpen] = useState(false);
   const [isApplicationsDropdownOpen, setIsApplicationsDropdownOpen] = useState(false);
+  const [isEventsDropdownOpen, setIsEventsDropdownOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   
@@ -31,7 +32,7 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
 
   const navItems = [
     { label: "Home", href: "/" },
-    { label: "Events", href: "#events" },
+    { label: "Events", href: "#events", hasDropdown: true },
     { label: "Programs", href: "/offerings/value-proposition", hasDropdown: true },
     { label: "Team", href: "/team/executive-management", hasDropdown: true },
     { label: "Careers", href: "/careers/jobs", hasDropdown: true },
@@ -72,6 +73,14 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
     { label: "Startup Pitch", href: "/apply/startup-pitch" },
   ];
 
+  // Events dropdown items
+  const eventsDropdownItems = [
+    { label: "Upcoming Events", href: "/events/upcoming" },
+    { label: "Past Events", href: "/events/past" },
+    { label: "Event Gallery", href: "/events/gallery" },
+    { label: "Event Highlights", href: "/events/highlights" },
+  ];
+
   // Clear all timeouts
   const clearAllTimeouts = () => {
     Object.values(dropdownTimeoutRefs.current).forEach(timeout => {
@@ -80,7 +89,7 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
   };
 
   // Handle dropdown open with delay
-  const handleDropdownOpen = (dropdownType: 'team' | 'offerings' | 'careers' | 'applications') => {
+  const handleDropdownOpen = (dropdownType: 'team' | 'offerings' | 'careers' | 'applications' | 'events') => {
     clearAllTimeouts();
     
     // Clear the timeout for this specific dropdown
@@ -94,6 +103,7 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
     if (dropdownType !== 'offerings') setIsOfferingsDropdownOpen(false);
     if (dropdownType !== 'careers') setIsCareersDropdownOpen(false);
     if (dropdownType !== 'applications') setIsApplicationsDropdownOpen(false);
+    if (dropdownType !== 'events') setIsEventsDropdownOpen(false);
     
     // Open this dropdown
     switch (dropdownType) {
@@ -109,11 +119,14 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
       case 'applications':
         setIsApplicationsDropdownOpen(true);
         break;
+      case 'events':
+        setIsEventsDropdownOpen(true);
+        break;
     }
   };
 
   // Handle dropdown close with delay
-  const handleDropdownClose = (dropdownType: 'team' | 'offerings' | 'careers' | 'applications') => {
+  const handleDropdownClose = (dropdownType: 'team' | 'offerings' | 'careers' | 'applications' | 'events') => {
     // Clear any existing timeout for this dropdown
     if (dropdownTimeoutRefs.current[dropdownType]) {
       clearTimeout(dropdownTimeoutRefs.current[dropdownType]!);
@@ -134,6 +147,9 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
         case 'applications':
           setIsApplicationsDropdownOpen(false);
           break;
+        case 'events':
+          setIsEventsDropdownOpen(false);
+          break;
       }
       dropdownTimeoutRefs.current[dropdownType] = null;
     }, 300);
@@ -145,6 +161,7 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
     setIsOfferingsDropdownOpen(false);
     setIsCareersDropdownOpen(false);
     setIsApplicationsDropdownOpen(false);
+    setIsEventsDropdownOpen(false);
     setIsMenuOpen(false);
     clearAllTimeouts();
   }, [location]);
@@ -191,6 +208,40 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
                       onMouseLeave={() => handleDropdownClose('offerings')}
                     >
                       {offeringsDropdownItems.map((dropdownItem) => (
+                        <Link
+                          key={dropdownItem.label}
+                          to={dropdownItem.href}
+                          className="dropdown-item"
+                        >
+                          {dropdownItem.label}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            } else if (item.label === "Events" && item.hasDropdown) {
+              return (
+                <div 
+                  key={item.label}
+                  className="relative"
+                  onMouseEnter={() => handleDropdownOpen('events')}
+                  onMouseLeave={() => handleDropdownClose('events')}
+                >
+                  <button
+                    className="header-nav-link flex items-center"
+                    onClick={() => setIsEventsDropdownOpen(!isEventsDropdownOpen)}
+                  >
+                    {item.label}
+                  </button>
+                  
+                  {isEventsDropdownOpen && (
+                    <div 
+                      className="dropdown-menu"
+                      onMouseEnter={() => handleDropdownOpen('events')}
+                      onMouseLeave={() => handleDropdownClose('events')}
+                    >
+                      {eventsDropdownItems.map((dropdownItem) => (
                         <Link
                           key={dropdownItem.label}
                           to={dropdownItem.href}
@@ -380,6 +431,42 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
                           onClick={() => {
                             setIsMenuOpen(false);
                             setIsOfferingsDropdownOpen(false);
+                          }}
+                        >
+                          {dropdownItem.label}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            } else if (item.label === "Events" && item.hasDropdown) {
+              return (
+                <div key={item.label}>
+                  <button
+                    className="mobile-nav-link flex justify-between items-center w-full"
+                    onClick={() => setIsEventsDropdownOpen(!isEventsDropdownOpen)}
+                  >
+                    {item.label}
+                    <svg 
+                      className={`w-4 h-4 ml-2 transition-transform duration-200 ${isEventsDropdownOpen ? 'rotate-180' : ''}`} 
+                      fill="none" 
+                      stroke="currentColor" 
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  {isEventsDropdownOpen && (
+                    <div className="mobile-dropdown-content">
+                      {eventsDropdownItems.map((dropdownItem) => (
+                        <Link
+                          key={dropdownItem.label}
+                          to={dropdownItem.href}
+                          className="mobile-dropdown-item"
+                          onClick={() => {
+                            setIsMenuOpen(false);
+                            setIsEventsDropdownOpen(false);
                           }}
                         >
                           {dropdownItem.label}

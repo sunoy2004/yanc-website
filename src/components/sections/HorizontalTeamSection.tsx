@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { teamMembers, TeamMember } from "@/data/mockData";
 import TeamMemberModal from "@/components/TeamMemberModal";
 
 const HorizontalTeamSection = () => {
+  const navigate = useNavigate();
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [topBeltHovered, setTopBeltHovered] = useState(false);
   const [bottomBeltHovered, setBottomBeltHovered] = useState(false);
@@ -31,7 +33,10 @@ const HorizontalTeamSection = () => {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center mb-10">
           <h2 className="section-title text-3xl md:text-4xl font-bold">Our Team</h2>
-          <button className="view-all-button group px-6 py-2.5 bg-primary/10 text-primary font-medium rounded-lg hover:bg-primary/20 transition-all duration-300 flex items-center gap-1.5 border border-primary/20">
+          <button 
+            className="view-all-button group px-6 py-2.5 bg-primary/10 text-primary font-medium rounded-lg hover:bg-primary/20 transition-all duration-300 flex items-center gap-1.5 border border-primary/20"
+            onClick={() => navigate('/team/cohort-founders')}
+          >
             <span className="text-sm">View all members</span>
             <svg className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
