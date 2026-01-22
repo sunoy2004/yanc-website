@@ -31,6 +31,17 @@ const Index = () => {
     }
   }, []);
 
+  // Handle navigation to home page - skip preloader when coming from other pages
+  useEffect(() => {
+    if (location.pathname === '/') {
+      const fromNavigation = sessionStorage.getItem('fromNavigation');
+      if (fromNavigation === 'true') {
+        setIsLoading(false);
+        sessionStorage.removeItem('fromNavigation');
+      }
+    }
+  }, [location.pathname]);
+
   const handlePreloaderComplete = useCallback(() => {
     setIsLoading(false);
   }, []);

@@ -4,7 +4,7 @@ services:
     env: static
     buildCommand: "npm install && npm run build"
     staticPublishPath: ./dist
-    # Add allowed hosts to prevent Vite errors
+    # SPA routing - redirect all routes to index.html
     routes:
       - type: rewrite
         source: /*
