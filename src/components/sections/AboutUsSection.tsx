@@ -27,7 +27,11 @@ const AboutUsSection = () => {
               {/* Description paragraph */}
               <div className="prose prose-lg max-w-none">
                 <p className="text-muted-foreground leading-relaxed whitespace-pre-line">
-                  {description}
+                  {description.split(/(Empowering Young Minds through Life Skills)/g).map((part, index) => 
+                    part === 'Empowering Young Minds through Life Skills' ? 
+                      <strong key={index}>{part}</strong> : 
+                      <span key={index}>{part}</span>
+                  )}
                 </p>
               </div>
             </div>

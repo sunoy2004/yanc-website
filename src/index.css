@@ -621,6 +621,27 @@
 }
 
 /* ======================================
+   CORE VALUES SECTION
+   ====================================== */
+@layer components {
+  #core-values.section {
+    @apply bg-background/100;
+  }
+  
+  #core-values .text-foreground {
+    @apply text-foreground/100;
+  }
+  
+  #core-values .text-muted-foreground {
+    @apply text-muted-foreground/100;
+  }
+  
+  #core-values .bg-card {
+    @apply bg-card/90 border border-border/50;
+  }
+}
+
+/* ======================================
    TESTIMONIALS SECTION
    ====================================== */
 @layer components {
@@ -1147,6 +1168,69 @@
   .main-content-visible {
     opacity: 1;
     transition: opacity 400ms ease-out;
+  }
+}
+
+/* ======================================
+   3D CAROUSEL ANIMATIONS
+   ====================================== */
+@layer base {
+  @keyframes animate {
+    0% {
+      transform: perspective(1000px) rotateY(0deg);
+    }
+    100% {
+      transform: perspective(1000px) rotateY(360deg);
+    }
+  }
+  
+  .myGallery {
+    animation: animate 20s linear infinite;
+  }
+  
+  .myGallery:hover {
+    animation-play-state: paused;
+  }
+  
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+}
+
+/* ======================================
+   CORE VALUES SECTION
+   ====================================== */
+@layer components {
+  #core-values.section {
+    @apply bg-background/95;
+  }
+  
+  #core-values .text-foreground {
+    @apply text-foreground/100;
+  }
+  
+  #core-values .text-muted-foreground {
+    @apply text-muted-foreground/70;
+  }
+  
+  #core-values .bg-card {
+    @apply bg-card/90 border border-border/50;
+  }
+}
+
+/*MOBILE*/
+@media (max-width:767px){
+  .myGalleryParent{
+      /*Scale Control*/
+      transform: scale(0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+  }
+  
+  .myGallery {
+      margin: 0 auto;
   }
 }
 

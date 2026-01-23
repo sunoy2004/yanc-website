@@ -12,11 +12,11 @@ const iconMap: Record<string, React.ElementType> = {
 const ProgramsSection = () => {
   return (
     <section id="programs" className="section">
-      <div className="container">
+      {/* <div className="container"> */}
         <ScrollAnimateWrapper>
-          <h2 className="section-title">Programs</h2>
+          <h2 className="section-title">Our Programs</h2>
           <p className="section-subtitle">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Comprehensive learning experiences designed to empower young minds with essential life skills.
           </p>
         </ScrollAnimateWrapper>
 
@@ -36,7 +36,7 @@ const ProgramsSection = () => {
             );
           })}
         </div>
-      </div>
+      {/* </div> */}
     </section>
   );
 };

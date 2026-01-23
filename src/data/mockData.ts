@@ -79,10 +79,10 @@ export const heroMedia: HeroMediaItem[] = [
 ];
 
 export const programs: Program[] = [
-  { id: "1", title: "Program Title", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", icon: "rocket" },
-  { id: "2", title: "Program Title", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", icon: "users" },
-  { id: "3", title: "Program Title", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", icon: "lightbulb" },
-  { id: "4", title: "Program Title", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", icon: "target" },
+  { id: "1", title: "Mentorship Programs", description: "Connect with experienced professionals who guide your career journey and personal growth.", icon: "rocket" },
+  { id: "2", title: "Skill Development", description: "Enhance your abilities through workshops, training sessions, and practical exercises.", icon: "users" },
+  { id: "3", title: "Networking Events", description: "Build valuable connections with peers, industry leaders, and potential collaborators.", icon: "lightbulb" },
+  { id: "4", title: "Leadership Training", description: "Develop leadership qualities and learn to inspire others in professional settings.", icon: "target" },
 ];
 
 export const events: Event[] = [
