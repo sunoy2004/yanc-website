@@ -1,51 +1,66 @@
-import { events } from "@/data/mockData";
-import { Calendar, MapPin } from "lucide-react";
 import ScrollAnimateWrapper from "@/components/ScrollAnimateWrapper";
 
 const EventsSection = () => {
+  // Define live events separately from the upcoming events
+  const liveEventsData = [
+    {
+      id: 1,
+      title: "YANC Discover Meet",
+      status: "live",
+      link: "/events/upcoming"
+    },
+    {
+      id: 2,
+      title: "Networking Workshop",
+      status: "upcoming",
+      link: "/events/upcoming"
+    }
+  ];
+  
+  // Filter to get only live events
+  const liveEvents = liveEventsData.filter(event => event.status === "live");
+  
   return (
     <section id="events" className="section section-alt">
       <div className="container">
-        <ScrollAnimateWrapper>
-          <h2 className="section-title">Upcoming Events</h2>
-          <p className="section-subtitle">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          </p>
-        </ScrollAnimateWrapper>
-
-        <div className="events-grid">
-          {events.map((event) => (
-            <ScrollAnimateWrapper key={event.id}>
-              <div className="event-card">
-                <div className="event-image">
-                  <img
-                    src={event.image}
-                    alt={event.title}
-                    loading="lazy"
-                    className="w-full h-full object-cover"
-                    style={{
-                      backfaceVisibility: "hidden",
-                      transform: "translateZ(0)",
-                    }}
-                  />
-                </div>
-                <div className="event-content">
-                  <h3 className="event-title">{event.title}</h3>
-                  <div className="event-meta">
-                    <span className="event-meta-item">
-                      <Calendar size={14} />
-                      {event.date}
-                    </span>
-                    <span className="event-meta-item">
-                      <MapPin size={14} />
-                      {event.location}
-                    </span>
+        {/* Live Event Strip - Only renders if there are live events */}
+        {
+          liveEvents.length > 0 && (
+            <div className="mb-8">
+              <section 
+                className="live-event-strip bg-gray-900 rounded-lg p-4 cursor-pointer hover:opacity-90 transition-opacity"
+                onClick={() => window.location.href = liveEvents[0].link}
+                aria-label="Live Event"
+                role="banner"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <div className="flex items-center">
+                      <div className="w-3 h-3 bg-red-500 rounded-full mr-2 animate-pulse"></div>
+                      <span className="text-red-500 font-bold text-sm uppercase tracking-wider">LIVE NOW</span>
+                    </div>
+                    <span className="text-white font-medium">{liveEvents[0].title}</span>
+                  </div>
+                  <div className="text-green-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                    </svg>
                   </div>
                 </div>
-              </div>
-            </ScrollAnimateWrapper>
-          ))}
-        </div>
+              </section>
+            </div>
+          )
+        }
+        
+        {/* Only show section title if there are no live events */}
+        {liveEvents.length === 0 && (
+          <ScrollAnimateWrapper>
+            <h2 className="section-title">Upcoming Events</h2>
+            <p className="section-subtitle">
+              Check back soon for upcoming events.
+            </p>
+          </ScrollAnimateWrapper>
+        )}
       </div>
     </section>
   );

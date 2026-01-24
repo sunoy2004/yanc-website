@@ -1231,6 +1231,37 @@
   }
 }
 
+/* LIVE EVENT STRIP */
+.live-event-strip {
+  background-color: hsl(var(--background)); /* Use YANC theme background */
+  transition: opacity 0.3s ease;
+}
+
+.live-event-strip:hover {
+  opacity: 0.9;
+}
+
+/* Responsive adjustments for live event strip */
+@media (max-width: 767px) {
+  .live-event-strip {
+    padding: 12px;
+  }
+  
+  .live-event-strip div:first-child {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .live-event-strip .space-x-3 {
+    margin-bottom: 8px;
+  }
+  
+  .live-event-strip .justify-between {
+    justify-content: center;
+  }
+}
+
 /*MOBILE*/
 @media (max-width:767px){
   .myGalleryParent{
