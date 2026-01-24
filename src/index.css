@@ -1214,7 +1214,20 @@
   }
   
   #core-values .bg-card {
-    @apply bg-card/90 border border-border/50;
+    background-color: hsl(var(--card) / 0.9);
+    border: 1px solid hsl(var(--border) / 0.5);
+  }
+  
+  #core-values .core-value-card {
+    transition: all 0.3s ease;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+  }
+  
+  #core-values .core-value-card:hover {
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+    border-color: hsl(var(--primary) / 0.3);
   }
 }
 

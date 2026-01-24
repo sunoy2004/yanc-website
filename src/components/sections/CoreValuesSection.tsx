@@ -124,7 +124,7 @@ const CoreValuesSection = () => {
                           transform: `rotateY(${angle}deg) translateZ(${radius}px)`,
                         }}
                       >
-                        <div className="w-full h-full flex flex-col items-center justify-center p-4 text-center bg-card border border-border rounded-xl shadow-sm">
+                        <div className="w-full h-full flex flex-col items-center justify-center p-4 text-center bg-card border border-border rounded-xl shadow-sm core-value-card">
                           <div className="text-3xl md:text-4xl mb-3">
                             {value.icon}
                           </div>
