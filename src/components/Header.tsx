@@ -37,7 +37,7 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
     { label: "Team", href: "/team/executive-management", hasDropdown: true },
     { label: "Careers", href: "/careers/jobs", hasDropdown: true },
     { label: "Applications", href: "/apply/membership", hasDropdown: true },
-    { label: "Contact", href: "#contact" },
+    { label: "Contact", href: "/contact" },
     { label: "FAQ", href: "/faq" },
   ];
 

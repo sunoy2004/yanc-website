@@ -47,13 +47,13 @@ const YoungMindsMashup = () => {
         <div className="container mx-auto px-4 max-w-6xl">
           
           {/* Section Heading */}
-          <div className="text-center mb-10">
-            <div className="inline-block relative mb-6">
-              <h1 className="text-3xl md:text-4xl font-bold text-foreground relative z-10">
+          <div className="text-center mb-16">
+            <div className="inline-block relative">
+              <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
                 Young Minds Mashup
               </h1>
-              <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-primary to-primary/50 rounded-full"></div>
             </div>
+            <div className="w-16 h-1 bg-primary rounded-full mx-auto mb-8"></div>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               Where Innovation Meets Opportunity
             </p>
@@ -79,26 +79,60 @@ const YoungMindsMashup = () => {
           </div>
 
           {/* Feature Cards Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
-            {featureCards.map((card) => (
+          <div 
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-10"
+            style={{
+              animation: 'fadeIn 0.8s ease-out forwards',
+              opacity: 0
+            }}
+          >
+            {featureCards.map((card, index) => (
               <div 
                 key={card.id}
-                className="group bg-card/80 backdrop-blur-sm rounded-2xl p-4 border border-border/50 shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-2 hover:border-primary/30"
+                className="feature-card group"
+                style={{
+                  animationDelay: `${index * 0.1}s`,
+                  animation: 'fadeInUp 0.6s ease-out forwards',
+                  opacity: 0,
+                  transform: 'translateY(20px)'
+                }}
               >
-                <div className="flex justify-center mb-6">
-                  <div className="p-4 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300">
-                    {card.icon}
+                {/* Animated background glow */}
+                <div className="feature-card-glow"></div>
+                
+                {/* Floating particles effect */}
+                <div className="feature-card-particle" style={{ top: '1rem', right: '1rem', animationDelay: '0.2s' }}></div>
+                <div className="feature-card-particle" style={{ bottom: '1rem', left: '1rem', width: '0.375rem', height: '0.375rem', animationDelay: '0.5s' }}></div>
+                
+                <div className="flex justify-center mb-6 relative">
+                  <div className="feature-card-icon">
+                    <div className="transition-transform duration-300 group-hover:scale-125 group-hover:-rotate-3">
+                      {card.icon}
+                    </div>
                   </div>
+                  {/* Shine effect on hover */}
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform -rotate-45"></div>
                 </div>
-                <h3 className="text-xl font-bold text-foreground mb-4 text-center group-hover:text-primary transition-colors duration-300">
+                
+                <h3 className="feature-card-title">
                   {card.title}
                 </h3>
-                <p className="text-muted-foreground text-center leading-relaxed">
+                
+                <p className="feature-card-description">
                   {card.description}
                 </p>
-                <div className="mt-6 pt-4 border-t border-border/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="w-12 h-1 bg-primary rounded-full mx-auto"></div>
+                
+                {/* Enhanced hover indicator */}
+                <div className="mt-4 pt-4 border-t border-border/30 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-2 group-hover:translate-y-0">
+                  <div className="flex items-center justify-center gap-2">
+                    <div className="w-3 h-0.5 bg-primary rounded-full animate-pulse"></div>
+                    <div className="w-8 h-1 bg-gradient-to-r from-primary to-accent rounded-full"></div>
+                    <div className="w-3 h-0.5 bg-accent rounded-full animate-pulse" style={{ animationDelay: '0.3s' }}></div>
+                  </div>
                 </div>
+                
+                {/* Subtle border animation */}
+                <div className="feature-card-border"></div>
               </div>
             ))}
           </div>

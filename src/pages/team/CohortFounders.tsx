@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
-import PageTemplate from "@/components/PageTemplate";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import TeamGrid from "@/components/TeamGrid";
+import { teamMembers } from "@/data/mockData";
 
 const CohortFounders = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
@@ -15,11 +18,19 @@ const CohortFounders = () => {
   };
 
   return (
-    <PageTemplate 
-      title="Cohort Founders" 
-      isDarkMode={isDarkMode} 
-      toggleTheme={toggleTheme} 
-    />
+    <div className="min-h-screen bg-background text-foreground">
+      <Header isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+      
+      <main>
+        <TeamGrid 
+          members={teamMembers}
+          sectionTitle="Cohort Founders"
+          sectionSubtitle="Dynamic young leaders driving change"
+        />
+      </main>
+
+      <Footer />
+    </div>
   );
 };
 

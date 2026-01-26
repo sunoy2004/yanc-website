@@ -142,6 +142,62 @@ export const teamMembers: TeamMember[] = [
       linkedin: "https://linkedin.com"
     }
   },
+  { 
+    id: "5", 
+    name: "Ms.Mahima Kalyanam", 
+    role: "Cohort Operations Ambassador", 
+    image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769271720/tm_9_hlwfnx.png",
+    description: "A recent biotechnology graduate, who aspires to become a scientist in the field of medicine. She is eager to learn more than what is taught in educational institutions and believes that one can learn the most through experiences and failures.",
+    socialLinks: {
+      twitter: "https://twitter.com",
+      linkedin: "https://linkedin.com",
+      github: "https://github.com"
+    }
+  },
+  { 
+    id: "6", 
+    name: "Mr.Lalith Adla", 
+    role: "Cohort Creative Ambassador", 
+    image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769271724/tm_7_ghl3gt.png",
+    description: "A Creative Brain. Visual Storyteller. Tech Savvy Dreamer. Meet Lalith, a B. Tech CSE student who’s got one foot in code and the other in creativity. He doesn’t just design visuals,he builds stories that vibe, connect, and stay. Lalith blends innovation, teamwork, and design magic to make every project pop. Curious by nature and fearless with ideas, Lalith believes that visuals aren’t just about aesthetics, they are about energy, emotion, and impact. And that’s exactly what he brings to every frame he creates in YANC.",
+    socialLinks: {
+      twitter: "https://twitter.com",
+      linkedin: "https://linkedin.com"
+    }
+  },
+  { 
+    id: "7", 
+    name: "Ms.Sanviti Reddy", 
+    role: "Cohort Social Media Ambassador", 
+    image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769271721/tm_8_i9ebwy.png",
+    description: "A recent graduate who enjoys making videos and taking pictures. She loves being creative and sharing stories through her work. She is excited to learn new things and be part of interesting projects..",
+    socialLinks: {
+      linkedin: "https://linkedin.com",
+      github: "https://github.com"
+    }
+  },
+  { 
+    id: "8", 
+    name: "Mr.Nisidh Reddy",
+    role: "Cohort Chief Financial Officer", 
+    image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769271727/tm_2_mz2b0c.png",
+    description: "Nisidh serves as the Cohort Associate Chief Financial Officer at YANC, where he supports strategic financial planning, designing financial templates, reporting, and cohort-level fiscal oversight. Currently pursuing a degree in Computer Science at GITAM University, Hyderabad, he brings a unique blend of technical acumen and financial insight. He has represented Telangana in national-level chess championships and is a Winner of the Southern Railways chess championship, embodying leadership, discipline, and a growth mindset.",
+    socialLinks: {
+      twitter: "https://twitter.com",
+      linkedin: "https://linkedin.com"
+    }
+  },
+  { 
+    id: "9", 
+    name: "Ms.Ananya Gadapa", 
+    role: "Cohort Operations Ambassador (COA)", 
+    image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769271725/tm_6_eke72s.png",
+    description: "Ananya is currently pursuing her engineering degree ,Ananya blends strategic thinking with a passion for innovation, creating solutions that connect technology and business. She has experience leading projects from the ground up, ensuring that each one moves smoothly from idea to execution. Known for her creativity and problem-solving mindset, she works closely with teams to turn challenges into opportunities.",
+    socialLinks: {
+      linkedin: "https://linkedin.com",
+      github: "https://github.com"
+    }
+  },
 ];
 
 export const founders: Founder[] = [
@@ -187,6 +243,100 @@ export const founders: Founder[] = [
     socialLinks: {
       linkedin: "https://linkedin.com/in/priyasharma",
       twitter: "https://twitter.com/priyasharma"
+    }
+  }
+];
+
+export const mentors: TeamMember[] = [
+  {
+    id: "1",
+    name: "Mr.Daisuke Tanji",
+    role: "Founder CEO of Indobox Inc",
+    image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769271719/gm_1_pgqxbt.png",
+    description: "Mr. Daisuke Tanji has over 20 years experience with one of the biggest Japanese trading company as sales and marketing field, trading, investment etc. 5 years working experience in India (Delhi and Mumbai) as General Manager for development new business. Establishing Indo-Japan ecosystem to help young minds of both countries to learn and grow. His vision is The fusion of Japan and India creates new value. YANC and Indobox are collaborating in the space of cross-border education, cultural exchange, internships, workshops, industry exposure, and youth focused learning programs between India and Japan, with the shared vision of empowering young minds to learn, explore, and grow beyond borders.",
+    socialLinks: {
+      linkedin: "https://linkedin.com/in/sarahjohnson",
+      twitter: "https://twitter.com/sarahjohnson"
+    }
+  },
+  {
+    id: "2",
+    name: "Mr.Cosme Almeida",
+    role: "Abroad Programmes Director,Católica Porto Business School, Portugal",
+    image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769271718/gm_2_bipsmf.png",
+    description: "Cosme Almeida is an experienced professional with a demonstrated history of working in the education management industry, around different Continents, managing international accredited projects. Skilled in Marketing Management, Negotiation, Team Management, Intercultural Communication and Business Planning. Strong marketing professional with skills in Management Control and Finance. Financial Brand Valuation Consultant. Basketball Coach. YANC and Cosme Almeida partnership will open the gates for young minds of India and Portugal to explore both the countries for internships, industry exposure, job opportunities, startup incubation, immersive experiences for the youth and more.",
+    socialLinks: {
+      linkedin: "https://linkedin.com/in/michaelchen",
+      github: "https://github.com/michaelchen"
+    }
+  },
+  {
+    id: "3",
+    name: "Emma Rodriguez",
+    role: "Venture Partner, Growth Capital",
+    image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=200&h=200&fit=crop&facepad=2",
+    description: "Former startup founder turned investor. Focuses on early-stage technology companies with scalable business models.",
+    socialLinks: {
+      linkedin: "https://linkedin.com/in/emmarodriguez",
+      twitter: "https://twitter.com/emmarodriguez"
+    }
+  },
+  {
+    id: "4",
+    name: "David Park",
+    role: "Head of Engineering, GlobalTech",
+    image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=200&fit=crop&facepad=2",
+    description: "Engineering leader with 12+ years in building high-performance teams and delivering complex software solutions at scale.",
+    socialLinks: {
+      linkedin: "https://linkedin.com/in/davidpark",
+      github: "https://github.com/davidpark"
+    }
+  }
+];
+
+export const advisors: TeamMember[] = [
+  {
+    id: "1",
+    name: "Mr.Lieven Cornelis",
+    role: "Psychologist & Human Capital Strategist",
+    image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769271731/ab_1_wmtwxr.png",
+    description: "Lieven Cornelis is a seasoned psychologist and human capital strategist specializing in leadership development and behavioral assessment. He is the creator of the Koan-PM platform, a sophisticated tool designed to analyze personality traits and provide actionable insights for personal and professional growth. With extensive experience in 360-degree feedback and psychological safety, Lieven empowers individuals and organizations to enhance performance through self-awareness and targeted development.",
+    socialLinks: {
+      linkedin: "https://linkedin.com/in/robertwilliams",
+      twitter: "https://twitter.com/robertwilliams"
+    }
+  },
+  {
+    id: "2",
+    name: "Mr.Mac Srinivasan",
+    role: "Global Growth Mentor & Certified Franchise Expert",
+    image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769271731/ab_2_tqsain.png",
+    description: "Mac Srinivasan is a Global Growth Mentor and the CEO of ‘The Abundant Group’ , with over 35+ years of business experience across 70+ countries. Mac is a Certified Franchise Executive (International Franchise Association, USA) and a highly sought-after keynote speaker who has inspired over 200,000 entrepreneurs in his journey.As the former Global Markets President of BNI, Mac led global expansion and delivered consistent year-over-year growth, even in challenging times of uncertainty. He now dedicates his time to helping entrepreneurs and global franchises scale exponentially, combining strategic insight with deep.Beyond business, Mac is passionate about education, supporting over 1,000s of underprivileged children.Adventurer at heart:a fire-walker, bungee jumper, skydiver …Mac’s passion and purpose fuels his endless energy to help you achieve exponential results.",
+    socialLinks: {
+      linkedin: "https://linkedin.com/in/lisathompson",
+      twitter: "https://twitter.com/lisathompson"
+    }
+  },
+  {
+    id: "3",
+    name: "Dr.Molly Joy",
+    role: "Psychologist & Academic Leader. PhD",
+    image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769271730/ab_3_go3nzf.png",
+    description: "Dr. Molly Joy is a distinguished psychologist and academic leader with over two decades of experience in higher education and mental health. She served as the Head of the Department of Psychology at reputed colleges. Dr. Molly's research encompasses areas such as educational psychology, organizational behavior, and ecological intelligence, contributing significantly to both academic literature and practical applications. Her dedication to student counseling and curriculum development has positively impacted numerous learners and professionals in the field.",
+    socialLinks: {
+      linkedin: "https://linkedin.com/in/jamesmiller",
+      github: "https://github.com/jamesmiller"
+    }
+  },
+  {
+    id: "4",
+    name: "Mr.Neil Gogte",
+    role: "Chairman:KMIT Group of colleges",
+    image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769271729/ab_4_pbozij.png",
+    description: "Neil Gogte is a visionary technologist, entrepreneur, and academic leader with over three decades of experience in IT and education. He is the founder and owner of multiple educational institutions, including engineering and junior colleges like Keshav Memorial and NGIT, shaping thousands of student careers. Neil is also the Founder of Genesis Solutions which trained 70K professionals since 1992. Neil’s leadership continues to impact thousands of young professionals and institutions across India.",
+    socialLinks: {
+      linkedin: "https://linkedin.com/in/mariagarcia",
+      twitter: "https://twitter.com/mariagarcia"
     }
   }
 ];

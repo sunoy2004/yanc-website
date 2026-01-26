@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
-import PageTemplate from "@/components/PageTemplate";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import TeamGrid from "@/components/TeamGrid";
+import { founders } from "@/data/mockData";
 
 const ExecutiveManagement = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
@@ -15,11 +18,19 @@ const ExecutiveManagement = () => {
   };
 
   return (
-    <PageTemplate 
-      title="Executive Management" 
-      isDarkMode={isDarkMode} 
-      toggleTheme={toggleTheme} 
-    />
+    <div className="min-h-screen bg-background text-foreground">
+      <Header isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+      
+      <main>
+        <TeamGrid 
+          members={founders}
+          sectionTitle="Executive Management"
+          sectionSubtitle="Leaders driving our mission and vision"
+        />
+      </main>
+
+      <Footer />
+    </div>
   );
 };
 

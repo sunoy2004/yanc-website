@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
-import PageTemplate from "@/components/PageTemplate";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import TeamGrid from "@/components/TeamGrid";
+import { advisors } from "@/data/mockData";
 
 const AdvisoryBoard = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
@@ -15,11 +18,19 @@ const AdvisoryBoard = () => {
   };
 
   return (
-    <PageTemplate 
-      title="Advisory Board" 
-      isDarkMode={isDarkMode} 
-      toggleTheme={toggleTheme} 
-    />
+    <div className="min-h-screen bg-background text-foreground">
+      <Header isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+      
+      <main>
+        <TeamGrid 
+          members={advisors}
+          sectionTitle="Advisory Board"
+          sectionSubtitle="Strategic minds guiding our path forward"
+        />
+      </main>
+
+      <Footer />
+    </div>
   );
 };
 
