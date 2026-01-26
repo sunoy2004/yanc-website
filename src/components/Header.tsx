@@ -180,7 +180,11 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
           to="/" 
           className={`header-logo ${isDarkMode ? 'text-white' : 'text-black'}`}
         >
-          YANC
+          <img 
+            src="/favicon.svg" 
+            alt="YANC Logo" 
+            className="w-12 h-12 object-contain"
+          />
         </Link>
 
         {/* Desktop nav */}

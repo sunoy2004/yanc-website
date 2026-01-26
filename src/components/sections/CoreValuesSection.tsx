@@ -88,7 +88,7 @@ const CoreValuesSection = () => {
 
           {/* Right Column - 3D Carousel (50%) */}
           <ScrollAnimateWrapper delay={150}>
-            <div className="lg:col-span-1 flex items-center justify-center relative myGalleryParent">
+            <div className="lg:col-span-1 flex items-start justify-center relative myGalleryParent pt-0 sm:pt-20 pl-0 lg:pl-48">
               <div 
                 ref={carouselRef}
                 className="relative w-56 h-72 sm:w-64 sm:h-80 md:w-80 md:h-96"
@@ -107,7 +107,7 @@ const CoreValuesSection = () => {
                   {coreValues.map((value, index) => {
                     const angle = (index * 360) / coreValues.length;
                     const radius = 200; // Based on the formula from the provided code
-                    
+                              
                     return (
                       <div
                         key={value.id}

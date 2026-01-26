@@ -1,19 +1,14 @@
 import { useState } from "react";
-import { teamMembers, TeamMember } from "@/data/mockData";
+import { founders, Founder } from "@/data/mockData";
 import ScrollAnimateWrapper from "@/components/ScrollAnimateWrapper";
 import TeamMemberModal from "@/components/TeamMemberModal";
 
 const FoundersSection = () => {
-  const [selectedFounder, setSelectedFounder] = useState<TeamMember | null>(null);
+  const [selectedFounder, setSelectedFounder] = useState<Founder | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleFounderClick = (founder: TeamMember) => {
-    // Use the founder data as-is, with bio field
-    const founderData = {
-      ...founder,
-      bio: founder.bio || founder.description
-    };
-    setSelectedFounder(founderData);
+  const handleFounderClick = (founder: Founder) => {
+    setSelectedFounder(founder);
     setIsModalOpen(true);
   };
 
@@ -27,26 +22,26 @@ const FoundersSection = () => {
           </p>
         </ScrollAnimateWrapper>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-          {teamMembers.map((member) => (
-            <ScrollAnimateWrapper key={member.id}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-8">
+          {founders.map((founder) => (
+            <ScrollAnimateWrapper key={founder.id}>
               <div 
                 className="founder-card bg-card rounded-xl p-6 border border-border shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer group"
-                onClick={() => handleFounderClick(member)}
+                onClick={() => handleFounderClick(founder)}
               >
                 <div className="founder-image-container mb-4 flex justify-center">
                   <img
-                    src={member.image}
-                    alt={member.name}
+                    src={founder.image}
+                    alt={founder.name}
                     loading="lazy"
                     className="w-20 h-20 rounded-full object-cover border-2 border-primary/20 group-hover:border-primary/40 transition-colors"
                   />
                 </div>
                 <h3 className="founder-name text-lg font-semibold text-foreground text-center mb-1">
-                  {member.name}
+                  {founder.name}
                 </h3>
-                <p className="founder-role text-sm text-muted-foreground text-center">
-                  {member.role}
+                <p className="founder-title text-sm text-muted-foreground text-center">
+                  {founder.title}
                 </p>
               </div>
             </ScrollAnimateWrapper>
