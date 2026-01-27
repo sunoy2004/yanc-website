@@ -184,21 +184,7 @@ const Faq = () => {
             ))}
           </div>
 
-          {/* CTA Section */}
-          <div className="text-center bg-card border border-border rounded-xl p-8 md:p-12">
-            <h2 className="text-2xl md:text-3xl font-bold mb-4">
-              Ready to embark on your journey of growth and empowerment?
-            </h2>
-            <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-              Contact us today!
-            </p>
-            <a 
-              href="mailto:connect@yanc.in" 
-              className="inline-block bg-primary text-primary-foreground px-8 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors"
-            >
-              Reach out to us at connect@yanc.in
-            </a>
-          </div>
+
         </div>
       </main>
 
