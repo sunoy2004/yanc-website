@@ -46,19 +46,27 @@ interface Errors {
   [key: string]: string;
 }
 
-interface StepProps {
+interface StringStepProps {
   formData: FormData;
   errors: Errors;
   onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
 }
 
-interface Step3Props extends StepProps {
-  handleCheckbox: (field: string, value: string, checked: boolean) => void;
-}
-
-interface Step5Props extends StepProps {
+interface Step5Props {
+  formData: FormData;
+  errors: Errors;
+  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
   handleFileUpload: (field: string, file: File | null) => void;
 }
+
+interface Step3Props {
+  formData: FormData;
+  errors: Errors;
+  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
+  handleCheckbox: (field: string, value: string, checked?: boolean) => void;
+}
+
+
 
 // Skills list
 const skillsList = [
@@ -153,7 +161,9 @@ const MembershipApplication = () => {
   // Handle checkbox changes
   const handleCheckboxChange = useCallback((name: string, value: string, checked?: boolean) => {
     setFormData(prev => {
-      const currentArray = prev[name as keyof typeof prev] as string[];
+      const currentValue = prev[name as keyof typeof prev];
+      // Ensure we're working with an array for checkbox fields
+      const currentArray = Array.isArray(currentValue) ? currentValue as string[] : [];
       // If checked is undefined, toggle the current state
       const isChecked = checked !== undefined ? checked : !currentArray.includes(value);
       const newArray = isChecked
@@ -405,7 +415,7 @@ const MembershipApplication = () => {
 };
 
 // Step 1 Component
-const Step1: React.FC<StepProps> = ({ formData, errors, onChange }) => (
+const Step1: React.FC<StringStepProps> = ({ formData, errors, onChange }) => (
   <div className="space-y-4">
     <div>
       <h3 className="text-xl font-bold text-foreground mb-2">Personal Information</h3>
@@ -503,7 +513,7 @@ const Step1: React.FC<StepProps> = ({ formData, errors, onChange }) => (
 );
 
 // Step 2 Component
-const Step2: React.FC<StepProps> = ({ formData, errors, onChange }) => (
+const Step2: React.FC<StringStepProps> = ({ formData, errors, onChange }) => (
   <div className="space-y-6">
     <div>
       <h3 className="text-xl font-bold text-foreground mb-2">Location & Education</h3>
@@ -913,7 +923,7 @@ const Step3: React.FC<Step3Props> = ({ formData, errors, onChange, handleCheckbo
 };
 
 // Step 4 Component
-const Step4: React.FC<StepProps> = ({ formData, errors, onChange }) => {
+const Step4: React.FC<StringStepProps> = ({ formData, errors, onChange }) => {
   const fields = [
     { name: 'whyJoin', label: 'Why do you want to join YANC? *', required: true },
     { name: 'skillsToDevelop', label: 'What skills do you want to develop? *', required: true },
@@ -944,12 +954,12 @@ const Step4: React.FC<StepProps> = ({ formData, errors, onChange }) => {
                   {field.label}
                 </label>
                 <span className="text-xs text-muted-foreground">
-                  {formData[field.name as keyof typeof formData]?.length || 0}/500
+                  {typeof formData[field.name as keyof typeof formData] === 'string' ? (formData[field.name as keyof typeof formData] as string).length : 0}/500
                 </span>
               </div>
               <textarea
                 name={field.name}
-                value={formData[field.name as keyof typeof formData] || ''}
+                value={String(formData[field.name as keyof typeof formData] ?? '')}
                 onChange={onChange}
                 maxLength={500}
                 rows={4}
@@ -1254,11 +1264,11 @@ const ReviewDetails: React.FC<{ formData: FormData }> = ({ formData }) => (
           </div>
           <div>
             <span className="font-medium text-foreground">Field of Study:</span>
-            <p className="text-muted-foreground">{formData.fieldOfStudy || 'Not provided'}</p>
+            <p className="text-muted-foreground">{typeof formData['fieldOfStudy'] === 'string' ? formData['fieldOfStudy'] : 'Not provided'}</p>
           </div>
           <div>
             <span className="font-medium text-foreground">Institution:</span>
-            <p className="text-muted-foreground">{formData.institution || 'Not provided'}</p>
+            <p className="text-muted-foreground">{typeof formData['institution'] === 'string' ? formData['institution'] : 'Not provided'}</p>
           </div>
         </div>
       </div>
