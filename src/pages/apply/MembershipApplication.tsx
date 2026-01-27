@@ -352,6 +352,12 @@ const MembershipApplication = () => {
               </div>
               <div className="mt-6 pt-4 border-t border-border">
                 <p className="text-sm text-muted-foreground">Step {currentStep} of {steps.length}</p>
+                <div className="mt-2 w-full bg-muted rounded-full h-2">
+                  <div 
+                    className="bg-primary h-2 rounded-full transition-all duration-300 ease-out" 
+                    style={{ width: `${((currentStep - 1) / (steps.length - 1)) * 100}%` }}
+                  ></div>
+                </div>
               </div>
             </div>
           </div>

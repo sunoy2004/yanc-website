@@ -43,7 +43,7 @@ const UpcomingEvents = () => {
                 <div className="mb-8">
                   <section 
                     className="live-event-strip bg-gray-900 rounded-lg p-4 cursor-pointer hover:opacity-90 transition-opacity"
-                    onClick={() => window.location.href = liveEvents.length > 0 ? liveEvents[0].link : '/events'}
+                    onClick={() => window.location.href = liveEvents.length > 0 ? liveEvents[0].link : '/events/upcoming'}
                     aria-label="Live Event"
                     role="banner"
                   >
