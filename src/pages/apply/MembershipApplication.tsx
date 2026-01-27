@@ -1,7 +1,64 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Download, User, MapPin, Briefcase, Target, FileText } from 'lucide-react';
 import { indianStates } from '../../data/mockData';
+
+// Define TypeScript interfaces
+interface FormData {
+  fullName: string;
+  email: string;
+  phone: string;
+  age: string;
+  street: string;
+  state: string;
+  city: string;
+  preferredState: string;
+  preferredCity: string;
+  educationLevel: string;
+  graduationYear: string;
+  fieldOfStudy: string;
+  institution: string;
+  experience: string;
+  skills: string[];
+  customSkill: string;
+  availability: string[];
+  timeCommitment: string;
+  whyJoin: string;
+  skillsToDevelop: string;
+  networkingPerspective: string;
+  howContribute: string;
+  vision: string;
+  introduceYourself: string;
+  mentorship: string;
+  leadership: string;
+  inspiration: string;
+  profilePhoto: File | null;
+  resume: File | null;
+  video: File | null;
+  linkedin: string;
+  socialMedia: string;
+  startDate: string;
+  comments: string;
+  subscription: string;
+}
+
+interface Errors {
+  [key: string]: string;
+}
+
+interface StepProps {
+  formData: FormData;
+  errors: Errors;
+  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
+}
+
+interface Step3Props extends StepProps {
+  handleCheckbox: (field: string, value: string, checked: boolean) => void;
+}
+
+interface Step5Props extends StepProps {
+  handleFileUpload: (field: string, file: File | null) => void;
+}
 
 // Skills list
 const skillsList = [
@@ -76,7 +133,7 @@ const MembershipApplication = () => {
   ];
 
   // Handle input changes
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
     
@@ -91,23 +148,25 @@ const MembershipApplication = () => {
         });
       }, 0);
     }
-  };
+  }, [errors]);
 
   // Handle checkbox changes
-  const handleCheckboxChange = (name: string, value: string) => {
+  const handleCheckboxChange = useCallback((name: string, value: string, checked?: boolean) => {
     setFormData(prev => {
       const currentArray = prev[name as keyof typeof prev] as string[];
-      const newArray = currentArray.includes(value)
-        ? currentArray.filter(item => item !== value)
-        : [...currentArray, value];
+      // If checked is undefined, toggle the current state
+      const isChecked = checked !== undefined ? checked : !currentArray.includes(value);
+      const newArray = isChecked
+        ? [...currentArray, value]
+        : currentArray.filter(item => item !== value);
       return { ...prev, [name]: newArray };
     });
-  };
+  }, []);
 
   // Handle file uploads
-  const handleFileUpload = (name: string, file: File | null) => {
+  const handleFileUpload = useCallback((name: string, file: File | null) => {
     setFormData(prev => ({ ...prev, [name]: file }));
-  };
+  }, []);
 
   // Validate current step
   const validateStep = (step: number) => {
@@ -346,7 +405,7 @@ const MembershipApplication = () => {
 };
 
 // Step 1 Component
-const Step1: React.FC<{ formData: any; errors: any; onChange: any }> = ({ formData, errors, onChange }) => (
+const Step1: React.FC<StepProps> = ({ formData, errors, onChange }) => (
   <div className="space-y-4">
     <div>
       <h3 className="text-xl font-bold text-foreground mb-2">Personal Information</h3>
@@ -444,7 +503,7 @@ const Step1: React.FC<{ formData: any; errors: any; onChange: any }> = ({ formDa
 );
 
 // Step 2 Component
-const Step2: React.FC<{ formData: any; errors: any; onChange: any }> = ({ formData, errors, onChange }) => (
+const Step2: React.FC<StepProps> = ({ formData, errors, onChange }) => (
   <div className="space-y-6">
     <div>
       <h3 className="text-xl font-bold text-foreground mb-2">Location & Education</h3>
@@ -649,21 +708,27 @@ const Step2: React.FC<{ formData: any; errors: any; onChange: any }> = ({ formDa
 );
 
 // Step 3 Component
-const Step3: React.FC<{ formData: any; errors: any; onChange: any; handleCheckbox: any }> = ({ formData, errors, onChange, handleCheckbox }) => {
+const Step3: React.FC<Step3Props> = ({ formData, errors, onChange, handleCheckbox }) => {
   const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   const timeCommitments = ['1-2 hours', '3-5 hours', '6-10 hours', '10+ hours'];
   
   // Handle custom skill input change
   const handleCustomSkillChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onChange({ target: { name: 'customSkill', value: e.target.value } });
+    const event = {
+      target: { name: 'customSkill', value: e.target.value }
+    } as React.ChangeEvent<HTMLInputElement>;
+    onChange(event);
   };
 
   // Handle adding custom skill
   const handleAddCustomSkill = () => {
     const skill = formData.customSkill?.trim();
     if (skill && formData.skills.length < 5 && !formData.skills.includes(skill)) {
-      handleCheckbox('skills', skill);
-      onChange({ target: { name: 'customSkill', value: '' } });
+      handleCheckbox('skills', skill, true);
+      const event = {
+        target: { name: 'customSkill', value: '' }
+      } as React.ChangeEvent<HTMLInputElement>;
+      onChange(event);
     }
   };
 
@@ -848,7 +913,7 @@ const Step3: React.FC<{ formData: any; errors: any; onChange: any; handleCheckbo
 };
 
 // Step 4 Component
-const Step4: React.FC<{ formData: any; errors: any; onChange: any }> = ({ formData, errors, onChange }) => {
+const Step4: React.FC<StepProps> = ({ formData, errors, onChange }) => {
   const fields = [
     { name: 'whyJoin', label: 'Why do you want to join YANC? *', required: true },
     { name: 'skillsToDevelop', label: 'What skills do you want to develop? *', required: true },
@@ -927,7 +992,7 @@ const Step4: React.FC<{ formData: any; errors: any; onChange: any }> = ({ formDa
 };
 
 // Step 5 Component
-const Step5: React.FC<{ formData: any; errors: any; onChange: any; handleFileUpload: any }> = ({ formData, errors, onChange, handleFileUpload }) => {
+const Step5: React.FC<Step5Props> = ({ formData, errors, onChange, handleFileUpload }) => {
   const subscriptionPlans = ['Basic', 'Premium', 'Enterprise'];
   
   return (
@@ -1136,7 +1201,7 @@ const Step5: React.FC<{ formData: any; errors: any; onChange: any; handleFileUpl
 
 
 // Review Details Component
-const ReviewDetails: React.FC<{ formData: any }> = ({ formData }) => (
+const ReviewDetails: React.FC<{ formData: FormData }> = ({ formData }) => (
   <div className="bg-secondary/50 border border-border rounded-lg p-6 mt-6">
     <h4 className="font-medium text-foreground mb-4">Review Your Application</h4>
     <p className="text-sm text-muted-foreground mb-4">
