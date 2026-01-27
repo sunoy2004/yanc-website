@@ -66,7 +66,7 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
 
   // Applications dropdown items
   const applicationsDropdownItems = [
-    { label: "Apply for YANC Membership", href: "/apply/membership" },
+    { label: "Apply for YANC Membership", href: "/apply/membership-application" },
     { label: "Discover Meet Registration", href: "/apply/discover-meet-registration" },
     { label: "Discover Meet Feedback", href: "/apply/discover-meet-feedback" },
     { label: "Mentor Registration", href: "/apply/mentor-registration" },

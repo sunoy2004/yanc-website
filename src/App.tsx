@@ -33,6 +33,7 @@ import DiscoverMeetRegistration from "./pages/apply/DiscoverMeetRegistration";
 import DiscoverMeetFeedback from "./pages/apply/DiscoverMeetFeedback";
 import MentorRegistration from "./pages/apply/MentorRegistration";
 import StartupPitch from "./pages/apply/StartupPitch";
+import MembershipApplication from "./pages/apply/MembershipApplication";
 
 // Events pages
 import UpcomingEvents from "./pages/events/Upcoming";
@@ -78,6 +79,7 @@ const App = () => (
           <Route path="/apply/discover-meet-feedback" element={<DiscoverMeetFeedback />} />
           <Route path="/apply/mentor-registration" element={<MentorRegistration />} />
           <Route path="/apply/startup-pitch" element={<StartupPitch />} />
+          <Route path="/apply/membership-application" element={<MembershipApplication />} />
           
           {/* Events routes */}
           <Route path="/events/upcoming" element={<UpcomingEvents />} />

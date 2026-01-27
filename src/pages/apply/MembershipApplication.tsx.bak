@@ -1,0 +1,1023 @@
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { ChevronLeft, ChevronRight, Download, User, MapPin, Briefcase, Target, FileText } from 'lucide-react';
+
+const MembershipApplication = () => {
+  const [currentStep, setCurrentStep] = useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
+
+  // Form data state
+  const [formData, setFormData] = useState({
+    // Step 1
+    fullName: '',
+    email: '',
+    phone: '',
+    age: '',
+    // Step 2
+    street: '',
+    state: '',
+    city: '',
+    preferredState: '',
+    preferredCity: '',
+    educationLevel: '',
+    graduationYear: '',
+    fieldOfStudy: '',
+    institution: '',
+    // Step 3
+    experience: '',
+    skills: [] as string[],
+    availability: [] as string[],
+    timeCommitment: '',
+    // Step 4
+    whyJoin: '',
+    skillsToDevelop: '',
+    networkingPerspective: '',
+    howContribute: '',
+    vision: '',
+    introduceYourself: '',
+    mentorship: '',
+    leadership: '',
+    inspiration: '',
+    // Step 5
+    profilePhoto: null as File | null,
+    resume: null as File | null,
+    video: null as File | null,
+    linkedin: '',
+    socialMedia: '',
+    startDate: '',
+    comments: '',
+    subscription: ''
+  });
+
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // Skills list
+  const skillsList = [
+    'JavaScript', 'Python', 'React', 'Node.js', 'HTML/CSS', 'Java', 'C++', 'SQL',
+    'Project Management', 'Leadership', 'Communication', 'Problem Solving',
+    'Data Analysis', 'Marketing', 'Design', 'Sales', 'Writing', 'Teaching',
+    'Event Management', 'Social Media', 'Content Creation', 'Public Speaking',
+    'Networking', 'Mentoring', 'Team Building', 'Strategic Planning'
+  ];
+
+  // Steps configuration
+  const steps = [
+    { id: 1, title: 'Personal Information', icon: User },
+    { id: 2, title: 'Location & Education', icon: MapPin },
+    { id: 3, title: 'Experience & Skills', icon: Briefcase },
+    { id: 4, title: 'Motivation & Goals', icon: Target },
+    { id: 5, title: 'Files & Submission', icon: FileText }
+  ];
+
+  // Handle input changes
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[name];
+        return newErrors;
+      });
+    }
+  };
+
+  // Handle checkbox changes
+  const handleCheckboxChange = (name: string, value: string) => {
+    setFormData(prev => {
+      const currentArray = prev[name as keyof typeof prev] as string[];
+      const newArray = currentArray.includes(value)
+        ? currentArray.filter(item => item !== value)
+        : [...currentArray, value];
+      return { ...prev, [name]: newArray };
+    });
+  };
+
+  // Handle file uploads
+  const handleFileUpload = (name: string, file: File | null) => {
+    setFormData(prev => ({ ...prev, [name]: file }));
+  };
+
+  // Validate current step
+  const validateStep = (step: number) => {
+    const newErrors: Record<string, string> = {};
+    
+    switch (step) {
+      case 1:
+        if (!formData.fullName.trim()) newErrors.fullName = 'Full name is required';
+        if (!formData.email.trim()) newErrors.email = 'Email is required';
+        else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Email is invalid';
+        if (!formData.phone.trim()) newErrors.phone = 'Phone number is required';
+        else if (!/^\d{10}$/.test(formData.phone)) newErrors.phone = 'Phone must be 10 digits';
+        if (!formData.age) newErrors.age = 'Age is required';
+        else if (parseInt(formData.age) < 18 || parseInt(formData.age) > 25) newErrors.age = 'Age must be between 18-25';
+        break;
+      case 2:
+        if (!formData.street.trim()) newErrors.street = 'Street address is required';
+        if (!formData.state) newErrors.state = 'State is required';
+        if (!formData.city.trim()) newErrors.city = 'City is required';
+        if (!formData.preferredState) newErrors.preferredState = 'Preferred state is required';
+        if (!formData.preferredCity.trim()) newErrors.preferredCity = 'Preferred city is required';
+        if (!formData.educationLevel) newErrors.educationLevel = 'Education level is required';
+        if (!formData.fieldOfStudy.trim()) newErrors.fieldOfStudy = 'Field of study is required';
+        if (!formData.institution.trim()) newErrors.institution = 'Institution is required';
+        break;
+      case 3:
+        if (!formData.experience) newErrors.experience = 'Years of experience is required';
+        if (formData.skills.length === 0) newErrors.skills = 'At least one skill is required';
+        if (formData.availability.length === 0) newErrors.availability = 'At least one day is required';
+        if (!formData.timeCommitment.trim()) newErrors.timeCommitment = 'Time commitment is required';
+        break;
+      case 4:
+        if (!formData.whyJoin.trim()) newErrors.whyJoin = 'This field is required';
+        if (!formData.skillsToDevelop.trim()) newErrors.skillsToDevelop = 'This field is required';
+        if (!formData.networkingPerspective.trim()) newErrors.networkingPerspective = 'This field is required';
+        if (!formData.howContribute.trim()) newErrors.howContribute = 'This field is required';
+        if (!formData.vision.trim()) newErrors.vision = 'This field is required';
+        if (!formData.introduceYourself.trim()) newErrors.introduceYourself = 'This field is required';
+        break;
+      case 5:
+        if (!formData.profilePhoto) newErrors.profilePhoto = 'Profile photo is required';
+        if (!formData.resume) newErrors.resume = 'Resume is required';
+        if (!formData.linkedin.trim()) newErrors.linkedin = 'LinkedIn URL is required';
+        if (!formData.startDate) newErrors.startDate = 'Preferred start date is required';
+        if (!formData.subscription) newErrors.subscription = 'Subscription plan is required';
+        break;
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  // Navigation
+  const goToNext = () => {
+    if (validateStep(currentStep)) {
+      setCurrentStep(prev => Math.min(prev + 1, 5));
+    }
+  };
+
+  const goToPrev = () => {
+    setCurrentStep(prev => Math.max(prev - 1, 1));
+  };
+
+  // Download guide
+  const handleDownloadGuide = () => {
+    // Placeholder URL
+    const guideUrl = 'https://yanc.com/membership-guide.pdf';
+    window.open(guideUrl, '_blank');
+  };
+
+  // Submit handler
+  const handleSubmit = () => {
+    if (validateStep(currentStep)) {
+      setIsSubmitting(true);
+      
+      // Placeholder for backend integration
+      // TODO: Add API endpoint: /api/membership-application
+      // TODO: Add auth headers and payload processing
+      setTimeout(() => {
+        console.log('Membership application submitted:', formData);
+        setIsSubmitting(false);
+        navigate('/success');
+      }, 2000);
+    }
+  };
+
+  // Get step component
+  const StepComponent = () => {
+    switch (currentStep) {
+      case 1: return <Step1 formData={formData} errors={errors} onChange={handleChange} />;
+      case 2: return <Step2 formData={formData} errors={errors} onChange={handleChange} />;
+      case 3: return <Step3 formData={formData} errors={errors} onChange={handleChange} handleCheckbox={handleCheckboxChange} />;
+      case 4: return <Step4 formData={formData} errors={errors} onChange={handleChange} />;
+      case 5: return <Step5 formData={formData} errors={errors} onChange={handleChange} handleFileUpload={handleFileUpload} />;
+      default: return <div>Step not found</div>;
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-background via-card to-background">
+      {/* Header */}
+      <div className="bg-card border-b border-border">
+        <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+          <div className="flex items-center space-x-4">
+            <img 
+              src="/favicon.svg" 
+              alt="YANC Logo" 
+              className="w-10 h-10 object-contain"
+            />
+            <div className="h-6 w-px bg-border"></div>
+            <h1 className="text-lg font-medium">Membership Application</h1>
+          </div>
+          
+          <div className="flex items-center space-x-4">
+            <button 
+              onClick={handleDownloadGuide}
+              className="flex items-center space-x-2 text-sm text-primary hover:text-primary/80 transition-colors"
+            >
+              <Download className="w-4 h-4" />
+              <span>Walk Me</span>
+            </button>
+            <div className="h-4 w-px bg-border"></div>
+            <button 
+              onClick={() => {
+                sessionStorage.setItem('fromNavigation', 'true');
+                window.location.href = '/';
+              }}
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Back to Home
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-4xl mx-auto px-4 py-8">
+        {/* Progress Indicator */}
+        <div className="bg-card rounded-lg p-6 border border-border shadow-sm mb-8">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-2xl font-bold text-foreground">YANC Membership Application</h2>
+            <span className="text-sm text-muted-foreground">Step {currentStep} of 5</span>
+          </div>
+          
+          <div className="grid grid-cols-5 gap-2 w-full">
+            {steps.map((step, index) => {
+              const isActive = step.id <= currentStep;
+              return (
+                <div 
+                  key={step.id}
+                  className={`flex flex-col items-center justify-center px-4 py-3 rounded-lg transition-all w-full h-full ${
+                    step.id <= currentStep
+                      ? step.id === currentStep
+                        ? "bg-primary text-primary-foreground shadow-lg transform -translate-y-1"
+                        : "bg-primary/20 text-primary"
+                      : "bg-muted text-muted-foreground"
+                  }`}
+                >
+                  <span className="text-lg font-bold">{index + 1}</span>
+                  <span className="text-xs mt-1 text-center">{step.title}</span>
+                </div>
+              );
+            })}
+          </div>
+          </div>
+        </div>
+
+        {/* Form Content */}
+        <div className="bg-card rounded-2xl p-8 border border-border shadow-lg">
+          <StepComponent />
+          
+          {/* Navigation Buttons */}
+          <div className="flex justify-between mt-8 pt-6 border-t border-border">
+            <button
+              onClick={goToPrev}
+              disabled={currentStep === 1}
+              className="flex items-center space-x-2 px-6 py-3 rounded-xl border border-border text-foreground hover:bg-secondary hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+            >
+              <ChevronLeft className="w-5 h-5" />
+              <span>Previous</span>
+            </button>
+            
+            {currentStep < 5 ? (
+              <button
+                onClick={goToNext}
+                className="flex items-center space-x-2 px-8 py-3 rounded-xl bg-gradient-to-r from-primary to-primary/80 text-primary-foreground hover:from-primary/90 hover:to-primary shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5"
+              >
+                <span className="font-medium">Next</span>
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            ) : (
+              <button
+                onClick={handleSubmit}
+                disabled={isSubmitting}
+                className="px-10 py-3 rounded-xl bg-gradient-to-r from-primary to-primary/80 text-primary-foreground hover:from-primary/90 hover:to-primary shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+              >
+                {isSubmitting ? (
+                  <span className="flex items-center">
+                    <span className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-foreground mr-2"></span>
+                    Submitting...
+                  </span>
+                ) : (
+                  'Submit Application'
+                )}
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Step 1 Component
+const Step1 = ({ formData, errors, onChange }: any) => (
+  <div className="space-y-6">
+    <div>
+      <h3 className="text-xl font-bold text-foreground mb-2">Personal Information</h3>
+      <p className="text-muted-foreground">Let's start with your basic information</p>
+    </div>
+    
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <label className="block text-sm font-medium text-foreground mb-2">
+          Full Name *
+        </label>
+        <input
+          type="text"
+          name="fullName"
+          value={formData.fullName}
+          onChange={onChange}
+          maxLength={500}
+          className={`w-full px-4 py-3 rounded-xl border ${
+            errors.fullName ? 'border-destructive' : 'border-border'
+          } bg-input text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all hover:shadow-sm`}
+          placeholder="Enter your full name"
+        />
+        <div className="flex justify-between items-center mt-1">
+          {errors.fullName && <p className="text-sm text-destructive">{errors.fullName}</p>}
+          <p className="text-xs text-muted-foreground ml-auto">{formData.fullName.length}/500</p>
+        </div>
+      </div>
+      
+      <div>
+        <label className="block text-sm font-medium text-foreground mb-2">
+          Email Address *
+        </label>
+        <input
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={onChange}
+          className={`w-full px-4 py-3 rounded-xl border ${
+            errors.email ? 'border-destructive' : 'border-border'
+          } bg-input text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all hover:shadow-sm`}
+          placeholder="Enter your email"
+        />
+        {errors.email && <p className="text-sm text-destructive mt-1">{errors.email}</p>}
+      </div>
+      
+      <div>
+        <label className="block text-sm font-medium text-foreground mb-2">
+          Phone Number *
+        </label>
+        <input
+          type="tel"
+          name="phone"
+          value={formData.phone}
+          onChange={onChange}
+          maxLength={10}
+          className={`w-full px-4 py-3 rounded-xl border ${
+            errors.phone ? 'border-destructive' : 'border-border'
+          } bg-input text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all hover:shadow-sm`}
+          placeholder="Enter 10-digit phone number"
+        />
+        {errors.phone && <p className="text-sm text-destructive mt-1">{errors.phone}</p>}
+      </div>
+      
+      <div>
+        <label className="block text-sm font-medium text-foreground mb-2">
+          Age *
+        </label>
+        <select
+          name="age"
+          value={formData.age}
+          onChange={onChange}
+          className={`w-full px-4 py-3 rounded-xl border ${
+            errors.age ? 'border-destructive' : 'border-border'
+          } bg-input text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all hover:shadow-sm`}
+        >
+          <option value="">Select your age</option>
+          {Array.from({ length: 8 }, (_, i) => i + 18).map(age => (
+            <option key={age} value={age}>{age} years</option>
+          ))}
+        </select>
+        {errors.age && <p className="text-sm text-destructive mt-1">{errors.age}</p>}
+      </div>
+    </div>
+    
+    <div className="bg-secondary/50 border border-border rounded-lg p-4">
+      <h4 className="font-medium text-foreground mb-2">Why do we need this information?</h4>
+      <p className="text-sm text-muted-foreground">
+        Your personal information helps us create your member profile and ensures we can contact you regarding your application status and membership activities.
+      </p>
+    </div>
+  </div>
+);
+
+// Step 2 Component
+const Step2 = ({ formData, errors, onChange }: any) => (
+  <div className="space-y-6">
+    <div>
+      <h3 className="text-xl font-bold text-foreground mb-2">Location & Education</h3>
+      <p className="text-muted-foreground">Tell us about where you're from and your educational background</p>
+    </div>
+    
+    <div className="space-y-6">
+      <div>
+        <h4 className="font-medium text-foreground mb-4">Applicant Communication Information</h4>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="md:col-span-3">
+            <label className="block text-sm font-medium text-foreground mb-2">
+              Street Address
+            </label>
+            <input
+              type="text"
+              name="street"
+              value={formData.street}
+              onChange={onChange}
+              maxLength={150}
+              className={`w-full px-4 py-3 rounded-lg border ${
+                errors.street ? 'border-destructive' : 'border-border'
+              } bg-input text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors`}
+              placeholder="Enter your street address"
+            />
+            {errors.street && <p className="text-sm text-destructive mt-1">{errors.street}</p>}
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-foreground mb-2">
+              State
+            </label>
+            <input
+              type="text"
+              name="state"
+              value={formData.state}
+              onChange={onChange}
+              className={`w-full px-4 py-3 rounded-lg border ${
+                errors.state ? 'border-destructive' : 'border-border'
+              } bg-input text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors`}
+              placeholder="Enter your state"
+            />
+            {errors.state && <p className="text-sm text-destructive mt-1">{errors.state}</p>}
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-foreground mb-2">
+              City / Town
+            </label>
+            <input
+              type="text"
+              name="city"
+              value={formData.city}
+              onChange={onChange}
+              className={`w-full px-4 py-3 rounded-lg border ${
+                errors.city ? 'border-destructive' : 'border-border'
+              } bg-input text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors`}
+              placeholder="Enter your city"
+            />
+            {errors.city && <p className="text-sm text-destructive mt-1">{errors.city}</p>}
+          </div>
+        </div>
+      </div>
+      
+      <div>
+        <h4 className="font-medium text-foreground mb-4">Preferred Cohort Location</h4>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-foreground mb-2">
+              State *
+            </label>
+            <input
+              type="text"
+              name="preferredState"
+              value={formData.preferredState}
+              onChange={onChange}
+              className={`w-full px-4 py-3 rounded-lg border ${
+                errors.preferredState ? 'border-destructive' : 'border-border'
+              } bg-input text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors`}
+              placeholder="Enter preferred state"
+            />
+            {errors.preferredState && <p className="text-sm text-destructive mt-1">{errors.preferredState}</p>}
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-foreground mb-2">
+              City *
+            </label>
+            <input
+              type="text"
+              name="preferredCity"
+              value={formData.preferredCity}
+              onChange={onChange}
+              className={`w-full px-4 py-3 rounded-lg border ${
+                errors.preferredCity ? 'border-destructive' : 'border-border'
+              } bg-input text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors`}
+              placeholder="Enter preferred city"
+            />
+            {errors.preferredCity && <p className="text-sm text-destructive mt-1">{errors.preferredCity}</p>}
+          </div>
+        </div>
+      </div>
+      
+      <div>
+        <h4 className="font-medium text-foreground mb-4">Educational Background</h4>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-foreground mb-2">
+              Education Level *
+            </label>
+            <select
+              name="educationLevel"
+              value={formData.educationLevel}
+              onChange={onChange}
+              className={`w-full px-4 py-3 rounded-lg border ${
+                errors.educationLevel ? 'border-destructive' : 'border-border'
+              } bg-input text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors`}
+            >
+              <option value="">Select education level</option>
+              <option value="high-school">High School</option>
+              <option value="bachelor">Bachelor's Degree</option>
+              <option value="master">Master's Degree</option>
+              <option value="phd">PhD</option>
+              <option value="other">Other</option>
+            </select>
+            {errors.educationLevel && <p className="text-sm text-destructive mt-1">{errors.educationLevel}</p>}
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-foreground mb-2">
+              Graduation Year
+            </label>
+            <input
+              type="number"
+              name="graduationYear"
+              value={formData.graduationYear}
+              onChange={onChange}
+              min="1950"
+              max="2030"
+              className="w-full px-4 py-3 rounded-lg border border-border bg-input text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors"
+              placeholder="Enter graduation year"
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-foreground mb-2">
+              Field of Study *
+            </label>
+            <input
+              type="text"
+              name="fieldOfStudy"
+              value={formData.fieldOfStudy}
+              onChange={onChange}
+              maxLength={500}
+              className={`w-full px-4 py-3 rounded-lg border ${
+                errors.fieldOfStudy ? 'border-destructive' : 'border-border'
+              } bg-input text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors`}
+              placeholder="Enter your field of study"
+            />
+            {errors.fieldOfStudy && <p className="text-sm text-destructive mt-1">{errors.fieldOfStudy}</p>}
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-foreground mb-2">
+              Institution Name *
+            </label>
+            <input
+              type="text"
+              name="institution"
+              value={formData.institution}
+              onChange={onChange}
+              maxLength={500}
+              className={`w-full px-4 py-3 rounded-lg border ${
+                errors.institution ? 'border-destructive' : 'border-border'
+              } bg-input text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors`}
+              placeholder="Enter institution name"
+            />
+            {errors.institution && <p className="text-sm text-destructive mt-1">{errors.institution}</p>}
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div className="bg-secondary/50 border border-border rounded-lg p-4">
+      <h4 className="font-medium text-foreground mb-2">Why do we need this information?</h4>
+      <p className="text-sm text-muted-foreground">
+        Location helps us connect you with nearby cohorts and members. Educational background helps us understand your academic foundation and match you with relevant opportunities.
+      </p>
+    </div>
+  </div>
+);
+
+// Step 3 Component
+const Step3 = ({ formData, errors, onChange, handleCheckbox }: any) => {
+  const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  const timeCommitments = ['1-2 hours', '3-5 hours', '6-10 hours', '10+ hours'];
+  
+  return (
+    <div className="space-y-6">
+      <div>
+        <h3 className="text-xl font-bold text-foreground mb-2">Experience & Skills</h3>
+        <p className="text-muted-foreground">Tell us about your experience and what skills you bring to YANC</p>
+      </div>
+      
+      <div className="space-y-6">
+        <div>
+          <label className="block text-sm font-medium text-foreground mb-2">
+            Years of Professional Experience *
+          </label>
+          <p className="text-xs text-muted-foreground mb-2">
+            Include internships, part-time work, and freelance experience
+          </p>
+          <select
+            name="experience"
+            value={formData.experience}
+            onChange={onChange}
+            className={`w-full px-4 py-3 rounded-lg border ${
+              errors.experience ? 'border-destructive' : 'border-border'
+            } bg-input text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors`}
+          >
+            <option value="">Select years of experience</option>
+            <option value="0-1">0-1 years</option>
+            <option value="1-2">1-2 years</option>
+            <option value="2-5">2-5 years</option>
+            <option value="5-10">5-10 years</option>
+            <option value="10+">10+ years</option>
+          </select>
+          {errors.experience && <p className="text-sm text-destructive mt-1">{errors.experience}</p>}
+        </div>
+        
+        <div>
+          <div className="flex justify-between items-center mb-4">
+            <label className="block text-sm font-medium text-foreground">
+              Skills & Expertise *
+            </label>
+            <span className="text-sm text-muted-foreground">Selected: {formData.skills.length} / 5 skills</span>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+            {skillsList.map(skill => (
+              <button
+                key={skill}
+                type="button"
+                onClick={() => handleCheckbox('skills', skill)}
+                className={`px-3 py-2 rounded-lg text-sm border transition-colors ${
+                  formData.skills.includes(skill)
+                    ? 'bg-primary text-primary-foreground border-primary'
+                    : 'bg-secondary border-border hover:bg-secondary/80'
+                }`}
+                disabled={!formData.skills.includes(skill) && formData.skills.length >= 5}
+              >
+                {skill}
+              </button>
+            ))}
+          </div>
+          {errors.skills && <p className="text-sm text-destructive mt-1">{errors.skills}</p>}
+        </div>
+        
+        <div>
+          <label className="block text-sm font-medium text-foreground mb-4">
+            Days Available *
+          </label>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+            {days.map(day => (
+              <label key={day} className="flex items-center space-x-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={formData.availability.includes(day)}
+                  onChange={() => handleCheckbox('availability', day)}
+                  className="rounded border-border text-primary focus:ring-primary/50"
+                />
+                <span className="text-sm text-foreground">{day}</span>
+              </label>
+            ))}
+          </div>
+          {errors.availability && <p className="text-sm text-destructive mt-1">{errors.availability}</p>}
+        </div>
+        
+        <div>
+          <label className="block text-sm font-medium text-foreground mb-2">
+            Time Commitment *
+          </label>
+          <p className="text-xs text-muted-foreground mb-2">
+            How many hours per week can you dedicate to YANC activities?
+          </p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+            {timeCommitments.map(time => (
+              <label key={time} className="flex items-center space-x-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="timeCommitment"
+                  value={time}
+                  checked={formData.timeCommitment === time}
+                  onChange={onChange}
+                  className="border-border text-primary focus:ring-primary/50"
+                />
+                <span className="text-sm text-foreground">{time}</span>
+              </label>
+            ))}
+          </div>
+          {errors.timeCommitment && <p className="text-sm text-destructive mt-1">{errors.timeCommitment}</p>}
+        </div>
+      </div>
+      
+      <div className="bg-secondary/50 border border-border rounded-lg p-4">
+        <p className="text-sm text-muted-foreground">
+          Your experience and skills help us match you with appropriate roles. Availability helps us schedule activities effectively.
+        </p>
+      </div>
+    </div>
+  );
+};
+
+// Step 4 Component
+const Step4 = ({ formData, errors, onChange }: any) => {
+  const fields = [
+    { name: 'whyJoin', label: 'Why do you want to join YANC? *', required: true },
+    { name: 'skillsToDevelop', label: 'What skills do you want to develop? *', required: true },
+    { name: 'networkingPerspective', label: 'What is your perspective on networking? *', required: true },
+    { name: 'howContribute', label: 'How can you contribute to YANC? *', required: true },
+    { name: 'vision', label: 'What is your vision for the future? *', required: true },
+    { name: 'introduceYourself', label: 'Introduce yourself *', required: true },
+    { name: 'mentorship', label: 'Mentorship experience', required: false },
+    { name: 'leadership', label: 'Leadership interests', required: false },
+    { name: 'inspiration', label: 'Who or what inspires you?', required: false }
+  ];
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h3 className="text-xl font-bold text-foreground mb-2">Motivation & Goals</h3>
+        <p className="text-muted-foreground">
+          Help us understand your aspirations and how you align with YANC's mission
+        </p>
+      </div>
+      
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2 space-y-6">
+          {fields.map(field => (
+            <div key={field.name}>
+              <div className="flex justify-between items-center mb-2">
+                <label className="block text-sm font-medium text-foreground">
+                  {field.label}
+                </label>
+                <span className="text-xs text-muted-foreground">
+                  {formData[field.name as keyof typeof formData]?.length || 0}/500
+                </span>
+              </div>
+              <textarea
+                name={field.name}
+                value={formData[field.name as keyof typeof formData] || ''}
+                onChange={onChange}
+                maxLength={500}
+                rows={4}
+                className={`w-full px-4 py-3 rounded-lg border ${
+                  errors[field.name] ? 'border-destructive' : 'border-border'
+                } bg-input text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors resize-none`}
+                placeholder={`Enter your response...`}
+              />
+              {errors[field.name] && <p className="text-sm text-destructive mt-1">{errors[field.name]}</p>}
+            </div>
+          ))}
+        </div>
+        
+        <div className="lg:col-span-1">
+          <div className="bg-secondary/50 border border-border rounded-lg p-4 sticky top-4">
+            <h4 className="font-medium text-foreground mb-3">Tips for Better Responses</h4>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              <li className="flex items-start space-x-2">
+                <span className="text-primary">•</span>
+                <span>Be authentic and genuine</span>
+              </li>
+              <li className="flex items-start space-x-2">
+                <span className="text-primary">•</span>
+                <span>Provide specific examples</span>
+              </li>
+              <li className="flex items-start space-x-2">
+                <span className="text-primary">•</span>
+                <span>Show passion for personal growth</span>
+              </li>
+              <li className="flex items-start space-x-2">
+                <span className="text-primary">•</span>
+                <span>Align with YANC's networking values</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Step 5 Component
+const Step5 = ({ formData, errors, onChange, handleFileUpload }: any) => {
+  const subscriptionPlans = ['Basic', 'Premium', 'Enterprise'];
+  
+  return (
+    <div className="space-y-6">
+      <div>
+        <h3 className="text-xl font-bold text-foreground mb-2">Files & Final Details</h3>
+        <p className="text-muted-foreground">
+          Upload your documents and complete your application
+        </p>
+      </div>
+      
+      <div className="space-y-6">
+        <div>
+          <h4 className="font-medium text-foreground mb-4">File Uploads</h4>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-2">
+                Profile Photo *
+              </label>
+              <div className="border-2 border-dashed border-border rounded-lg p-6 text-center">
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/gif"
+                  onChange={(e) => handleFileUpload('profilePhoto', e.target.files?.[0] || null)}
+                  className="hidden"
+                  id="profilePhoto"
+                />
+                <label htmlFor="profilePhoto" className="cursor-pointer">
+                  <div className="text-muted-foreground">
+                    {formData.profilePhoto ? (
+                      <div>
+                        <p className="text-sm">{formData.profilePhoto.name}</p>
+                        <p className="text-xs mt-1">Click to change</p>
+                      </div>
+                    ) : (
+                      <div>
+                        <p className="text-sm">Click to upload</p>
+                        <p className="text-xs mt-1">JPG, PNG, GIF (max 5MB)</p>
+                      </div>
+                    )}
+                  </div>
+                </label>
+              </div>
+              {errors.profilePhoto && <p className="text-sm text-destructive mt-1">{errors.profilePhoto}</p>}
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-2">
+                Resume / CV *
+              </label>
+              <div className="border-2 border-dashed border-border rounded-lg p-6 text-center">
+                <input
+                  type="file"
+                  accept=".pdf,.doc,.docx"
+                  onChange={(e) => handleFileUpload('resume', e.target.files?.[0] || null)}
+                  className="hidden"
+                  id="resume"
+                />
+                <label htmlFor="resume" className="cursor-pointer">
+                  <div className="text-muted-foreground">
+                    {formData.resume ? (
+                      <div>
+                        <p className="text-sm">{formData.resume.name}</p>
+                        <p className="text-xs mt-1">Click to change</p>
+                      </div>
+                    ) : (
+                      <div>
+                        <p className="text-sm">Click to upload</p>
+                        <p className="text-xs mt-1">PDF, DOC, DOCX (max 5MB)</p>
+                      </div>
+                    )}
+                  </div>
+                </label>
+              </div>
+              {errors.resume && <p className="text-sm text-destructive mt-1">{errors.resume}</p>}
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-2">
+                Video Introduction (Optional)
+              </label>
+              <div className="border-2 border-dashed border-border rounded-lg p-6 text-center">
+                <input
+                  type="file"
+                  accept="video/mp4,video/mov,video/avi"
+                  onChange={(e) => handleFileUpload('video', e.target.files?.[0] || null)}
+                  className="hidden"
+                  id="video"
+                />
+                <label htmlFor="video" className="cursor-pointer">
+                  <div className="text-muted-foreground">
+                    {formData.video ? (
+                      <div>
+                        <p className="text-sm">{formData.video.name}</p>
+                        <p className="text-xs mt-1">Click to change</p>
+                      </div>
+                    ) : (
+                      <div>
+                        <p className="text-sm">Click to upload</p>
+                        <p className="text-xs mt-1">MP4, MOV, AVI (max 50MB)</p>
+                      </div>
+                    )}
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div>
+          <h4 className="font-medium text-foreground mb-4">Professional Links</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-2">
+                LinkedIn Profile URL *
+              </label>
+              <input
+                type="url"
+                name="linkedin"
+                value={formData.linkedin}
+                onChange={onChange}
+                className={`w-full px-4 py-3 rounded-lg border ${
+                  errors.linkedin ? 'border-destructive' : 'border-border'
+                } bg-input text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors`}
+                placeholder="https://linkedin.com/in/your-profile"
+              />
+              {errors.linkedin && <p className="text-sm text-destructive mt-1">{errors.linkedin}</p>}
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-2">
+                Other Social Media URL (Optional)
+              </label>
+              <input
+                type="url"
+                name="socialMedia"
+                value={formData.socialMedia}
+                onChange={onChange}
+                className="w-full px-4 py-3 rounded-lg border border-border bg-input text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors"
+                placeholder="https://twitter.com/your-profile"
+              />
+            </div>
+          </div>
+        </div>
+        
+        <div>
+          <h4 className="font-medium text-foreground mb-4">Final Details</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-2">
+                Preferred Start Date *
+              </label>
+              <input
+                type="date"
+                name="startDate"
+                value={formData.startDate}
+                onChange={onChange}
+                className={`w-full px-4 py-3 rounded-lg border ${
+                  errors.startDate ? 'border-destructive' : 'border-border'
+                } bg-input text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors`}
+              />
+              {errors.startDate && <p className="text-sm text-destructive mt-1">{errors.startDate}</p>}
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-2">
+                Subscription Plan *
+              </label>
+              <select
+                name="subscription"
+                value={formData.subscription}
+                onChange={onChange}
+                className={`w-full px-4 py-3 rounded-lg border ${
+                  errors.subscription ? 'border-destructive' : 'border-border'
+                } bg-input text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors`}
+              >
+                <option value="">Select subscription plan</option>
+                {subscriptionPlans.map(plan => (
+                  <option key={plan} value={plan}>{plan}</option>
+                ))}
+              </select>
+              {errors.subscription && <p className="text-sm text-destructive mt-1">{errors.subscription}</p>}
+            </div>
+            
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
+                Additional Comments (Optional)
+              </label>
+              <textarea
+                name="comments"
+                value={formData.comments}
+                onChange={onChange}
+                maxLength={500}
+                rows={3}
+                className="w-full px-4 py-3 rounded-lg border border-border bg-input text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors resize-none"
+                placeholder="Any additional information you'd like to share..."
+              />
+              <p className="text-xs text-muted-foreground mt-1">{formData.comments.length}/500</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div className="bg-secondary/50 border border-border rounded-lg p-4">
+        <h4 className="font-medium text-foreground mb-2">Review Section</h4>
+        <p className="text-sm text-muted-foreground mb-3">
+          Please review all your information before submitting. Once submitted, you cannot edit your application.
+        </p>
+        <ul className="text-sm text-muted-foreground space-y-1">
+          <li>• Review time: 5–7 business days</li>
+          <li>• Email notification on status</li>
+          <li>• On acceptance, onboarding & cohort assignment sent</li>
+        </ul>
+      </div>
+    </div>
+  );
+};
+
+export default MembershipApplication;
