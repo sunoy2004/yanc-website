@@ -10,6 +10,7 @@ import SignIn from "./pages/SignIn";
 import Faq from "./pages/Faq";
 import Contact from "./pages/Contact";
 
+
 // Our Offerings pages
 import ValueProposition from "./pages/offerings/ValueProposition";
 import WhoCanJoin from "./pages/offerings/WhoCanJoin";
@@ -72,8 +73,8 @@ const App = () => (
           
           {/* Careers routes */}
           <Route path="/careers" element={<Careers />} />
-          {/* <Route path="/careers/jobs" element={<Jobs />} /> */}
-          {/* <Route path="/careers/internships" element={<Internships />} /> */}
+          {/* <Route path="/careers/jobs" element={<Jobs />} */}
+          {/* <Route path="/careers/internships" element={<Internships />} */}
           
           {/* Applications routes */}
           <Route path="/apply/membership" element={<Membership />} />

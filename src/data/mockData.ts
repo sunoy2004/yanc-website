@@ -97,18 +97,7 @@ export const events: Event[] = [
 ];
 
 export const teamMembers: TeamMember[] = [
-  { 
-    id: "1", 
-    name: "Ms.Hasini Kanumuru", 
-    role: "Cohort Alumni Ambassador", 
-    image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769271721/tm_1_bmw2xm.png",
-    description: "Hasini is a Alumni Ambassador at YANC,She is a dynamic young changemaker with a passion for purposeful innovation and community empowerment. As the founder of Sama and Pratirodha, she embodies an entrepreneurial mindset driven to solve real-world challenges and make an impact. With leadership experience as Secretary General at ACC MUN and accolades in debates, elocution, and performing arts, Hasini seamlessly blends intellect, creativity, and social consciousness. A performer of 16 dance forms, she continues to shine across academic, artistic, and leadership platforms.",
-    socialLinks: {
-      twitter: "https://twitter.com",
-      linkedin: "https://linkedin.com",
-      github: "https://github.com"
-    }
-  },
+  
   { 
     id: "2", 
     name: "Mr.Mohana Karingula", 
@@ -166,17 +155,6 @@ export const teamMembers: TeamMember[] = [
     }
   },
   { 
-    id: "7", 
-    name: "Ms.Sanviti Reddy", 
-    role: "Cohort Social Media Ambassador", 
-    image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769271721/tm_8_i9ebwy.png",
-    description: "A recent graduate who enjoys making videos and taking pictures. She loves being creative and sharing stories through her work. She is excited to learn new things and be part of interesting projects..",
-    socialLinks: {
-      linkedin: "https://linkedin.com",
-      github: "https://github.com"
-    }
-  },
-  { 
     id: "8", 
     name: "Mr.Nisidh Reddy",
     role: "Cohort Chief Financial Officer", 
@@ -185,6 +163,17 @@ export const teamMembers: TeamMember[] = [
     socialLinks: {
       twitter: "https://twitter.com",
       linkedin: "https://linkedin.com"
+    }
+  },
+  { 
+    id: "7", 
+    name: "Ms.Sanviti Reddy", 
+    role: "Cohort Social Media Ambassador", 
+    image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769271721/tm_8_i9ebwy.png",
+    description: "A recent graduate who enjoys making videos and taking pictures. She loves being creative and sharing stories through her work. She is excited to learn new things and be part of interesting projects..",
+    socialLinks: {
+      linkedin: "https://linkedin.com",
+      github: "https://github.com"
     }
   },
   { 
@@ -198,6 +187,18 @@ export const teamMembers: TeamMember[] = [
       github: "https://github.com"
     }
   },
+  { 
+    id: "1", 
+    name: "Ms.Hasini Kanumuru", 
+    role: "Cohort Alumni Ambassador", 
+    image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769271721/tm_1_bmw2xm.png",
+    description: "Hasini is a Alumni Ambassador at YANC,She is a dynamic young changemaker with a passion for purposeful innovation and community empowerment. As the founder of Sama and Pratirodha, she embodies an entrepreneurial mindset driven to solve real-world challenges and make an impact. With leadership experience as Secretary General at ACC MUN and accolades in debates, elocution, and performing arts, Hasini seamlessly blends intellect, creativity, and social consciousness. A performer of 16 dance forms, she continues to shine across academic, artistic, and leadership platforms.",
+    socialLinks: {
+      twitter: "https://twitter.com",
+      linkedin: "https://linkedin.com",
+      github: "https://github.com"
+    }
+  }
 ];
 
 export const founders: Founder[] = [

@@ -36,9 +36,9 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
     { label: "Events", href: "#events", hasDropdown: true },
     { label: "Programs", href: "/offerings/value-proposition", hasDropdown: true },
     { label: "Team", href: "/team/executive-management", hasDropdown: true },
-    { label: "Careers", href: "/careers" }, // Updated to single page
+    { label: "Careers", href: "https://web.yanc.in/careers", external: true }, // External redirect
     { label: "Applications", href: "/apply/membership", hasDropdown: true },
-    { label: "Contact", href: "/contact" },
+    { label: "Contact", href: "https://web.yanc.in/contact-us", external: true },
     { label: "FAQ", href: "/faq" },
   ];
 
@@ -67,11 +67,11 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
 
   // Applications dropdown items
   const applicationsDropdownItems = [
-    { label: "Apply for YANC Membership", href: "/apply/membership-application" },
-    { label: "Discover Meet Registration", href: "/apply/discover-meet-registration" },
-    { label: "Discover Meet Feedback", href: "/apply/discover-meet-feedback" },
-    { label: "Mentor Registration", href: "/apply/mentor-registration" },
-    { label: "Startup Pitch", href: "/apply/startup-pitch" },
+    { label: "Apply for YANC Membership", href: "https://web.yanc.in/membership-application", external: true },
+    { label: "Discover Meet Registration", href: "https://web.yanc.in/discover-meet-registration", external: true },
+    { label: "Discover Meet Feedback", href: "https://web.yanc.in/discover-meet-feedback", external: true },
+    { label: "Mentor Registration", href: "https://web.yanc.in/mentor-registration", external: true },
+    { label: "Startup Pitch", href: "https://web.yanc.in/startup-pitch", external: true },
   ];
 
   // Events dropdown items
@@ -288,9 +288,15 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
             } else if (item.label === "Careers") {
               // Single page link - no dropdown
               return (
-                <Link key={item.label} to={item.href} className="header-nav-link">
+                <a 
+                  key={item.label} 
+                  href={item.href} 
+                  className="header-nav-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   {item.label}
-                </Link>
+                </a>
               );
             } else if (item.label === "Applications" && item.hasDropdown) {
               return (
@@ -314,13 +320,15 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
                       onMouseLeave={() => handleDropdownClose('applications')}
                     >
                       {applicationsDropdownItems.map((dropdownItem) => (
-                        <Link
+                        <a
                           key={dropdownItem.label}
-                          to={dropdownItem.href}
+                          href={dropdownItem.href}
                           className="dropdown-item"
+                          target="_blank"
+                          rel="noopener noreferrer"
                         >
                           {dropdownItem.label}
-                        </Link>
+                        </a>
                       ))}
                     </div>
                   )}
@@ -338,6 +346,19 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
                 >
                   {item.label}
                 </button>
+              );
+            } else if (item.label === "Contact") {
+              // External redirect for contact
+              return (
+                <a 
+                  key={item.label} 
+                  href={item.href} 
+                  className="header-nav-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {item.label}
+                </a>
               );
             } else {
               return (
@@ -485,14 +506,16 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
             } else if (item.label === "Careers") {
               // Single page link - no dropdown
               return (
-                <Link
+                <a
                   key={item.label}
-                  to={item.href}
+                  href={item.href}
                   className="mobile-nav-link"
                   onClick={() => setIsMenuOpen(false)}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   {item.label}
-                </Link>
+                </a>
               );
             } else if (item.label === "Applications" && item.hasDropdown) {
               return (
@@ -514,17 +537,19 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
                   {isApplicationsDropdownOpen && (
                     <div className="mobile-dropdown-content">
                       {applicationsDropdownItems.map((dropdownItem) => (
-                        <Link
+                        <a
                           key={dropdownItem.label}
-                          to={dropdownItem.href}
+                          href={dropdownItem.href}
                           className="mobile-dropdown-item"
                           onClick={() => {
                             setIsMenuOpen(false);
                             setIsApplicationsDropdownOpen(false);
                           }}
+                          target="_blank"
+                          rel="noopener noreferrer"
                         >
                           {dropdownItem.label}
-                        </Link>
+                        </a>
                       ))}
                     </div>
                   )}
@@ -543,6 +568,20 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
                 >
                   {item.label}
                 </button>
+              );
+            } else if (item.label === "Contact") {
+              // External redirect for contact
+              return (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  className="mobile-nav-link"
+                  onClick={() => setIsMenuOpen(false)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {item.label}
+                </a>
               );
             } else {
               return (
