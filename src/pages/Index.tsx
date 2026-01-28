@@ -8,10 +8,10 @@ import CoreValuesSection from "@/components/sections/CoreValuesSection";
 import EventsSection from "@/components/sections/EventsSection";
 import FoundersSection from "@/components/sections/FoundersSection";
 import HorizontalTeamSection from "@/components/sections/HorizontalTeamSection";
-import TestimonialsSection from "@/components/sections/TestimonialsSection";
+// import TestimonialsSection from "@/components/sections/TestimonialsSection"; // Disabled 
 import Footer from "@/components/Footer";
 import Preloader from "@/components/Preloader";
-import Chatbot from "@/components/Chatbot";
+import Layout from "@/components/Layout";
 
 const Index = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
@@ -60,8 +60,7 @@ const Index = () => {
           isLoading ? "main-content-hidden" : "main-content-visible"
         }`}
       >
-        <Header isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
-        <main>
+        <Layout isDarkMode={isDarkMode} toggleTheme={toggleTheme}>
           <Hero />
           <AboutUsSection />
           <CoreValuesSection />
@@ -69,7 +68,7 @@ const Index = () => {
           <EventsSection />
           <FoundersSection />
           <HorizontalTeamSection />
-          <TestimonialsSection />
+          {/* <TestimonialsSection /> */} {/* Disabled per request */}
           
           {/* CTA Section */}
           <div className="text-center p-8 md:p-12">
@@ -82,13 +81,13 @@ const Index = () => {
             <a 
               href="mailto:connect@yanc.in" 
               className="inline-block bg-primary text-primary-foreground px-8 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               Reach out to us at connect@yanc.in
             </a>
           </div>
-        </main>
-        <Footer />
-        <Chatbot />
+        </Layout>
       </div>
     </>
   );
