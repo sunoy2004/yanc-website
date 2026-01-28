@@ -563,7 +563,9 @@ const Step1: React.FC<StringStepProps> = ({ formData, errors, onChange, onCountr
             name="country"
             value={formData.country}
             onChange={(e) => {
-              onCountryChange && onCountryChange(e.target.value);
+              if (onCountryChange) {
+                onCountryChange(e.target.value);
+              }
               onChange(e);
             }}
             className={
