@@ -44,6 +44,12 @@ const Contact = () => {
       newErrors.email = 'Email is invalid';
     }
     
+    if (!formData.phone.trim()) {
+      newErrors.phone = 'Phone number is required';
+    } else if (!/^\d{10}$/.test(formData.phone)) {
+      newErrors.phone = 'Phone must be 10 digits';
+    }
+    
     if (!formData.city.trim()) {
       newErrors.city = 'City is required';
     }
@@ -239,9 +245,13 @@ const Contact = () => {
                       id="phone"
                       name="phone"
                       value={formData.phone}
-                      onChange={handleChange}
+                      onChange={(e) => {
+                        const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 10);
+                        handleChange({ target: { name: 'phone', value } } as React.ChangeEvent<HTMLInputElement>);
+                      }}
+                      maxLength={10}
                       className="w-full px-4 py-3 rounded-lg border border-border bg-input text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors"
-                      placeholder="Enter your phone number"
+                      placeholder="Enter 10-digit phone number"
                     />
                   </div>
                   

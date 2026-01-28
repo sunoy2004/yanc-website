@@ -13,7 +13,6 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isTeamDropdownOpen, setIsTeamDropdownOpen] = useState(false);
   const [isOfferingsDropdownOpen, setIsOfferingsDropdownOpen] = useState(false);
-  const [isCareersDropdownOpen, setIsCareersDropdownOpen] = useState(false);
   const [isApplicationsDropdownOpen, setIsApplicationsDropdownOpen] = useState(false);
   const [isEventsDropdownOpen, setIsEventsDropdownOpen] = useState(false);
   const location = useLocation();
@@ -23,11 +22,13 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
   const dropdownTimeoutRefs = useRef<{
     team: NodeJS.Timeout | null;
     offerings: NodeJS.Timeout | null;
-    careers: NodeJS.Timeout | null;
+    applications: NodeJS.Timeout | null;
+    events: NodeJS.Timeout | null;
   }>({
     team: null,
     offerings: null,
-    careers: null
+    applications: null,
+    events: null
   });
 
   const navItems = [
@@ -35,7 +36,7 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
     { label: "Events", href: "#events", hasDropdown: true },
     { label: "Programs", href: "/offerings/value-proposition", hasDropdown: true },
     { label: "Team", href: "/team/executive-management", hasDropdown: true },
-    { label: "Careers", href: "/careers/jobs", hasDropdown: true },
+    { label: "Careers", href: "/careers" }, // Updated to single page
     { label: "Applications", href: "/apply/membership", hasDropdown: true },
     { label: "Contact", href: "/contact" },
     { label: "FAQ", href: "/faq" },
@@ -58,11 +59,11 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
     { label: "Why YANC", href: "/offerings/why-us" },
   ];
 
-  // Careers dropdown items
-  const careersDropdownItems = [
-    { label: "Job Openings", href: "/careers/jobs" },
-    { label: "Internships", href: "/careers/internships" },
-  ];
+  // Careers dropdown items (commented out for now)
+  // const careersDropdownItems = [
+  //   { label: "Job Openings", href: "/careers/jobs" },
+  //   { label: "Internships", href: "/careers/internships" },
+  // ];
 
   // Applications dropdown items
   const applicationsDropdownItems = [
@@ -89,7 +90,7 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
   };
 
   // Handle dropdown open with delay
-  const handleDropdownOpen = (dropdownType: 'team' | 'offerings' | 'careers' | 'applications' | 'events') => {
+  const handleDropdownOpen = (dropdownType: 'team' | 'offerings' | 'applications' | 'events') => {
     clearAllTimeouts();
     
     // Clear the timeout for this specific dropdown
@@ -101,7 +102,6 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
     // Close other dropdowns immediately
     if (dropdownType !== 'team') setIsTeamDropdownOpen(false);
     if (dropdownType !== 'offerings') setIsOfferingsDropdownOpen(false);
-    if (dropdownType !== 'careers') setIsCareersDropdownOpen(false);
     if (dropdownType !== 'applications') setIsApplicationsDropdownOpen(false);
     if (dropdownType !== 'events') setIsEventsDropdownOpen(false);
     
@@ -113,9 +113,6 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
       case 'offerings':
         setIsOfferingsDropdownOpen(true);
         break;
-      case 'careers':
-        setIsCareersDropdownOpen(true);
-        break;
       case 'applications':
         setIsApplicationsDropdownOpen(true);
         break;
@@ -126,7 +123,7 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
   };
 
   // Handle dropdown close with delay
-  const handleDropdownClose = (dropdownType: 'team' | 'offerings' | 'careers' | 'applications' | 'events') => {
+  const handleDropdownClose = (dropdownType: 'team' | 'offerings' | 'applications' | 'events') => {
     // Clear any existing timeout for this dropdown
     if (dropdownTimeoutRefs.current[dropdownType]) {
       clearTimeout(dropdownTimeoutRefs.current[dropdownType]!);
@@ -140,9 +137,6 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
           break;
         case 'offerings':
           setIsOfferingsDropdownOpen(false);
-          break;
-        case 'careers':
-          setIsCareersDropdownOpen(false);
           break;
         case 'applications':
           setIsApplicationsDropdownOpen(false);
@@ -159,7 +153,6 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
   useEffect(() => {
     setIsTeamDropdownOpen(false);
     setIsOfferingsDropdownOpen(false);
-    setIsCareersDropdownOpen(false);
     setIsApplicationsDropdownOpen(false);
     setIsEventsDropdownOpen(false);
     setIsMenuOpen(false);
@@ -292,39 +285,12 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
                   )}
                 </div>
               );
-            } else if (item.label === "Careers" && item.hasDropdown) {
+            } else if (item.label === "Careers") {
+              // Single page link - no dropdown
               return (
-                <div 
-                  key={item.label}
-                  className="relative"
-                  onMouseEnter={() => handleDropdownOpen('careers')}
-                  onMouseLeave={() => handleDropdownClose('careers')}
-                >
-                  <button
-                    className="header-nav-link flex items-center"
-                    onClick={() => setIsCareersDropdownOpen(!isCareersDropdownOpen)}
-                  >
-                    {item.label}
-                  </button>
-                  
-                  {isCareersDropdownOpen && (
-                    <div 
-                      className="dropdown-menu"
-                      onMouseEnter={() => handleDropdownOpen('careers')}
-                      onMouseLeave={() => handleDropdownClose('careers')}
-                    >
-                      {careersDropdownItems.map((dropdownItem) => (
-                        <Link
-                          key={dropdownItem.label}
-                          to={dropdownItem.href}
-                          className="dropdown-item"
-                        >
-                          {dropdownItem.label}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </div>
+                <Link key={item.label} to={item.href} className="header-nav-link">
+                  {item.label}
+                </Link>
               );
             } else if (item.label === "Applications" && item.hasDropdown) {
               return (
@@ -516,41 +482,17 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
                   )}
                 </div>
               );
-            } else if (item.label === "Careers" && item.hasDropdown) {
+            } else if (item.label === "Careers") {
+              // Single page link - no dropdown
               return (
-                <div key={item.label}>
-                  <button
-                    className="mobile-nav-link flex justify-between items-center w-full"
-                    onClick={() => setIsCareersDropdownOpen(!isCareersDropdownOpen)}
-                  >
-                    {item.label}
-                    <svg 
-                      className={`w-4 h-4 ml-2 transition-transform duration-200 ${isCareersDropdownOpen ? 'rotate-180' : ''}`} 
-                      fill="none" 
-                      stroke="currentColor" 
-                      viewBox="0 0 24 24"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </button>
-                  {isCareersDropdownOpen && (
-                    <div className="mobile-dropdown-content">
-                      {careersDropdownItems.map((dropdownItem) => (
-                        <Link
-                          key={dropdownItem.label}
-                          to={dropdownItem.href}
-                          className="mobile-dropdown-item"
-                          onClick={() => {
-                            setIsMenuOpen(false);
-                            setIsCareersDropdownOpen(false);
-                          }}
-                        >
-                          {dropdownItem.label}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </div>
+                <Link
+                  key={item.label}
+                  to={item.href}
+                  className="mobile-nav-link"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {item.label}
+                </Link>
               );
             } else if (item.label === "Applications" && item.hasDropdown) {
               return (

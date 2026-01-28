@@ -221,6 +221,7 @@ const MentorRegistration = () => {
         if (!formData.email.trim()) newErrors.email = 'Email is required';
         else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Email is invalid';
         if (!formData.phone.trim()) newErrors.phone = 'Phone is required';
+        else if (!/\d{10}/.test(formData.phone)) newErrors.phone = 'Phone must be 10 digits';
         if (!formData.city.trim()) newErrors.city = 'City is required';
         if (!formData.state.trim()) newErrors.state = 'State/Province is required';
         if (!formData.country.trim()) newErrors.country = 'Country is required';
@@ -474,12 +475,16 @@ const Step1: React.FC<StringStepProps> = ({ formData, errors, onChange, onCountr
           type="tel"
           name="phone"
           value={formData.phone}
-          onChange={onChange}
+          onChange={(e) => {
+            const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 10);
+            onChange({ target: { name: 'phone', value } } as React.ChangeEvent<HTMLInputElement>);
+          }}
+          maxLength={10}
           className={
             `w-full px-3 py-2 rounded-lg border ` +
             (errors.phone ? 'border-destructive' : 'border-border') +
             ` bg-input text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors`}
-          placeholder="Enter your phone number"
+          placeholder="Enter 10-digit phone number"
         />
         {errors.phone && <p className="text-sm text-destructive mt-1">{errors.phone}</p>}
       </div>

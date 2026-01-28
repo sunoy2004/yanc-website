@@ -26,6 +26,7 @@ import GlobalMentors from "./pages/team/GlobalMentors";
 // Careers pages
 import Jobs from "./pages/careers/Jobs";
 import Internships from "./pages/careers/Internships";
+import Careers from "./pages/Careers";
 
 // Applications pages
 import Membership from "./pages/apply/Membership";
@@ -70,8 +71,9 @@ const App = () => (
           <Route path="/team/global-mentors" element={<GlobalMentors />} />
           
           {/* Careers routes */}
-          <Route path="/careers/jobs" element={<Jobs />} />
-          <Route path="/careers/internships" element={<Internships />} />
+          <Route path="/careers" element={<Careers />} />
+          {/* <Route path="/careers/jobs" element={<Jobs />} /> */}
+          {/* <Route path="/careers/internships" element={<Internships />} /> */}
           
           {/* Applications routes */}
           <Route path="/apply/membership" element={<Membership />} />
