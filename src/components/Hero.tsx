@@ -5,18 +5,22 @@ import { Button } from "@/components/ui/button";
 const Hero = () => {
   return (
     <section className="hero-section">
+      {/* Top content - moved above carousel */}
+      <div className="hero-top-content">
+        <h1 className="hero-title-top">
+          <span className="text-accent">YANC</span>
+        </h1>
+        <p className="hero-subtitle-top">Yet Another Networking Club</p>
+      </div>
+
       {/* Three.js curved slider background */}
       <div className="hero-carousel-container">
         <CurvedSlider items={heroMedia} speed={15} gap={65} curve={6} />
       </div>
 
-      {/* Overlay content */}
-      <div className="hero-overlay">
+      {/* Bottom content - moved below carousel */}
+      <div className="hero-bottom-content">
         <div className="hero-content">
-          <h1 className="hero-title">
-            <span className="text-accent">YANC</span>
-          </h1>
-          <p className="hero-subtitle">Yet Another Networking Club</p>
           <p className="hero-description">
             Placeholder tagline goes here. Connect, collaborate, create.
           </p>
