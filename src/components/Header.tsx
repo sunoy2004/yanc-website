@@ -378,9 +378,9 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
           >
             {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
           </button>
-          <Link to="/signup" className="hidden md:flex items-center justify-center px-4 py-2 text-sm font-medium text-foreground bg-background border border-border rounded-md hover:bg-accent transition-colors">
-            Join
-          </Link>
+          <a href="https://web.yanc.in/" className="hidden md:flex items-center justify-center px-4 py-2 text-sm font-medium text-foreground bg-background border border-border rounded-md hover:bg-accent transition-colors" target="_blank" rel="noopener noreferrer">
+            Member login
+          </a>
           <button
             className="mobile-menu-toggle"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -596,9 +596,9 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
               );
             }
           })}
-          <Link to="/signup" className="mt-4 w-full py-2 px-4 bg-primary text-primary-foreground rounded-md text-center text-sm font-medium hover:bg-primary/90 transition-colors" onClick={() => setIsMenuOpen(false)}>
-            Join
-          </Link>
+          <a href="https://web.yanc.in/" className="mt-4 w-full py-2 px-4 bg-primary text-primary-foreground rounded-md text-center text-sm font-medium hover:bg-primary/90 transition-colors" onClick={() => setIsMenuOpen(false)} target="_blank" rel="noopener noreferrer">
+            Member login
+          </a>
         </nav>
       )}
     </header>
