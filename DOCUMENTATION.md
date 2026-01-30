@@ -295,7 +295,7 @@ Modifiable content: Footer links, social media links, copyright information
 ### Hero Section Components
 
 **File: src/components/Hero.tsx**
-Purpose: Hero section with 3D carousel, branding positioned above/below carousel, and external call-to-action link
+Purpose: Hero section with 3D carousel, three-tier layout (top title/subtitle, middle carousel, bottom description/CTA), and external call-to-action link
 Used by: src/pages/Index.tsx
 Uses: CurvedSlider, mockData
 Modifiable content: Hero content, CTA text, carousel configuration, external link URLs
@@ -370,7 +370,7 @@ Modifiable content: About Us content, mission/vision statements
 
 | Page Name | Route URL | File Path | Responsibility | Data Source | API Used | Components Used |
 |-----------|-----------|-----------|----------------|-------------|----------|-----------------|
-| Home | `/` | src/pages/Index.tsx | Main landing page with all sections | mockData.ts | None | Header, Hero, AboutUsSection, CoreValuesSection, EventsSection, FoundersSection, HorizontalTeamSection, Footer, Preloader, Layout |
+| Home | `/` | src/pages/Index.tsx | Main landing page with all sections plus bottom CTA | mockData.ts | None | Header, Hero, AboutUsSection, CoreValuesSection, EventsSection, FoundersSection, HorizontalTeamSection, Footer, Preloader, Layout, CTA Section |
 | Sign Up | `/signup` | src/pages/SignUp.tsx | User registration form | None | None | AuthCard, FormInput, Button, SocialLoginButtons |
 | Sign In | `/signin` | src/pages/SignIn.tsx | User login form | None | None | AuthCard, FormInput, Button, SocialLoginButtons |
 | FAQ | `/faq` | src/pages/Faq.tsx | Frequently asked questions | None | None | Various UI components |
@@ -402,7 +402,7 @@ Modifiable content: About Us content, mission/vision statements
 
 ### Feature: Homepage Display
 Files involved:
-- Index.tsx → Main page structure
+- Index.tsx → Main page structure with bottom CTA section
 - Hero.tsx → Hero section with 3D carousel
 - AboutUsSection.tsx → About Us content
 - CoreValuesSection.tsx → Core values display
@@ -803,27 +803,28 @@ The application implements error handling primarily in the Chatbot component:
 
 The following updates have been made to the project:
 
-1. **Hero Section Restructuring** (Hero.tsx):
-   - Moved title and subtitle to top content area above the 3D carousel
-   - Moved description and CTA to bottom content area below the carousel
-   - Changed CTA from internal Button component to external link pointing to membership application
-   - Added proper external link attributes (target="_blank", rel="noopener noreferrer")
+1. **Hero Section Updates** (Hero.tsx):
+   - Maintained three-section layout: top content (title/subtitle), 3D carousel, and bottom content (description/CTA)
+   - Kept external link for membership application with proper security attributes
+   - Preserved responsive design structure
 
 2. **Header Updates** (Header.tsx):
    - Changed "Join" button to "Member login"
    - Updated link to external URL (https://web.yanc.in/)
    - Added proper external link attributes
 
-3. **CSS Updates** (index.css):
-   - Added new classes for hero-top-content, hero-title-top, hero-subtitle-top
-   - Added hero-bottom-content styling
-   - Added responsive adjustments for mobile and tablet breakpoints
+3. **CSS Styling Updates** (index.css):
+   - Enhanced hero-bottom-content with centered flex layout and gradient background
+   - Added padding and vertical spacing to hero-content
+   - Maintained responsive design with proper breakpoints
+   - Kept existing hero description and CTA styling with appropriate sizing
 
 These changes improve the user experience by:
-- Better visual hierarchy in the hero section
+- Better content positioning and visual hierarchy
 - Proper external link handling for better security
 - Enhanced mobile responsiveness
 - More descriptive navigation labels
 - Direct access to membership applications through external links
+- Improved visual presentation with gradient overlays
 
 This documentation provides a comprehensive overview of the YANC website project, enabling any developer to understand, modify, and extend the application effectively.

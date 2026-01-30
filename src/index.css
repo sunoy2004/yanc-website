@@ -336,11 +336,11 @@
   }
 
   .hero-bottom-content {
-    @apply absolute bottom-0 left-0 right-0 z-20 pb-8 px-4 sm:px-6 pt-4 bg-gradient-to-t from-background to-transparent;
+    @apply absolute inset-0 flex items-center justify-center z-20 px-4 sm:px-6 bg-gradient-to-t from-background/80 via-background/40 to-transparent;
   }
 
   .hero-content {
-    @apply text-center z-10 px-4 sm:px-6;
+    @apply text-center z-10 px-4 sm:px-6 py-8;
   }
 
   .hero-title {
