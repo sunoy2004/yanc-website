@@ -1,0 +1,79 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, dev ]
+  pull_request:
+    branches: [ main, dev ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run linting
+      run: npm run lint
+
+    - name: Run type checking
+      run: npx tsc --noEmit
+
+    - name: Run tests
+      run: npm run test
+
+    - name: Build project
+      run: npm run build
+      env:
+        NODE_ENV: production
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev'  # Run on main or dev branch push
+    environment: ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}  # Use different environments for different branches
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18.x'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build project
+      run: npm run build
+      env:
+        NODE_ENV: production
+
+    - name: Upload build artifacts
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: dist/
+
+    - name: Deploy status to Render
+      run: |
+        if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+          echo "Production deployment triggered to Render."
+        elif [ "${{ github.ref }}" = "refs/heads/dev" ]; then
+          echo "Development deployment triggered to Render."
+        fi
