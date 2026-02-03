@@ -1,4 +1,36 @@
 steps:
+  # Create Artifact Registry repository if it doesn't exist
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
+    entrypoint: gcloud
+    args:
+      - 'artifacts'
+      - 'repositories'
+      - 'describe'
+      - 'cloud-run-source-deploy'
+      - '--location=$_LOCATION'
+      - '--project=$PROJECT_ID'
+    env:
+      - 'CLOUDSDK_CORE_PROJECT=$PROJECT_ID'
+    # Continue even if repository doesn't exist yet
+    allowFailure: true
+
+  # Create repository if it didn't exist
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
+    entrypoint: gcloud
+    args:
+      - 'artifacts'
+      - 'repositories'
+      - 'create'
+      - 'cloud-run-source-deploy'
+      - '--repository-format=docker'
+      - '--location=$_LOCATION'
+      - '--project=$PROJECT_ID'
+    env:
+      - 'CLOUDSDK_CORE_PROJECT=$PROJECT_ID'
+    # Only run if the previous step failed (meaning repo doesn't exist)
+    waitFor: ['-']
+    allowFailure: true
+
   # Build the Docker image
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', '$_LOCATION-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/$REPO_NAME:$COMMIT_SHA', '.']
