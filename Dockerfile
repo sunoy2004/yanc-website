@@ -23,5 +23,9 @@ COPY --from=builder /app/dist ./dist
 # Cloud Run uses port 8080
 EXPOSE 8080
 
+# Health check endpoint
+HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost:8080/ || exit 1
+
 # Serve static files
 CMD ["serve", "-s", "dist", "-l", "8080"]
