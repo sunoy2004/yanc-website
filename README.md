@@ -6,6 +6,8 @@ production(main):https://yanc-website.onrender.com
 
 development(dev):https://yanc-website-test.onrender.com
 
+Gcp(feature):https://website-1095720168864.asia-south1.run.app
+
 ## Project Overview
 
 This is a demo framework for the Yet Another Networking Club (YANC) website, featuring:
