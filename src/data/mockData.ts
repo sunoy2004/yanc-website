@@ -15,12 +15,36 @@ export interface Program {
   icon: string;
 }
 
+export interface MediaItem {
+  id: string;
+  type: "image" | "video";
+  src: string;
+  alt: string;
+}
+
 export interface Event {
   id: string;
   title: string;
   date: string;
   location: string;
   image: string;
+}
+
+export interface EventGalleryItem {
+  id: string;
+  title: string;
+  date: string;
+  description: string;
+  media: MediaItem[];
+}
+
+export interface MentorTalk {
+  id: string;
+  title: string;
+  speaker: string;
+  date: string;
+  description: string;
+  media: MediaItem[];
 }
 
 export interface SocialLinks {
@@ -386,6 +410,88 @@ export const indianStates = [
   "Puducherry",
   "Jammu and Kashmir",
   "Ladakh"
+];
+
+// Event gallery items
+export const eventGalleryItems: EventGalleryItem[] = [
+  {
+    id: "1",
+    title: "Annual Tech Conference 2024",
+    date: "2024-11-15",
+    description: "Our flagship annual tech conference featuring industry leaders and innovative startups.",
+    media: [
+      { id: "1", type: "image", src: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=600&fit=crop", alt: "Tech conference audience" },
+      { id: "2", type: "image", src: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800&h=600&fit=crop", alt: "Speaker presenting" },
+      { id: "3", type: "video", src: "https://res.cloudinary.com/dzjot5f7d/video/upload/v1769271732/vid4_vbbn9h.mp4", alt: "Conference highlights video" },
+      { id: "4", type: "image", src: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&h=600&fit=crop", alt: "Networking session" },
+      { id: "5", type: "image", src: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=600&fit=crop", alt: "Workshop session" },
+      { id: "6", type: "image", src: "https://images.unsplash.com/photo-1434494878194-7e9ce75f380f?w=800&h=600&fit=crop", alt: "Panel discussion" },
+    ]
+  },
+  {
+    id: "2",
+    title: "Women in Tech Summit",
+    date: "2024-10-22",
+    description: "Celebrating women's contributions to technology and innovation.",
+    media: [
+      { id: "7", type: "image", src: "https://images.unsplash.com/photo-1556761222-9d6ecab38ec6?w=800&h=600&fit=crop", alt: "Women in tech panel" },
+      { id: "8", type: "image", src: "https://images.unsplash.com/photo-1573164713988-8665fc963095?w=800&h=600&fit=crop", alt: "Female engineers discussing" },
+      { id: "9", type: "image", src: "https://images.unsplash.com/photo-1589391886645-d51941baf7fb?w=800&h=600&fit=crop", alt: "Tech workshop" },
+      { id: "10", type: "video", src: "https://res.cloudinary.com/dzjot5f7d/video/upload/v1769271735/vid1_tho4y2.mp4", alt: "Summit highlights" },
+    ]
+  },
+  {
+    id: "3",
+    title: "Startup Pitch Night",
+    date: "2024-09-18",
+    description: "Showcasing innovative startups and connecting entrepreneurs with investors.",
+    media: [
+      { id: "11", type: "image", src: "https://images.unsplash.com/photo-1552664100-c2f8dc44b03f?w=800&h=600&fit=crop", alt: "Startup pitch presentation" },
+      { id: "12", type: "image", src: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=800&h=600&fit=crop", alt: "Entrepreneurs networking" },
+      { id: "13", type: "image", src: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=600&fit=crop", alt: "Investor meeting" },
+    ]
+  }
+];
+
+// Mentor talks
+export const mentorTalks: MentorTalk[] = [
+  {
+    id: "1",
+    title: "Navigating Your Career Path",
+    speaker: "Emma Rodriguez",
+    date: "2024-11-05",
+    description: "Learn how to strategically plan and navigate your professional journey with industry expert Emma Rodriguez.",
+    media: [
+      { id: "14", type: "image", src: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=800&h=600&fit=crop", alt: "Emma Rodriguez speaking" },
+      { id: "15", type: "image", src: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&h=600&fit=crop", alt: "Audience listening" },
+      { id: "16", type: "image", src: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&h=600&fit=crop", alt: "Q&A session" },
+      { id: "17", type: "video", src: "https://res.cloudinary.com/dzjot5f7d/video/upload/v1769271734/vid2_fprt1h.mp4", alt: "Talk highlights" },
+    ]
+  },
+  {
+    id: "2",
+    title: "Building Resilient Teams",
+    speaker: "David Park",
+    date: "2024-10-15",
+    description: "Insights on creating strong, adaptable teams that thrive in challenging environments.",
+    media: [
+      { id: "18", type: "image", src: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&h=600&fit=crop", alt: "David Park presenting" },
+      { id: "19", type: "image", src: "https://images.unsplash.com/photo-1552664100-c2f8dc44b03f?w=800&h=600&fit=crop", alt: "Team building activity" },
+      { id: "20", type: "image", src: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=800&h=600&fit=crop", alt: "Collaboration session" },
+    ]
+  },
+  {
+    id: "3",
+    title: "Innovation in Startups",
+    speaker: "Mr.Daisuke Tanji",
+    date: "2024-09-25",
+    description: "Exploring how startups can drive innovation and create sustainable competitive advantages.",
+    media: [
+      { id: "21", type: "image", src: "https://images.unsplash.com/photo-1556761222-9d6ecab38ec6?w=800&h=600&fit=crop", alt: "Daisuke Tanji speaking" },
+      { id: "22", type: "image", src: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&h=600&fit=crop", alt: "Innovation workshop" },
+      { id: "23", type: "video", src: "https://res.cloudinary.com/dzjot5f7d/video/upload/v1769271733/vid3_zqqyvf.mp4", alt: "Innovation showcase" },
+    ]
+  }
 ];
 
 // About Us content - CMS-driven

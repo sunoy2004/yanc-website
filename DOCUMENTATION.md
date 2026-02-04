@@ -10,6 +10,7 @@ The YANC (Yet Another Networking Club) website is a modern, responsive web appli
 - Provide information about events, team, and opportunities
 - Facilitate user engagement through chatbot and contact features
 - Enable membership applications and event registrations
+- Display rich media galleries for events and programs
 
 ### Main Features
 - Responsive design with mobile-first approach
@@ -22,9 +23,13 @@ The YANC (Yet Another Networking Club) website is a modern, responsive web appli
 - Accessible design following WCAG guidelines
 - External link integration for membership applications
 - Proper external link handling with security attributes
+- Professional image/video galleries with lightbox viewers
+- Progressive loading with "View More"/"View Less" functionality
+- Timeline-based event galleries
+- Mentor talk galleries with rich media support
 
 ### Application Type
-This is a client-side React Single Page Application (SPA) built with Vite, featuring serverless deployment capabilities.
+This is a client-side React Single Page Application (SPA) built with Vite, featuring serverless deployment capabilities with integrated CMS support for content management and Google Drive storage for media assets.
 
 ### Target Users
 - Prospective members interested in joining the networking club
@@ -32,13 +37,15 @@ This is a client-side React Single Page Application (SPA) built with Vite, featu
 - Professionals looking for networking opportunities
 - Students and young professionals seeking mentorship
 - Industry experts interested in mentoring or partnering with YANC
+- Administrators managing website content via the CMS
 
 ### High-Level Workflow
 1. User visits the website and sees the animated hero section
 2. Navigation through various sections (About, Events, Team, etc.)
 3. Interaction with the chatbot for quick information
-4. Click external links for membership applications or member login
-5. Contact form submission for inquiries
+4. Browsing rich media galleries with lightbox functionality
+5. Click external links for membership applications or member login
+6. Contact form submission for inquiries
 
 ---
 
@@ -53,21 +60,25 @@ This is a client-side React Single Page Application (SPA) built with Vite, featu
 - **React Router DOM**: Client-side routing solution
 - **@tanstack/react-query**: Data fetching and state management library
 - **Three.js + @react-three/fiber**: 3D graphics library for the hero carousel animation
+- **Lucide React**: Icon library for consistent UI elements
 
 ### Backend Technologies
-- **Client-side only**: This is a static SPA with no dedicated backend server
+- **Headless CMS**: API-driven content management system with Google Drive integration
+- **Database**: PostgreSQL for structured content data
 - **API Integration**: Integration with OpenAI API for chatbot functionality (with fallback to mock service)
 
 ### Database
-- **Mock Data**: Uses TypeScript interfaces and mock data stored in `src/data/mockData.ts`
-- **No persistent database**: All data is currently stored statically in the client-side code
+- **Structured Content**: Uses PostgreSQL database managed by Prisma ORM
+- **Media Storage**: Google Drive for image and video assets with shareable links stored in database
 
 ### APIs
 - **OpenAI API**: For chatbot responses (with fallback to mock service to avoid CORS issues)
-- **Mock API Service**: Default service to prevent CORS issues during development
+- **CMS API**: Headless content management system with RESTful endpoints
+- **Google Drive API**: For media upload and management
 
 ### Authentication Method
-- **Currently not implemented**: The application has sign-in/sign-up pages but no actual authentication system is implemented yet
+- **CMS Admin Authentication**: Secure admin panel with JWT-based authentication
+- **Client-side only**: Main website has no user authentication system yet
 
 ### Hosting / Deployment Tools
 - **Netlify**: Static hosting with client-side routing support
@@ -88,6 +99,7 @@ Following user preference, all external navigation links throughout the applicat
 - **Three.js**: Advanced 3D animations for engaging user experience
 - **React Router**: Client-side routing for SPA navigation
 - **React Query**: Efficient data fetching and caching
+- **Google Drive**: Cost-effective media storage solution for headless CMS
 
 ---
 
@@ -156,6 +168,9 @@ src/
 │   │   ├── toggle.tsx
 │   │   ├── tooltip.tsx
 │   │   └── use-toast.ts
+│   ├── gallery/
+│   │   ├── ImageVideoGallery.tsx
+│   │   └── Lightbox.tsx
 │   ├── AuthCard.tsx
 │   ├── Chatbot.tsx
 │   ├── CurvedSlider.tsx
@@ -236,14 +251,15 @@ src/
 - **components/**: Reusable UI components organized by type
   - **sections/**: Components representing specific page sections
   - **ui/**: Shadcn/ui components built with Radix UI primitives
+  - **gallery/**: Components for image/video galleries and lightbox functionality
 - **data/**: Static data and mock data structures
 - **hooks/**: Custom React hooks for reusable logic
 - **lib/**: Utility functions and helper modules
 - **pages/**: Route components for different application views
   - **apply/**: Application forms and registration pages
   - **careers/**: Job and internship listings
-  - **events/**: Event-related pages
-  - **offerings/**: Service offering pages
+  - **events/**: Event-related pages with gallery functionality
+  - **offerings/**: Service offering pages with mentor talk galleries
   - **team/**: Team member listing pages
 - **services/**: API and service integration modules
 - **test/**: Unit tests and test utilities
@@ -306,6 +322,20 @@ Used by: Hero.tsx
 Uses: React Three Fiber, Three.js, custom shaders
 Modifiable content: Animation speed, curvature, visual effects
 
+### Gallery Components
+
+**File: src/components/gallery/ImageVideoGallery.tsx**
+Purpose: Reusable gallery component with masonry layout for images and videos
+Used by: Event Gallery, Past Events, Event Highlights, Mentor Talks pages
+Uses: MediaItem interface, PlayCircle icon, Lightbox component
+Modifiable content: Layout columns, media display behavior, view more/less functionality
+
+**File: src/components/gallery/Lightbox.tsx**
+Purpose: Full-screen media viewer with navigation controls
+Used by: ImageVideoGallery component
+Uses: Arrow icons, Close icon, keyboard navigation
+Modifiable content: Lightbox appearance, navigation behavior, keyboard shortcuts
+
 ### Page Components
 
 **File: src/pages/Index.tsx**
@@ -329,10 +359,10 @@ Modifiable content: Registration form fields, validation rules
 ### Data Management
 
 **File: src/data/mockData.ts**
-Purpose: Contains all static data structures used throughout the application
+Purpose: Contains all static data structures used throughout the application including media items for galleries
 Used by: All components that display content
 Uses: TypeScript interfaces for type safety
-Modifiable content: All content displayed on the website (team members, events, etc.)
+Modifiable content: All content displayed on the website (team members, events, gallery items, etc.)
 
 ### Service Layer
 
@@ -378,7 +408,7 @@ Modifiable content: About Us content, mission/vision statements
 | Value Proposition | `/offerings/value-proposition` | src/pages/offerings/ValueProposition.tsx | Value proposition information | mockData.ts | None | Various UI components |
 | Who Can Join | `/offerings/who-can-join` | src/pages/offerings/WhoCanJoin.tsx | Membership eligibility | mockData.ts | None | Various UI components |
 | Young Minds Mashup | `/offerings/young-minds-mashup` | src/pages/offerings/YoungMindsMashup.tsx | Young Minds Mashup information | mockData.ts | None | Various UI components |
-| Mentor Talks | `/offerings/mentor-talks` | src/pages/offerings/MentorTalks.tsx | Mentor Talks information | mockData.ts | None | Various UI components |
+| Mentor Talks | `/offerings/mentor-talks` | src/pages/offerings/MentorTalks.tsx | Mentor Talks information with gallery | mockData.ts | None | Gallery components, various UI components |
 | Why Us | `/offerings/why-us` | src/pages/offerings/WhyUs.tsx | Reasons to join YANC | mockData.ts | None | Various UI components |
 | Executive Management | `/team/executive-management` | src/pages/team/ExecutiveManagement.tsx | Executive team information | mockData.ts | None | Team-related components |
 | Cohort Founders | `/team/cohort-founders` | src/pages/team/CohortFounders.tsx | Cohort founder information | mockData.ts | None | Team-related components |
@@ -392,9 +422,9 @@ Modifiable content: About Us content, mission/vision statements
 | Startup Pitch | `/apply/startup-pitch` | src/pages/apply/StartupPitch.tsx | Startup pitch application | mockData.ts | None | Application components |
 | Membership Application | `/apply/membership-application` | src/pages/apply/MembershipApplication.tsx | Detailed membership application | mockData.ts | None | Application components |
 | Upcoming Events | `/events/upcoming` | src/pages/events/Upcoming.tsx | Upcoming events list | mockData.ts | None | Event-related components |
-| Past Events | `/events/past` | src/pages/events/Past.tsx | Past events archive | mockData.ts | None | Event-related components |
-| Event Gallery | `/events/gallery` | src/pages/events/Gallery.tsx | Event photo gallery | mockData.ts | None | Gallery components |
-| Event Highlights | `/events/highlights` | src/pages/events/Highlights.tsx | Event highlights | mockData.ts | None | Highlight components |
+| Past Events | `/events/past` | src/pages/events/Past.tsx | Past events archive with galleries | mockData.ts | None | Event and gallery components |
+| Event Gallery | `/events/gallery` | src/pages/events/Gallery.tsx | Event photo gallery with timeline | mockData.ts | None | Gallery components |
+| Event Highlights | `/events/highlights` | src/pages/events/Highlights.tsx | Event highlights with galleries | mockData.ts | None | Gallery components |
 
 ---
 
@@ -482,6 +512,27 @@ Files involved:
 
 Request-Response Lifecycle: Events data loaded → Events rendered → User can navigate to specific event pages
 
+### Feature: Media Galleries
+Files involved:
+- components/gallery/ImageVideoGallery.tsx → Gallery component with masonry layout
+- components/gallery/Lightbox.tsx → Full-screen media viewer
+- events/Past.tsx → Past events with galleries
+- events/Gallery.tsx → Event gallery page
+- events/Highlights.tsx → Event highlights with galleries
+- offerings/MentorTalks.tsx → Mentor talks with galleries
+- mockData.ts → Gallery media data
+
+Request-Response Lifecycle: Gallery data loaded → Masonry layout rendered → User can click media → Lightbox opens → User navigates through media
+
+### Feature: Progressive Loading
+Files involved:
+- components/gallery/ImageVideoGallery.tsx → View more/view less functionality
+- events/Past.tsx → Per-event gallery expansion
+- events/Gallery.tsx → Gallery expansion controls
+- events/Highlights.tsx → Highlights expansion controls
+
+Request-Response Lifecycle: Initial content loaded → View more button shown → User clicks → Additional content displayed → View less button appears
+
 ---
 
 ## 7. WHERE TO CHANGE WHAT (VERY IMPORTANT)
@@ -510,13 +561,14 @@ Request-Response Lifecycle: Events data loaded → Events rendered → User can 
 
 ### API URL Changes
 - **Chatbot API endpoint**: src/services/apiService.ts (realApiService.sendMessage)
+- **CMS API endpoint**: Will be configured in environment variables and service layers
 - **Base API URL**: Environment variable VITE_API_BASE_URL in .env file
 
 ### Database Fields Changes
-- **Mock data structure**: src/data/mockData.ts (interfaces and data arrays)
-- **Team member fields**: TeamMember interface in mockData.ts
-- **Event fields**: Event interface in mockData.ts
-- **Founder fields**: Founder interface in mockData.ts
+- **Content structure**: src/data/mockData.ts (interfaces and data arrays)
+- **Media item fields**: MediaItem interface in mockData.ts
+- **Event gallery fields**: EventGalleryItem interface in mockData.ts
+- **Mentor talk fields**: MentorTalk interface in mockData.ts
 
 ### Validations Changes
 - **Form validations**: Individual page components (SignUp, SignIn, etc.)
@@ -532,6 +584,11 @@ Request-Response Lifecycle: Events data loaded → Events rendered → User can 
 - **API configuration**: .env.example file
 - **Build settings**: vite.config.ts
 - **Deployment settings**: render.yaml, netlify.toml
+
+### Gallery Configuration Changes
+- **Gallery layout**: src/components/gallery/ImageVideoGallery.tsx (columns, responsive behavior)
+- **Lightbox functionality**: src/components/gallery/Lightbox.tsx (navigation, keyboard controls)
+- **View more/less behavior**: ImageVideoGallery.tsx (expansion logic)
 
 ---
 
@@ -550,6 +607,11 @@ Frontend → Chatbot.tsx → User inputs message → sendMessageToAI → apiServ
 ### Team Data Flow
 ```
 Frontend → HorizontalTeamSection.tsx → Import teamMembers from mockData.ts → Render team belt animation → Click triggers TeamMemberModal → Display detailed info
+```
+
+### Gallery Data Flow
+```
+Frontend → Gallery components → Import media data from mockData.ts → Render masonry layout → User interaction triggers Lightbox → Full-screen media viewing
 ```
 
 ### Form Submission Flow
@@ -585,8 +647,15 @@ Frontend → Index.tsx → Preloader mounts → Animation sequence → onComplet
 - **Model used**: None (uses mock data or external API)
 - **Used by**: src/components/Chatbot.tsx
 
+### CMS API Endpoints (Planned)
+- **Content retrieval**: GET /api/content/{section}
+- **Gallery items**: GET /api/content/gallery-items
+- **Event galleries**: GET /api/content/event-galleries
+- **Mentor talks**: GET /api/content/mentor-talks
+- **Authentication**: POST /api/auth/login
+
 ### Mock API Endpoints
-Currently, the application uses mock data for all content display, with no actual backend API endpoints implemented.
+Currently, the application uses mock data for all content display, with plans for CMS integration to replace static data with API-driven content. Google Drive will serve as the media storage backend with shareable links stored in the database.
 
 ### Environment-Based Configuration
 - **VITE_API_BASE_URL**: Base URL for API calls
@@ -597,13 +666,34 @@ Currently, the application uses mock data for all content display, with no actua
 ## 10. DATABASE SCHEMA
 
 ### Current Implementation (Mock Data)
-The application currently uses TypeScript interfaces and arrays in `src/data/mockData.ts`:
+The application currently uses TypeScript interfaces and arrays in `src/data/mockData.ts` with plans to integrate with a PostgreSQL database via Prisma ORM and Google Drive for media storage:
+
+**MediaItem Interface**
+- id: string - Unique identifier
+- type: "image" | "video" - Media type
+- src: string - Google Drive shareable link
+- alt: string - Alt text
+
+**EventGalleryItem Interface**
+- id: string - Unique identifier
+- title: string - Gallery title
+- date: string - Gallery date
+- description: string - Gallery description
+- media: MediaItem[] - Array of media items
+
+**MentorTalk Interface**
+- id: string - Unique identifier
+- title: string - Talk title
+- speaker: string - Speaker name
+- date: string - Talk date
+- description: string - Talk description
+- media: MediaItem[] - Array of media items for the talk
 
 **TeamMember Interface**
 - id: string - Unique identifier
 - name: string - Team member's name
 - role: string - Role/title
-- image: string - Image URL
+- image: string - Google Drive shareable link for image
 - description: string - Bio/description (optional)
 - socialLinks: SocialLinks object - Social media links (optional)
 
@@ -617,13 +707,13 @@ The application currently uses TypeScript interfaces and arrays in `src/data/moc
 - title: string - Event title
 - date: string - Event date
 - location: string - Event location
-- image: string - Event image URL
+- imageUrl: string - Google Drive shareable link for event image
 
 **Founder Interface**
 - id: string - Unique identifier
 - name: string - Founder's name
 - title: string - Title
-- image: string - Image URL
+- image: string - Google Drive shareable link for image
 - bio: string - Biography
 - socialLinks: SocialLinks object - Social media links (optional)
 
@@ -632,12 +722,12 @@ The application currently uses TypeScript interfaces and arrays in `src/data/moc
 - quote: string - Testimonial text
 - author: string - Author name
 - company: string - Company name
-- image: string - Author image URL
+- image: string - Google Drive shareable link for author image
 
 **HeroMediaItem Interface**
 - id: string - Unique identifier
 - type: "image" | "video" - Media type
-- src: string - Source URL
+- src: string - Google Drive shareable link for media
 - alt: string - Alt text
 
 **Program Interface**
@@ -653,6 +743,9 @@ The application currently uses TypeScript interfaces and arrays in `src/data/moc
 - mission: object - Mission statement with title, description, icon
 
 ### Feature Usage
+- MediaItem: Used for all gallery and media display components
+- EventGalleryItem: Used in event gallery pages
+- MentorTalk: Used in mentor talk pages
 - TeamMember: Used for displaying team members across various team pages
 - Event: Used in EventsSection and event pages
 - Founder: Used in FoundersSection
@@ -660,6 +753,12 @@ The application currently uses TypeScript interfaces and arrays in `src/data/moc
 - HeroMediaItem: Used in Hero component for carousel
 - Program: Used in ProgramsSection (currently commented out)
 - AboutUsContent: Used in AboutUsSection
+
+### Planned CMS Integration
+- **Database**: PostgreSQL with Prisma ORM
+- **Media Storage**: Google Drive with shareable links stored in database
+- **Content Types**: Sections, galleries, events, mentor talks, team members
+- **API Layer**: RESTful endpoints for content management
 
 ---
 
@@ -719,11 +818,12 @@ TypeScript compiler configuration for the project.
 ## 12. ERROR HANDLING & LOGGING
 
 ### Error Handling Approach
-The application implements error handling primarily in the Chatbot component:
+The application implements error handling primarily in the Chatbot component and gallery components:
 
 - **Chatbot API Errors**: Captured in `sendMessageToAI` function with fallback response
 - **Image Loading Errors**: Handled in `CurvedSlider.tsx` with error state and fallback display
 - **Video Loading Errors**: Handled in `CurvedSlider.tsx` with error state and fallback display
+- **Gallery Media Errors**: Handled in `ImageVideoGallery.tsx` and `Lightbox.tsx` with error states
 - **Form Validation**: Implemented in individual form components
 
 ### Error Logging
@@ -732,7 +832,8 @@ The application implements error handling primarily in the Chatbot component:
 
 ### Where to Add New Error Handling
 - Form validation errors in sign-in/sign-up components
-- Network error handling for future API integrations
+- Network error handling for CMS API integrations
+- Media loading errors in gallery components
 - Error boundaries at component level for production builds
 
 ---
@@ -761,6 +862,11 @@ The application implements error handling primarily in the Chatbot component:
 - Deploys to Render only if all checks pass
 - Tests against multiple Node.js versions
 
+### CMS Integration Notes
+- Headless CMS will be deployed separately with its own API server
+- Frontend will fetch content via CMS API endpoints
+- Google Drive will serve as the media storage backend
+
 ---
 
 ## 14. FUTURE EXTENSION GUIDE
@@ -772,6 +878,7 @@ The application implements error handling primarily in the Chatbot component:
 4. Optionally add navigation entry in Header.tsx
 5. Export the component from the new file
 6. Test the new route
+7. If the page needs gallery functionality, use `ImageVideoGallery.tsx` component
 
 ### How to Add a New API
 1. Create a new service file in `src/services/`
@@ -780,13 +887,14 @@ The application implements error handling primarily in the Chatbot component:
 4. Import and use the service in relevant components
 5. Add proper loading/error states to UI
 6. Consider caching with React Query if needed
+7. For CMS integration, follow the planned API structure
 
 ### How to Add a New Database Table
-1. Since this is a client-side app, create a new interface in `src/data/mockData.ts`
-2. Create a new data array with the appropriate structure
-3. Add sample data following the interface
-4. Import and use the data in relevant components
-5. For a real backend, you would need to implement an actual database
+1. Define the interface in `src/data/mockData.ts` for development
+2. When implementing CMS, update the Prisma schema with the new model
+3. Create migration for the new table structure
+4. Implement API endpoints for CRUD operations
+5. Connect to Google Drive for media storage if needed
 
 ### How to Add a New Feature Safely
 1. Identify the components that need modification
@@ -799,32 +907,50 @@ The application implements error handling primarily in the Chatbot component:
 8. Consider accessibility and responsive design
 9. Update documentation if the feature is significant
 
+### How to Implement CMS Integration
+1. Set up a separate CMS API server with PostgreSQL and Prisma
+2. Implement Google Drive integration for media uploads
+3. Create API endpoints following the documented structure
+4. Update service layer to fetch data from CMS API instead of mock data
+5. Implement caching strategies for performance
+6. Add real-time update capabilities if needed
+
 ## 15. RECENT CHANGES SUMMARY
 
-The following updates have been made to the project:
+The following updates have been made to the project to enhance gallery functionality and prepare for CMS integration:
 
-1. **Hero Section Updates** (Hero.tsx):
-   - Maintained three-section layout: top content (title/subtitle), 3D carousel, and bottom content (description/CTA)
-   - Kept external link for membership application with proper security attributes
-   - Preserved responsive design structure
+1. **Gallery Components Added** (src/components/gallery/):
+   - Created `ImageVideoGallery.tsx` with masonry layout for images and videos
+   - Implemented `Lightbox.tsx` for full-screen media viewing
+   - Added responsive design and keyboard navigation support
+   - Implemented progressive loading with "View More"/"View Less" functionality
 
-2. **Header Updates** (Header.tsx):
-   - Changed "Join" button to "Member login"
-   - Updated link to external URL (https://web.yanc.in/)
-   - Added proper external link attributes
+2. **Event Pages Enhanced** (src/pages/events/):
+   - Updated `Past.tsx` with gallery functionality and per-event expansion
+   - Enhanced `Gallery.tsx` with timeline-based layout and gallery features
+   - Improved `Highlights.tsx` with featured media sections and gallery controls
 
-3. **CSS Styling Updates** (index.css):
-   - Enhanced hero-bottom-content with centered flex layout and gradient background
-   - Added padding and vertical spacing to hero-content
+3. **Mentor Talks Page Updated** (src/pages/offerings/MentorTalks.tsx):
+   - Added gallery functionality for mentor talk media
+   - Implemented rich media display for talks and presentations
+
+4. **Data Structures Extended** (src/data/mockData.ts):
+   - Added `MediaItem` interface for gallery media
+   - Created `EventGalleryItem` interface for event galleries
+   - Added `MentorTalk` interface for mentor talk content
+   - Extended mock data with rich media content
+
+5. **CSS Styling Updates** (index.css):
+   - Enhanced gallery layouts with responsive grid systems
+   - Added lightbox overlay styles
+   - Improved media display styling with hover effects
    - Maintained responsive design with proper breakpoints
-   - Kept existing hero description and CTA styling with appropriate sizing
 
 These changes improve the user experience by:
-- Better content positioning and visual hierarchy
-- Proper external link handling for better security
-- Enhanced mobile responsiveness
-- More descriptive navigation labels
-- Direct access to membership applications through external links
-- Improved visual presentation with gradient overlays
-
-This documentation provides a comprehensive overview of the YANC website project, enabling any developer to understand, modify, and extend the application effectively.
+- Rich media galleries with professional presentation
+- Full-screen lightbox viewing for detailed media examination
+- Progressive loading to optimize performance
+- Timeline-based organization for event content
+- Consistent UI/UX across all gallery implementations
+- Preparation for CMS integration with structured data models
+- Google Drive integration ready architecture
