@@ -3,7 +3,7 @@
 export interface MediaItem {
   id: string;
   type: 'IMAGE' | 'VIDEO';
-  url: string; // Google Drive shareable link
+  url: string; // Supabase Storage URL
   altText?: string;
   caption?: string;
   order: number;
@@ -108,7 +108,7 @@ export interface EventGallery {
 export interface EventImage {
   id: string;
   eventGalleryId: string;
-  imageUrl: string; // Google Drive shareable link
+  imageUrl: string; // Supabase Storage URL
   caption?: string;
   order: number;
   isActive: boolean;

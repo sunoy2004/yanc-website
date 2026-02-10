@@ -60,11 +60,47 @@ class CmsClient {
       throw error;
     }
   }
+  
+  // Special request method for endpoints that don't follow /api/content pattern
+  private async requestDirect<T>(endpoint: string): Promise<T> {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), this.timeout);
+
+    try {
+      const response = await fetch(`${this.baseUrl}${endpoint}`, {
+        signal: controller.signal,
+        headers: {
+          'Content-Type': 'application/json',
+          // Add any required headers for CMS authentication if needed
+        },
+      });
+
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        throw new Error(`CMS API error: ${response.status} ${response.statusText}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      clearTimeout(timeoutId);
+      
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        throw new Error('Network error: Unable to reach CMS');
+      }
+      
+      if ((error as Error).name === 'AbortError') {
+        throw new Error('Request timeout: CMS took too long to respond');
+      }
+      
+      throw error;
+    }
+  }
 
   // Public content endpoints
   async getHeroContent(): Promise<HeroContent | null> {
     try {
-      return await this.request<HeroContent>('/hero');
+      return await this.requestDirect<HeroContent>('/api/hero');
     } catch (error) {
       console.error('Error fetching hero content:', error);
       return null;

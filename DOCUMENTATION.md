@@ -865,7 +865,7 @@ The application implements error handling primarily in the Chatbot component and
 ### CMS Integration Notes
 - Headless CMS will be deployed separately with its own API server
 - Frontend will fetch content via CMS API endpoints
-- Google Drive will serve as the media storage backend
+- Supabase Storage will serve as the media storage backend
 
 ---
 
@@ -953,4 +953,4 @@ These changes improve the user experience by:
 - Timeline-based organization for event content
 - Consistent UI/UX across all gallery implementations
 - Preparation for CMS integration with structured data models
-- Google Drive integration ready architecture
+- Supabase Storage integration ready architecture

@@ -42,7 +42,13 @@ import {
  */
 class CmsService {
   /**
-   * Fetch and cache hero content
+   * Fetch and cache hero content with CMS-first, mock-fallback logic
+   * 
+   * RULES:
+   * 1. CMS Priority: If CMS has published hero content → use CMS exclusively
+   * 2. Publish Logic: Only hero items with isActive = true are valid
+   * 3. Fallback: If CMS is empty, null, 404, or has no published content → use mock
+   * 4. Fail-Safe: If CMS API is unreachable → gracefully render mock content
    */
   async getHeroContent(): Promise<HeroContentUI | null> {
     const cacheKey = 'hero-content';
@@ -53,21 +59,36 @@ class CmsService {
     }
     
     try {
+      console.log('Fetching hero content from CMS...');
       const cmsHero = await cmsClient.getHeroContent();
-      const serializedHero = serializeHeroContent(cmsHero);
       
-      // Use mock data if CMS returns null or empty media items
-      if (!serializedHero || !serializedHero.mediaItems || serializedHero.mediaItems.length === 0) {
-        console.log('Using mock hero content');
-        const mockHero = serializeMockHeroContent(heroMedia);
-        cmsCache.set(cacheKey, mockHero);
-        return mockHero;
+      // Check if CMS returned valid published content
+      // CMS returns null when no active content exists
+      // Handle both camelCase and snake_case property names for isActive
+      const isPublished = cmsHero && cmsHero.id && (cmsHero.isActive === true || (cmsHero as any).is_active === true);
+      
+      if (isPublished) {
+        const serializedHero = serializeHeroContent(cmsHero);
+        
+        // Additional validation: ensure we have media items
+        if (serializedHero && serializedHero.mediaItems && serializedHero.mediaItems.length > 0) {
+          console.log(`✅ Using CMS hero content: ${cmsHero.title} (${serializedHero.mediaItems.length} media items)`);
+          cmsCache.set(cacheKey, serializedHero);
+          return serializedHero;
+        } else {
+          console.warn('⚠️ CMS hero content found but has no media items, falling back to mock');
+        }
+      } else {
+        console.log('ℹ️ No published CMS hero content found, falling back to mock data');
       }
       
-      cmsCache.set(cacheKey, serializedHero);
-      return serializedHero;
+      // Fallback to mock data
+      const mockHero = serializeMockHeroContent(heroMedia);
+      cmsCache.set(cacheKey, mockHero);
+      return mockHero;
+      
     } catch (error) {
-      console.error('Error in getHeroContent, using mock data:', error);
+      console.warn('⚠️ CMS API error or unreachable, falling back to mock hero content:', error);
       const mockHero = serializeMockHeroContent(heroMedia);
       cmsCache.set(cacheKey, mockHero);
       return mockHero;
