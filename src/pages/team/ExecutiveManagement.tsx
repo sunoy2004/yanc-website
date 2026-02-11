@@ -2,10 +2,13 @@ import React, { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import TeamGrid from "@/components/TeamGrid";
-import { founders } from "@/data/mockData";
+import { useTeamData } from "@/services/cms/useTeamData";
 
 const ExecutiveManagement = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
+  console.log('🚀 ExecutiveManagement component mounting');
+  const { teamData, loading, error } = useTeamData(undefined, 'executive_management');
+  console.log('📋 ExecutiveManagement received:', teamData.length, 'members');
 
   useEffect(() => {
     // Initialize dark mode
@@ -17,13 +20,30 @@ const ExecutiveManagement = () => {
     document.documentElement.classList.toggle("dark");
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background text-foreground">
+        <Header isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+        <main className="container mx-auto px-4 py-16 text-center">
+          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Executive Management</h1>
+          <p className="text-muted-foreground">Loading team members...</p>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (error) {
+    console.error('Error loading executive management:', error);
+  }
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Header isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
       
       <main>
         <TeamGrid 
-          members={founders}
+          members={teamData}
           sectionTitle="Executive Management"
           sectionSubtitle="Leaders driving our mission and vision"
         />

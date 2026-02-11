@@ -7,6 +7,8 @@ import {
   serializeMediaItems,
   serializeEventGalleries,
   serializeMentorTalks,
+  serializeTestimonials,
+  serializeAboutUs,
   serializeMockHeroContent,
   serializeMockPrograms,
   serializeMockEvents,
@@ -14,6 +16,8 @@ import {
   serializeMockGalleryItems,
   serializeMockEventGalleries,
   serializeMockMentorTalks,
+  serializeMockTestimonials,
+  serializeMockAboutUs,
   serializeMockFounders
 } from './serializers';
 import { cmsCache } from './utils';
@@ -32,8 +36,12 @@ import {
   events as mockEvents,
   teamMembers as mockTeamMembers,
   founders as mockFounders,
+  testimonials as mockTestimonials,
   eventGalleryItems as mockEventGalleryItems,
-  mentorTalks as mockMentorTalks
+  mentorTalks as mockMentorTalks,
+  aboutUsContent,
+  mentors as mockMentors,
+  advisors as mockAdvisors
 } from '@/data/mockData';
 
 /**
@@ -191,6 +199,119 @@ class CmsService {
       const mockTeamMembersData = serializeMockTeamMembers(mockTeamMembers);
       cmsCache.set(cacheKey, mockTeamMembersData);
       return mockTeamMembersData;
+    }
+  }
+
+  /**
+   * Fetch and cache team members by type
+   */
+  async getTeamMembersByType(type: string): Promise<TeamMemberUI[]> {
+    const cacheKey = `team-members-${type}`;
+    const cached = cmsCache.get(cacheKey);
+    
+    if (cached) {
+      return cached;
+    }
+    
+    try {
+      const cmsTeamMembers = await cmsClient.getTeamMembers();
+      // Filter by type - map frontend types to CMS types
+      const typeMap: Record<string, string> = {
+        'executive': 'REGULAR',
+        'cohort_founder': 'FOUNDER',
+        'advisory': 'ADVISOR',
+        'global_mentor': 'MENTOR'
+      };
+      
+      const cmsType = typeMap[type] || type.toUpperCase();
+      const filteredCmsTeamMembers = cmsTeamMembers.filter(member => 
+        member.type.toLowerCase() === cmsType.toLowerCase()
+      );
+      
+      const serializedTeamMembers = serializeTeamMembers(filteredCmsTeamMembers);
+      
+      // Use mock data if CMS returns empty array for this type
+      if (!serializedTeamMembers || serializedTeamMembers.length === 0) {
+        console.log(`Using mock ${type} team members`);
+        const mockTeamMembersData = serializeMockTeamMembers(mockTeamMembers);
+        cmsCache.set(cacheKey, mockTeamMembersData);
+        return mockTeamMembersData;
+      }
+      
+      cmsCache.set(cacheKey, serializedTeamMembers);
+      return serializedTeamMembers;
+    } catch (error) {
+      console.error(`Error in getTeamMembersByType(${type}), using mock data:`, error);
+      const mockTeamMembersData = serializeMockTeamMembers(mockTeamMembers);
+      cmsCache.set(cacheKey, mockTeamMembersData);
+      return mockTeamMembersData;
+    }
+  }
+
+  /**
+   * Fetch and cache team members by section
+   */
+  async getTeamMembersBySection(section: string): Promise<TeamMemberUI[]> {
+    const cacheKey = `team-members-section-${section}`;
+    const cached = cmsCache.get(cacheKey);
+    
+    if (cached) {
+      return cached;
+    }
+    
+    try {
+      const cmsTeamMembers = await cmsClient.getTeamMembersBySection(section);
+      const serializedTeamMembers = serializeTeamMembers(cmsTeamMembers);
+      
+      // Use mock data if CMS returns empty array for this section
+      if (!serializedTeamMembers || serializedTeamMembers.length === 0) {
+        console.log(`Using mock ${section} team members`);
+        // Return appropriate mock data based on section
+        let mockData: TeamMemberUI[] = [];
+        switch (section) {
+          case 'executive_management':
+            mockData = serializeMockFounders(mockFounders);
+            break;
+          case 'cohort_founders':
+            mockData = serializeMockTeamMembers(mockTeamMembers);
+            break;
+          case 'advisory_board':
+            mockData = serializeMockFounders(mockAdvisors);
+            break;
+          case 'global_mentors':
+            mockData = serializeMockFounders(mockMentors);
+            break;
+          default:
+            mockData = serializeMockTeamMembers(mockTeamMembers);
+        }
+        cmsCache.set(cacheKey, mockData);
+        return mockData;
+      }
+      
+      cmsCache.set(cacheKey, serializedTeamMembers);
+      return serializedTeamMembers;
+    } catch (error) {
+      console.error(`Error in getTeamMembersBySection(${section}), using mock data:`, error);
+      // Return appropriate mock data based on section
+      let mockData: TeamMemberUI[] = [];
+      switch (section) {
+        case 'executive_management':
+          mockData = serializeMockFounders(mockFounders);
+          break;
+        case 'cohort_founders':
+          mockData = serializeMockTeamMembers(mockTeamMembers);
+          break;
+        case 'advisory_board':
+          mockData = serializeMockFounders(mockAdvisors);
+          break;
+        case 'global_mentors':
+          mockData = serializeMockFounders(mockMentors);
+          break;
+        default:
+          mockData = serializeMockTeamMembers(mockTeamMembers);
+      }
+      cmsCache.set(cacheKey, mockData);
+      return mockData;
     }
   }
 
@@ -359,6 +480,71 @@ class CmsService {
 
   clearCache(): void {
     cmsCache.clear();
+  }
+
+  /**
+   * Fetch and cache testimonials
+   */
+  async getTestimonials(): Promise<any[]> {
+    const cacheKey = 'testimonials';
+    const cached = cmsCache.get(cacheKey);
+    
+    if (cached) {
+      return cached;
+    }
+    
+    try {
+      const cmsTestimonials = await cmsClient.getTestimonials();
+      const serializedTestimonials = serializeTestimonials(cmsTestimonials);
+      
+      // Use mock data if CMS returns empty array
+      if (!serializedTestimonials || serializedTestimonials.length === 0) {
+        console.log('Using mock testimonials');
+        const mockTestimonialsData = serializeMockTestimonials(mockTestimonials);
+        cmsCache.set(cacheKey, mockTestimonialsData);
+        return mockTestimonialsData;
+      }
+      
+      cmsCache.set(cacheKey, serializedTestimonials);
+      return serializedTestimonials;
+    } catch (error) {
+      console.error('Error in getTestimonials, using mock data:', error);
+      const mockTestimonialsData = serializeMockTestimonials(mockTestimonials);
+      cmsCache.set(cacheKey, mockTestimonialsData);
+      return mockTestimonialsData;
+    }
+  }
+
+  /**
+   * Fetch and cache about us content
+   */
+  async getAboutUs(): Promise<any | null> {
+    const cacheKey = 'about-us';
+    const cached = cmsCache.get(cacheKey);
+    
+    if (cached) {
+      return cached;
+    }
+    
+    try {
+      const cmsAboutUs = await cmsClient.getAboutUs();
+      const serializedAboutUs = serializeAboutUs(cmsAboutUs);
+      
+      if (!serializedAboutUs) {
+        console.log('Using mock about us content');
+        const mockAboutUsData = serializeMockAboutUs(aboutUsContent);
+        cmsCache.set(cacheKey, mockAboutUsData);
+        return mockAboutUsData;
+      }
+      
+      cmsCache.set(cacheKey, serializedAboutUs);
+      return serializedAboutUs;
+    } catch (error) {
+      console.error('Error in getAboutUs, using mock data:', error);
+      const mockAboutUsData = serializeMockAboutUs(aboutUsContent);
+      cmsCache.set(cacheKey, mockAboutUsData);
+      return mockAboutUsData;
+    }
   }
 
   /**

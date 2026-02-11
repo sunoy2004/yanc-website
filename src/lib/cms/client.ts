@@ -118,7 +118,7 @@ class CmsClient {
 
   async getPrograms(): Promise<Program[]> {
     try {
-      return await this.request<Program[]>('/programs') || [];
+      return await this.requestDirect<Program[]>('/api/programs/public') || [];
     } catch (error) {
       console.error('Error fetching programs:', error);
       return [];
@@ -127,7 +127,7 @@ class CmsClient {
 
   async getMentorTalks(): Promise<MentorTalk[]> {
     try {
-      return await this.request<MentorTalk[]>('/mentor-talks') || [];
+      return await this.requestDirect<MentorTalk[]>('/api/mentor-talks/public') || [];
     } catch (error) {
       console.error('Error fetching mentor talks:', error);
       return [];
@@ -136,7 +136,7 @@ class CmsClient {
 
   async getEvents(): Promise<Event[]> {
     try {
-      return await this.request<Event[]>('/events') || [];
+      return await this.requestDirect<Event[]>('/api/events/public') || [];
     } catch (error) {
       console.error('Error fetching events:', error);
       return [];
@@ -145,7 +145,7 @@ class CmsClient {
 
   async getEventGalleries(): Promise<EventGallery[]> {
     try {
-      return await this.request<EventGallery[]>('/event-galleries') || [];
+      return await this.requestDirect<EventGallery[]>('/api/event-galleries/public') || [];
     } catch (error) {
       console.error('Error fetching event galleries:', error);
       return [];
@@ -154,7 +154,7 @@ class CmsClient {
 
   async getGalleryItems(): Promise<MediaItem[]> {
     try {
-      return await this.request<MediaItem[]>('/gallery-items') || [];
+      return await this.requestDirect<MediaItem[]>('/api/gallery-items/public') || [];
     } catch (error) {
       console.error('Error fetching gallery items:', error);
       return [];
@@ -163,16 +163,34 @@ class CmsClient {
 
   async getTeamMembers(): Promise<TeamMember[]> {
     try {
-      return await this.request<TeamMember[]>('/team') || [];
+      return await this.requestDirect<TeamMember[]>('/api/team/public') || [];
     } catch (error) {
       console.error('Error fetching team members:', error);
       return [];
     }
   }
 
+  async getTeamMembersByType(type: string): Promise<TeamMember[]> {
+    try {
+      return await this.requestDirect<TeamMember[]>(`/api/team/public/${type}`) || [];
+    } catch (error) {
+      console.error(`Error fetching team members by type ${type}:`, error);
+      return [];
+    }
+  }
+
+  async getTeamMembersBySection(section: string): Promise<TeamMember[]> {
+    try {
+      return await this.requestDirect<TeamMember[]>(`/api/team/public?section=${section}`) || [];
+    } catch (error) {
+      console.error(`Error fetching team members by section ${section}:`, error);
+      return [];
+    }
+  }
+
   async getFounders(): Promise<Founder[]> {
     try {
-      return await this.request<Founder[]>('/founders') || [];
+      return await this.requestDirect<Founder[]>('/api/founders/public') || [];
     } catch (error) {
       console.error('Error fetching founders:', error);
       return [];
@@ -181,7 +199,7 @@ class CmsClient {
 
   async getTestimonials(): Promise<Testimonial[]> {
     try {
-      return await this.request<Testimonial[]>('/testimonials') || [];
+      return await this.requestDirect<Testimonial[]>('/api/testimonials/public') || [];
     } catch (error) {
       console.error('Error fetching testimonials:', error);
       return [];
@@ -190,7 +208,7 @@ class CmsClient {
 
   async getAboutUs(): Promise<AboutUs | null> {
     try {
-      return await this.request<AboutUs>('/about-us');
+      return await this.requestDirect<AboutUs>('/api/about/public');
     } catch (error) {
       console.error('Error fetching about us content:', error);
       return null;
@@ -199,7 +217,7 @@ class CmsClient {
 
   async getContactInfo(): Promise<ContactInfo | null> {
     try {
-      return await this.request<ContactInfo>('/contact');
+      return await this.requestDirect<ContactInfo>('/api/contact/public');
     } catch (error) {
       console.error('Error fetching contact info:', error);
       return null;

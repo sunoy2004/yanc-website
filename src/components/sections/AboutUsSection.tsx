@@ -1,6 +1,7 @@
-import { aboutUsContent } from "@/data/mockData";
+import { useState, useEffect } from 'react';
 import { Eye, Target } from "lucide-react";
 import ScrollAnimateWrapper from "@/components/ScrollAnimateWrapper";
+import { useAboutUsData } from "@/services/cms/useAboutUsData";
 
 const iconMap: Record<string, React.ElementType> = {
   eye: Eye,
@@ -8,7 +9,41 @@ const iconMap: Record<string, React.ElementType> = {
 };
 
 const AboutUsSection = () => {
-  const { headline, description, vision, mission } = aboutUsContent;
+  const { aboutUsData, loading, error } = useAboutUsData();
+
+  if (loading) {
+    return (
+      <section id="about-us" className="section">
+        <div className="container mx-auto px-4 py-20 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+            Loading About Us...
+          </h2>
+          <p className="section-subtitle">
+            Loading content...
+          </p>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    console.error('Error loading about us content:', error);
+  }
+
+  const { headline, description, vision, mission } = aboutUsData || {
+    headline: "About Us",
+    description: "Empowering Young Minds through Life Skills\n\nNetworking and life skills are crucial in today's fast-paced world.",
+    vision: {
+      title: "Vision",
+      description: "Empowering young minds together.",
+      icon: "eye"
+    },
+    mission: {
+      title: "Mission",
+      description: "Building better people for better Tomorrow.",
+      icon: "target"
+    }
+  };
 
   return (
     <section id="about-us" className="section">

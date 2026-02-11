@@ -6,6 +6,8 @@ import {
   MediaItem,
   EventGallery,
   MentorTalk,
+  Testimonial,
+  AboutUs,
   HeroContentUI,
   ProgramUI,
   EventUI,
@@ -23,7 +25,9 @@ import {
   TeamMember as MockTeamMember,
   MediaItem as MockMediaItem,
   EventGalleryItem as MockEventGalleryItem,
-  MentorTalk as MockMentorTalk
+  MentorTalk as MockMentorTalk,
+  Testimonial as MockTestimonial,
+  AboutUsContent as MockAboutUs
 } from '@/data/mockData';
 
 // Serializer functions to convert CMS data to UI-friendly format
@@ -33,6 +37,7 @@ export const serializeHeroContent = (cmsHero: HeroContent | null): HeroContentUI
   return {
     title: cmsHero.title,
     subtitle: cmsHero.subtitle,
+    description: cmsHero.description,
     ctaText: cmsHero.ctaText,
     ctaUrl: cmsHero.ctaUrl,
     mediaItems: cmsHero.mediaItems.map(item => ({
@@ -45,8 +50,8 @@ export const serializeHeroContent = (cmsHero: HeroContent | null): HeroContentUI
 
 export const serializePrograms = (cmsPrograms: Program[]): ProgramUI[] => {
   return cmsPrograms
-    .filter(program => program.isActive)
-    .sort((a, b) => a.order - b.order)
+    .filter(program => program.isActive || (program as any).is_active) // Handle both camelCase and snake_case
+    .sort((a, b) => (a.order || 0) - (b.order || 0)) // Handle missing order field
     .map(program => ({
       id: program.id,
       title: program.title,
@@ -57,51 +62,53 @@ export const serializePrograms = (cmsPrograms: Program[]): ProgramUI[] => {
 
 export const serializeEvents = (cmsEvents: Event[]): EventUI[] => {
   return cmsEvents
-    .filter(event => event.isActive)
+    .filter(event => event.isActive || (event as any).is_active) // Handle both camelCase and snake_case
     .map(event => ({
       id: event.id,
       title: event.title,
       date: event.date,
       location: event.location,
-      image: event.imageUrl
+      image: event.imageUrl || (event as any).image_url || '' // Handle both camelCase and snake_case
     }));
 };
 
 export const serializeTeamMembers = (cmsTeamMembers: TeamMember[]): TeamMemberUI[] => {
   return cmsTeamMembers
-    .filter(member => member.isActive)
-    .sort((a, b) => a.order - b.order)
+    .filter(member => member.isActive || (member as any).is_active) // Handle both camelCase and snake_case
+    .sort((a, b) => (a.order || 0) - (b.order || 0)) // Handle missing order field
     .map(member => ({
       id: member.id,
       name: member.name,
       role: member.role,
       title: member.title,
       bio: member.bio,
-      image: member.imageUrl,
-      socialLinks: member.socialLinks ? {
-        twitter: member.socialLinks.twitter,
-        linkedin: member.socialLinks.linkedin,
-        github: member.socialLinks.github
-      } : undefined
+      image: member.imageUrl || (member as any).image_url || '', // Handle both camelCase and snake_case
+      socialLinks: member.socialLinks && Array.isArray(member.socialLinks) ? 
+        member.socialLinks.reduce((acc, link) => {
+          if (link.platform && link.url) {
+            acc[link.platform] = link.url;
+          }
+          return acc;
+        }, {} as { [key: string]: string }) : undefined
     }));
 };
 
 export const serializeMediaItems = (cmsMediaItems: MediaItem[]): MediaItemUI[] => {
   return cmsMediaItems
-    .filter(item => item.isActive)
-    .sort((a, b) => a.order - b.order)
+    .filter(item => item.isActive || (item as any).is_active) // Handle both camelCase and snake_case
+    .sort((a, b) => (a.order || 0) - (b.order || 0)) // Handle missing order field
     .map(item => ({
       id: item.id,
       type: item.type.toLowerCase() as 'image' | 'video',
       src: item.url,
-      alt: item.altText || 'Media item',
+      alt: item.altText || (item as any).alt_text || 'Media item', // Handle both camelCase and snake_case
       caption: item.caption
     }));
 };
 
 export const serializeEventGalleries = (cmsEventGalleries: EventGallery[]): EventGalleryItemUI[] => {
   return cmsEventGalleries
-    .filter(gallery => gallery.isActive)
+    .filter(gallery => gallery.isActive || (gallery as any).is_active) // Handle both camelCase and snake_case
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()) // Sort by date descending
     .map(gallery => ({
       id: gallery.id,
@@ -111,11 +118,11 @@ export const serializeEventGalleries = (cmsEventGalleries: EventGallery[]): Even
       media: serializeMediaItems(gallery.images.map(img => ({
         id: img.id,
         type: 'IMAGE' as const,
-        url: img.imageUrl,
+        url: img.imageUrl || (img as any).image_url || '', // Handle both camelCase and snake_case
         altText: img.caption || 'Event image',
         caption: img.caption,
         order: img.order,
-        isActive: img.isActive,
+        isActive: img.isActive || (img as any).is_active, // Handle both camelCase and snake_case
         createdAt: img.createdAt,
         updatedAt: img.updatedAt
       })))
@@ -124,27 +131,61 @@ export const serializeEventGalleries = (cmsEventGalleries: EventGallery[]): Even
 
 export const serializeMentorTalks = (cmsMentorTalks: MentorTalk[]): MentorTalkUI[] => {
   return cmsMentorTalks
-    .filter(talk => talk.isActive)
+    .filter(talk => talk.isActive || (talk as any).is_active) // Handle both camelCase and snake_case
     .map(talk => ({
       id: talk.id,
       title: talk.title,
       speaker: talk.speaker,
       date: talk.date,
       description: talk.description,
-      videoUrl: talk.videoUrl,
-      thumbnail: talk.thumbnail,
+      videoUrl: talk.videoUrl || (talk as any).video_url || '', // Handle both camelCase and snake_case
+      thumbnail: talk.thumbnail || (talk as any).thumbnail_url || '', // Handle both camelCase and snake_case
       media: serializeMediaItems(talk.gallery.map(galleryItem => ({
         id: galleryItem.id,
         type: 'IMAGE' as const,
-        url: galleryItem.imageUrl,
+        url: galleryItem.imageUrl || (galleryItem as any).image_url || '', // Handle both camelCase and snake_case
         altText: galleryItem.caption || 'Mentor talk media',
         caption: galleryItem.caption,
         order: galleryItem.order,
-        isActive: galleryItem.isActive,
+        isActive: galleryItem.isActive || (galleryItem as any).is_active, // Handle both camelCase and snake_case
         createdAt: galleryItem.createdAt,
         updatedAt: galleryItem.updatedAt
       })))
     }));
+};
+
+// Serializer for testimonials
+export const serializeTestimonials = (cmsTestimonials: Testimonial[]): any[] => {
+  return cmsTestimonials
+    .filter(testimonial => testimonial.isActive || (testimonial as any).is_active) // Handle both camelCase and snake_case
+    .sort((a, b) => (a.order || 0) - (b.order || 0)) // Handle missing order field
+    .map(testimonial => ({
+      id: testimonial.id,
+      quote: testimonial.quote,
+      author: testimonial.author,
+      company: testimonial.company,
+      image: testimonial.imageUrl || (testimonial as any).image_url || '' // Handle both camelCase and snake_case
+    }));
+};
+
+// Serializer for about us
+export const serializeAboutUs = (cmsAboutUs: AboutUs | null): any | null => {
+  if (!cmsAboutUs) return null;
+  
+  return {
+    headline: cmsAboutUs.headline,
+    description: cmsAboutUs.description,
+    vision: {
+      title: cmsAboutUs.visionTitle,
+      description: cmsAboutUs.visionDesc,
+      icon: 'eye'
+    },
+    mission: {
+      title: cmsAboutUs.missionTitle,
+      description: cmsAboutUs.missionDesc,
+      icon: 'target'
+    }
+  };
 };
 
 // Mock data serializers
@@ -240,14 +281,43 @@ export const serializeMockMentorTalks = (mockMentorTalks: MockMentorTalk[]): Men
   }));
 };
 
+// Serializer for mock testimonials
+export const serializeMockTestimonials = (mockTestimonials: MockTestimonial[]): any[] => {
+  return mockTestimonials.map(t => ({
+    id: t.id,
+    quote: t.quote,
+    author: t.author,
+    company: t.company,
+    image: t.image
+  }));
+};
+
+// Serializer for mock about us
+export const serializeMockAboutUs = (mockAboutUs: MockAboutUs): any => {
+  return {
+    headline: mockAboutUs.headline,
+    description: mockAboutUs.description,
+    vision: {
+      title: mockAboutUs.vision.title,
+      description: mockAboutUs.vision.description,
+      icon: mockAboutUs.vision.icon
+    },
+    mission: {
+      title: mockAboutUs.mission.title,
+      description: mockAboutUs.mission.description,
+      icon: mockAboutUs.mission.icon
+    }
+  };
+};
+
 // Serialize mock founders from the mock data
 export const serializeMockFounders = (mockFounders: any[]): TeamMemberUI[] => {
   return mockFounders.map(founder => ({
     id: founder.id,
     name: founder.name,
-    role: founder.title || founder.role,
-    title: founder.title,
-    bio: founder.bio,
+    role: founder.role, // Use role instead of title for TeamMember
+    title: founder.role, // Map role to title for consistency
+    bio: founder.description || founder.bio, // Handle both description and bio fields
     image: founder.image,
     socialLinks: founder.socialLinks ? {
       twitter: founder.socialLinks.twitter,

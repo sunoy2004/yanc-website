@@ -225,52 +225,55 @@ export const teamMembers: TeamMember[] = [
   }
 ];
 
-export const founders: Founder[] = [
+export const executiveManagement: TeamMember[] = [
   {
     id: "1",
-    name: "Ms.Aarti Khandeker",
-    title: "Co-Founder, Sales & Marketing",
-    image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769274547/em_2_rdyzwd.png",
-    bio: "Aarti Khandeker is founder of BentDesign Studio, an Entrepreneur and an architect with over a decade of experience in Design and Creativity. Worked on diverse projects - residential, commercial and institutional buildings.",
+    name: "Mr.Swaminathan Gopal",
+    role: "Founder & CEO",
+    image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769271719/em_1_tnhted.png",
+    description: "Swaminathan brings in over two decades of experience spanning technology, business strategy, and entrepreneurship. A hands-on entrepreneur and an IT executive, he has built high-performing engineering teams and spearheaded businesses from the ground up. He has led technology teams for Fortune 100 companies and is an alumnus of IIM-Calcutta. Whether it's leading startups or optimizing enterprise technology, Swami thrives on turning vision into reality.",
     socialLinks: {
-      linkedin: "https://linkedin.com/in/johnsmith",
-      twitter: "https://twitter.com/johnsmith"
+      linkedin: "https://linkedin.com/in/swaminathangopal",
+      twitter: "https://twitter.com/swaminathangopal"
     }
   },
   {
     id: "2",
     name: "Mr.Ajay Thota",
-    title: "Co-Founder & SPV, Technology",
+    role: "Co-Founder & SPV, Technology",
     image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769271720/em_3_fm69dl.png",
-    bio: "Ajay Thota is an IT leader with 20+ years of US experience in leading multiple product development and digital transformation initiatives at MNCs across the globe. He is passionate about building teams by driving cultural change in individuals to become more conscientious and successful at a young age. Ajay holds an MS degree from NIU, USA, and a B.E from Osmania University.",
+    description: "Ajay Thota is an IT leader with 20+ years of US experience in leading multiple product development and digital transformation initiatives at MNCs across the globe. He is passionate about building teams by driving cultural change in individuals to become more conscientious and successful at a young age. Ajay holds an MS degree from NIU, USA, and a B.E from Osmania University.",
     socialLinks: {
-      linkedin: "https://linkedin.com/in/mariagarcia",
-      twitter: "https://twitter.com/mariagarcia"
+      linkedin: "https://linkedin.com/in/ajaythota",
+      twitter: "https://twitter.com/ajaythota"
     }
   },
   {
     id: "3",
     name: "Mr.Ram Charan",
-    title: "Co-Founder & CTO",
+    role: "Co-Founder & CTO",
     image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769274464/em_4_reayvx.png",
-    bio: "Ram Charan currently is an entrepreneur and comes with 20+ years of experience building products in the Software Engineering space working with Fortune 500 companies. He is vividly experienced with the Startup space in the roles of Founding Member, Technology Leadership, and Sustainable Product Innovations. For YANC, he is playing the role of CTO.",
+    description: "Ram Charan currently is an entrepreneur and comes with 20+ years of experience building products in the Software Engineering space working with Fortune 500 companies. He is vividly experienced with the Startup space in the roles of Founding Member, Technology Leadership, and Sustainable Product Innovations. For YANC, he is playing the role of CTO.",
     socialLinks: {
-      linkedin: "https://linkedin.com/in/davidkim",
-      github: "https://github.com/davidkim"
+      linkedin: "https://linkedin.com/in/ramcharan",
+      github: "https://github.com/ramcharan"
     }
   },
   {
     id: "4",
-    name: "Mr.Swaminathan Gopal",
-    title: "Founder & CEO",
-    image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769271719/em_1_tnhted.png",
-    bio: "Swaminathan brings in over two decades of experience spanning technology, business strategy, and entrepreneurship. A hands-on entrepreneur and an IT executive, he has built high-performing engineering teams and spearheaded businesses from the ground up. He has led technology teams for Fortune 100 companies and is an alumnus of IIM-Calcutta. Whether it's leading startups or optimizing enterprise technology, Swami thrives on turning vision into reality.",
+    name: "Ms.Aarti Khandeker",
+    role: "Co-Founder, Sales & Marketing",
+    image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769274547/em_2_rdyzwd.png",
+    description: "Aarti Khandeker is founder of BentDesign Studio, an Entrepreneur and an architect with over a decade of experience in Design and Creativity. Worked on diverse projects - residential, commercial and institutional buildings.",
     socialLinks: {
-      linkedin: "https://linkedin.com/in/priyasharma",
-      twitter: "https://twitter.com/priyasharma"
+      linkedin: "https://linkedin.com/in/aartikhandeker",
+      twitter: "https://twitter.com/aartikhandeker"
     }
   }
 ];
+
+// Alias for backward compatibility
+export const founders = executiveManagement;
 
 export const mentors: TeamMember[] = [
   {
@@ -280,8 +283,8 @@ export const mentors: TeamMember[] = [
     image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769271719/gm_1_pgqxbt.png",
     description: "Mr. Daisuke Tanji has over 20 years experience with one of the biggest Japanese trading company as sales and marketing field, trading, investment etc. 5 years working experience in India (Delhi and Mumbai) as General Manager for development new business. Establishing Indo-Japan ecosystem to help young minds of both countries to learn and grow. His vision is The fusion of Japan and India creates new value. YANC and Indobox are collaborating in the space of cross-border education, cultural exchange, internships, workshops, industry exposure, and youth focused learning programs between India and Japan, with the shared vision of empowering young minds to learn, explore, and grow beyond borders.",
     socialLinks: {
-      linkedin: "https://linkedin.com/in/sarahjohnson",
-      twitter: "https://twitter.com/sarahjohnson"
+      linkedin: "https://linkedin.com/in/daisuketanji",
+      twitter: "https://twitter.com/daisuketanji"
     }
   },
   {
@@ -291,30 +294,8 @@ export const mentors: TeamMember[] = [
     image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769271718/gm_2_bipsmf.png",
     description: "Cosme Almeida is an experienced professional with a demonstrated history of working in the education management industry, around different Continents, managing international accredited projects. Skilled in Marketing Management, Negotiation, Team Management, Intercultural Communication and Business Planning. Strong marketing professional with skills in Management Control and Finance. Financial Brand Valuation Consultant. Basketball Coach. YANC and Cosme Almeida partnership will open the gates for young minds of India and Portugal to explore both the countries for internships, industry exposure, job opportunities, startup incubation, immersive experiences for the youth and more.",
     socialLinks: {
-      linkedin: "https://linkedin.com/in/michaelchen",
-      github: "https://github.com/michaelchen"
-    }
-  },
-  {
-    id: "3",
-    name: "Emma Rodriguez",
-    role: "Venture Partner, Growth Capital",
-    image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=200&h=200&fit=crop&facepad=2",
-    description: "Former startup founder turned investor. Focuses on early-stage technology companies with scalable business models.",
-    socialLinks: {
-      linkedin: "https://linkedin.com/in/emmarodriguez",
-      twitter: "https://twitter.com/emmarodriguez"
-    }
-  },
-  {
-    id: "4",
-    name: "David Park",
-    role: "Head of Engineering, GlobalTech",
-    image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=200&fit=crop&facepad=2",
-    description: "Engineering leader with 12+ years in building high-performance teams and delivering complex software solutions at scale.",
-    socialLinks: {
-      linkedin: "https://linkedin.com/in/davidpark",
-      github: "https://github.com/davidpark"
+      linkedin: "https://linkedin.com/in/cosmealmeida",
+      github: "https://github.com/cosmealmeida"
     }
   }
 ];
@@ -327,8 +308,8 @@ export const advisors: TeamMember[] = [
     image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769271731/ab_1_wmtwxr.png",
     description: "Lieven Cornelis is a seasoned psychologist and human capital strategist specializing in leadership development and behavioral assessment. He is the creator of the Koan-PM platform, a sophisticated tool designed to analyze personality traits and provide actionable insights for personal and professional growth. With extensive experience in 360-degree feedback and psychological safety, Lieven empowers individuals and organizations to enhance performance through self-awareness and targeted development.",
     socialLinks: {
-      linkedin: "https://linkedin.com/in/robertwilliams",
-      twitter: "https://twitter.com/robertwilliams"
+      linkedin: "https://linkedin.com/in/lievencornelis",
+      twitter: "https://twitter.com/lievencornelis"
     }
   },
   {
@@ -338,8 +319,8 @@ export const advisors: TeamMember[] = [
     image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769271731/ab_2_tqsain.png",
     description: "Mac Srinivasan is a Global Growth Mentor and the CEO of ‘The Abundant Group’ , with over 35+ years of business experience across 70+ countries. Mac is a Certified Franchise Executive (International Franchise Association, USA) and a highly sought-after keynote speaker who has inspired over 200,000 entrepreneurs in his journey.As the former Global Markets President of BNI, Mac led global expansion and delivered consistent year-over-year growth, even in challenging times of uncertainty. He now dedicates his time to helping entrepreneurs and global franchises scale exponentially, combining strategic insight with deep.Beyond business, Mac is passionate about education, supporting over 1,000s of underprivileged children.Adventurer at heart:a fire-walker, bungee jumper, skydiver …Mac’s passion and purpose fuels his endless energy to help you achieve exponential results.",
     socialLinks: {
-      linkedin: "https://linkedin.com/in/lisathompson",
-      twitter: "https://twitter.com/lisathompson"
+      linkedin: "https://linkedin.com/in/macsrinivasan",
+      twitter: "https://twitter.com/macsrinivasan"
     }
   },
   {
@@ -349,8 +330,8 @@ export const advisors: TeamMember[] = [
     image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769271730/ab_3_go3nzf.png",
     description: "Dr. Molly Joy is a distinguished psychologist and academic leader with over two decades of experience in higher education and mental health. She served as the Head of the Department of Psychology at reputed colleges. Dr. Molly's research encompasses areas such as educational psychology, organizational behavior, and ecological intelligence, contributing significantly to both academic literature and practical applications. Her dedication to student counseling and curriculum development has positively impacted numerous learners and professionals in the field.",
     socialLinks: {
-      linkedin: "https://linkedin.com/in/jamesmiller",
-      github: "https://github.com/jamesmiller"
+      linkedin: "https://linkedin.com/in/drmollyjoy",
+      github: "https://github.com/drmollyjoy"
     }
   },
   {
@@ -360,8 +341,8 @@ export const advisors: TeamMember[] = [
     image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769271729/ab_4_pbozij.png",
     description: "Neil Gogte is a visionary technologist, entrepreneur, and academic leader with over three decades of experience in IT and education. He is the founder and owner of multiple educational institutions, including engineering and junior colleges like Keshav Memorial and NGIT, shaping thousands of student careers. Neil is also the Founder of Genesis Solutions which trained 70K professionals since 1992. Neil’s leadership continues to impact thousands of young professionals and institutions across India.",
     socialLinks: {
-      linkedin: "https://linkedin.com/in/mariagarcia",
-      twitter: "https://twitter.com/mariagarcia"
+      linkedin: "https://linkedin.com/in/neilgogte",
+      twitter: "https://twitter.com/neilgogte"
     }
   }
 ];

@@ -26,6 +26,7 @@ export interface HeroContent {
   id: string;
   title: string;
   subtitle?: string;
+  description?: string;
   ctaText?: string;
   ctaUrl?: string;
   mediaItems: HeroMediaItem[];
@@ -206,6 +207,7 @@ export enum MemberType {
 export interface HeroContentUI {
   title: string;
   subtitle?: string;
+  description?: string;
   ctaText?: string;
   ctaUrl?: string;
   mediaItems: { src: string; type: 'image' | 'video'; alt: string }[];

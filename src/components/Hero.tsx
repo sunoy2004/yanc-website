@@ -62,7 +62,7 @@ const Hero = () => {
   // Use CMS content if available, otherwise fallback to default structure
   const title = heroContent?.title || "YANC";
   const subtitle = heroContent?.subtitle || "Yet Another Networking Club";
-  const description = heroContent?.ctaText || "Placeholder tagline goes here. Connect, collaborate, create.";
+  const description = heroContent?.description || "Placeholder tagline goes here. Connect, collaborate, create.";
   const ctaText = heroContent?.ctaText || "Join the Community";
   const ctaUrl = heroContent?.ctaUrl || "/apply/membership";
   const mediaItems = heroContent?.mediaItems || [];

@@ -1,13 +1,32 @@
-import { useState } from "react";
-import { founders, Founder } from "@/data/mockData";
+import { useState, useEffect } from "react";
 import ScrollAnimateWrapper from "@/components/ScrollAnimateWrapper";
 import TeamMemberModal from "@/components/TeamMemberModal";
+import { useFoundersData } from "@/services/cms/useFoundersData";
+import { TeamMemberUI } from "@/lib/cms/types";
 
 const FoundersSection = () => {
-  const [selectedFounder, setSelectedFounder] = useState<Founder | null>(null);
+  const { foundersData, loading, error } = useFoundersData();
+  const [selectedFounder, setSelectedFounder] = useState<TeamMemberUI | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleFounderClick = (founder: Founder) => {
+  if (loading) {
+    return (
+      <section id="founders" className="py-16 bg-background">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="section-title text-3xl md:text-4xl font-bold text-center mb-4">Meet the Founders</h2>
+          <p className="section-subtitle text-center text-muted-foreground max-w-2xl mx-auto mb-12">
+            Loading founders...
+          </p>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    console.error('Error loading founders:', error);
+  }
+
+  const handleFounderClick = (founder: TeamMemberUI) => {
     setSelectedFounder(founder);
     setIsModalOpen(true);
   };
@@ -23,7 +42,7 @@ const FoundersSection = () => {
         </ScrollAnimateWrapper>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-8">
-          {founders.map((founder) => (
+          {foundersData.map((founder) => (
             <ScrollAnimateWrapper key={founder.id}>
               <div 
                 className="founder-card bg-card rounded-xl p-6 border border-border shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer group"
@@ -41,7 +60,7 @@ const FoundersSection = () => {
                   {founder.name}
                 </h3>
                 <p className="founder-title text-sm text-muted-foreground text-center">
-                  {founder.title}
+                  {founder.role || founder.title}
                 </p>
               </div>
             </ScrollAnimateWrapper>

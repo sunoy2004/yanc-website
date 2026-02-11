@@ -1,8 +1,28 @@
-import { testimonials } from "@/data/mockData";
+import { useState, useEffect } from 'react';
 import { Quote } from "lucide-react";
 import ScrollAnimateWrapper from "@/components/ScrollAnimateWrapper";
+import { useTestimonialsData } from "@/services/cms/useTestimonialsData";
 
 const TestimonialsSection = () => {
+  const { testimonialsData, loading, error } = useTestimonialsData();
+
+  if (loading) {
+    return (
+      <section className="section section-alt">
+        <div className="container mx-auto px-4 py-20 text-center">
+          <h2 className="section-title">Testimonials</h2>
+          <p className="section-subtitle">
+            Loading testimonials...
+          </p>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    console.error('Error loading testimonials:', error);
+  }
+
   return (
     <section className="section section-alt">
       <div className="container">
@@ -14,7 +34,7 @@ const TestimonialsSection = () => {
         </ScrollAnimateWrapper>
 
         <div className="testimonials-grid">
-          {testimonials.map((testimonial) => (
+          {testimonialsData.map((testimonial) => (
             <ScrollAnimateWrapper key={testimonial.id}>
               <div className="testimonial-card">
                 <Quote size={24} className="testimonial-quote-icon" />

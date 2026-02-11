@@ -1,25 +1,34 @@
+import { useState, useEffect } from 'react';
 import ScrollAnimateWrapper from "@/components/ScrollAnimateWrapper";
+import { useEventsData } from "@/services/cms/useEventsData";
 
 const EventsSection = () => {
-  // Define live events separately from the upcoming events
-  const liveEventsData = [
-    {
-      id: 1,
-      title: "YANC Discover Meet",
-      status: "live",
-      link: "/events/upcoming"
-    },
-    {
-      id: 2,
-      title: "Networking Workshop",
-      status: "upcoming",
-      link: "/events/upcoming"
-    }
-  ];
-  
-  // Filter to get only live events
-  const liveEvents = liveEventsData.filter(event => event.status === "live");
-  
+  const { eventsData, loading, error } = useEventsData();
+
+  if (loading) {
+    return (
+      <section id="events" className="section section-alt">
+        <div className="container mx-auto px-4 py-20 text-center">
+          <h2 className="section-title">Events</h2>
+          <p className="section-subtitle">
+            Loading events...
+          </p>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    console.error('Error loading events:', error);
+  }
+
+  // Filter for live events (for demo purposes, we'll consider recent events as live)
+  const liveEvents = eventsData.filter(event => 
+    event.title.toLowerCase().includes('live') || 
+    event.title.toLowerCase().includes('discover') ||
+    new Date(event.date) >= new Date()
+  );
+
   return (
     <section id="events" className="section section-alt">
       <div className="container">
@@ -29,7 +38,7 @@ const EventsSection = () => {
             <div className="mb-8">
               <section 
                 className="live-event-strip bg-gray-900 rounded-lg p-4 cursor-pointer hover:opacity-90 transition-opacity"
-                onClick={() => window.location.href = liveEvents[0].link}
+                onClick={() => window.location.href = `/events/upcoming`}
                 aria-label="Live Event"
                 role="banner"
               >
