@@ -37,13 +37,13 @@ export const serializeHeroContent = (cmsHero: HeroContent | null): HeroContentUI
   return {
     title: cmsHero.title,
     subtitle: cmsHero.subtitle,
-    description: cmsHero.description,
-    ctaText: cmsHero.ctaText,
-    ctaUrl: cmsHero.ctaUrl,
-    mediaItems: cmsHero.mediaItems.map(item => ({
+    description: cmsHero.description || '',
+    ctaText: (cmsHero as any).cta_text || cmsHero.ctaText || 'Get Started',
+    ctaUrl: (cmsHero as any).cta_url || cmsHero.ctaUrl || '#',
+    mediaItems: (cmsHero.mediaItems || []).map(item => ({
       src: item.url,
-      type: item.type.toLowerCase() as 'image' | 'video',
-      alt: item.altText
+      type: item.type?.toLowerCase() as 'image' | 'video' || 'image',
+      alt: (item as any).alt || item.altText || ''
     }))
   };
 };
@@ -172,20 +172,28 @@ export const serializeTestimonials = (cmsTestimonials: Testimonial[]): any[] => 
 export const serializeAboutUs = (cmsAboutUs: AboutUs | null): any | null => {
   if (!cmsAboutUs) return null;
   
-  return {
+  console.log('🔍 serializeAboutUs received:', cmsAboutUs);
+  
+  // Handle both snake_case and camelCase properties
+  const aboutUsData = cmsAboutUs as any;
+  
+  const result = {
     headline: cmsAboutUs.headline,
     description: cmsAboutUs.description,
     vision: {
-      title: cmsAboutUs.visionTitle,
-      description: cmsAboutUs.visionDesc,
+      title: aboutUsData['vision_title'] || aboutUsData['visionTitle'],
+      description: aboutUsData['vision_desc'] || aboutUsData['visionDesc'],
       icon: 'eye'
     },
     mission: {
-      title: cmsAboutUs.missionTitle,
-      description: cmsAboutUs.missionDesc,
+      title: aboutUsData['mission_title'] || aboutUsData['missionTitle'],
+      description: aboutUsData['mission_desc'] || aboutUsData['missionDesc'],
       icon: 'target'
     }
   };
+  
+  console.log('🔍 serializeAboutUs result:', result);
+  return result;
 };
 
 // Mock data serializers
