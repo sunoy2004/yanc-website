@@ -63,37 +63,55 @@ const EventGallery = () => {
               </div>
             ) : galleryItems.length > 0 ? (
               <div className="space-y-12">
-                {/* Gallery Items Grid - Completely Independent */}
-                <div className="bg-card border border-border rounded-lg p-6">
-                  <div className="mb-6 pb-4 border-b border-border">
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <h2 className="text-2xl font-bold mb-2">Event Gallery</h2>
-                        <p className="text-sm text-muted-foreground">
-                          Standalone gallery content managed separately via CMS
-                        </p>
+                {/* Group gallery items by event title */}
+                {(() => {
+                  // Group items by title
+                  const groupedItems: Record<string, WebsiteGalleryItem[]> = {};
+                  galleryItems.forEach(item => {
+                    const title = item.title || 'Untitled Event';
+                    if (!groupedItems[title]) {
+                      groupedItems[title] = [];
+                    }
+                    groupedItems[title].push(item);
+                  });
+
+                  return Object.entries(groupedItems).map(([eventTitle, items]) => (
+                    <div key={eventTitle} className="bg-card border border-border rounded-lg p-6">
+                      <div className="mb-6 pb-4 border-b border-border">
+                        <div className="flex items-start justify-between">
+                          <div>
+                            <h2 className="text-2xl font-bold mb-2">{eventTitle}</h2>
+                            <p className="text-sm text-muted-foreground">
+                              Event Gallery
+                            </p>
+                            {items[0]?.description && (
+                              <p className="text-xs text-muted-foreground mt-1">
+                                {items[0].description}
+                              </p>
+                            )}
+                          </div>
+                          <div className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded">
+                            {Math.min(items.length, 10)} photos
+                          </div>
+                        </div>
                       </div>
-                      <div className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded">
-                        {galleryItems.length} items
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                    {galleryItems.map((item, index) => (
-                      <div 
-                        key={`${item.id}-${index}`}
-                        className="relative group cursor-pointer overflow-hidden rounded-lg aspect-square border border-border hover:border-primary transition-colors"
-                        onClick={() => handleMediaClick(
-                          galleryItems.map(gItem => ({
-                            id: gItem.id,
-                            src: gItem.media.url,
-                            alt: gItem.media.alt || gItem.title || `Gallery item ${index + 1}`,
-                            type: gItem.media.type
-                          })), 
-                          index
-                        )}
-                      >
+                      
+                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                        {/* Limit to maximum 10 images per event */}
+                        {items.slice(0, 10).map((item, index) => (
+                          <div 
+                            key={`${item.id}-${index}`}
+                            className="relative group cursor-pointer overflow-hidden rounded-lg aspect-square border border-border hover:border-primary transition-colors"
+                            onClick={() => handleMediaClick(
+                              items.slice(0, 10).map((gItem, idx) => ({
+                                id: gItem.id,
+                                src: gItem.media.url,
+                                alt: gItem.media.alt || gItem.title || `Gallery item ${idx + 1}`,
+                                type: gItem.media.type
+                              })), 
+                              index
+                            )}
+                          >
                             {item.media.type === "image" ? (
                               <img
                                 src={item.media.url}
@@ -124,19 +142,27 @@ const EventGallery = () => {
                               </div>
                             )}
                           </div>
-                    ))}
-                  </div>
-                </div>
+                        ))}
+                      </div>
+                      
+                      {items.length > 10 && (
+                        <div className="mt-4 text-center text-sm text-muted-foreground">
+                          Showing 10 of {items.length} images from this event
+                        </div>
+                      )}
+                    </div>
+                  ));
+                })()}
                 
                 {/* Gallery Summary */}
                 <div className="bg-card border border-border rounded-lg p-6">
                   <div className="text-center">
                     <h3 className="text-lg font-semibold mb-2">Gallery Summary</h3>
                     <p className="text-muted-foreground">
-                      Displaying {galleryItems.length} standalone gallery items
+                      Displaying gallery items grouped by event title
                     </p>
                     <p className="text-xs text-muted-foreground mt-2">
-                      Completely isolated from events - managed independently via CMS
+                      Each event shown in its own separate section with up to 10 images
                     </p>
                   </div>
                 </div>
@@ -144,9 +170,9 @@ const EventGallery = () => {
             ) : (
               <div className="bg-card border border-border rounded-lg p-12 text-center">
                 <div className="text-5xl mb-4">🖼️</div>
-                <h3 className="text-xl font-semibold mb-2">No Gallery Items Found</h3>
+                <h3 className="text-xl font-semibold mb-2">No Events with Gallery Found</h3>
                 <p className="text-muted-foreground">
-                  No media items available in the gallery yet.
+                  No events with gallery media available yet.
                 </p>
               </div>
             )}
