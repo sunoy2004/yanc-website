@@ -31,7 +31,7 @@ class CmsClient {
     const timeoutId = setTimeout(() => controller.abort(), this.timeout);
 
     try {
-      const response = await fetch(`${this.baseUrl}/api/content${endpoint}`, {
+      const response = await fetch(`${this.baseUrl}/api${endpoint}`, {
         signal: controller.signal,
         headers: {
           'Content-Type': 'application/json',
@@ -143,6 +143,24 @@ class CmsClient {
     }
   }
 
+  async getEventsByType(type: string): Promise<Event[]> {
+    try {
+      return await this.requestDirect<Event[]>(`/api/events/${type}`) || [];
+    } catch (error) {
+      console.error(`Error fetching events by type ${type}:`, error);
+      return [];
+    }
+  }
+
+  async getEventsByYear(year: number): Promise<Event[]> {
+    try {
+      return await this.requestDirect<Event[]>(`/api/events/by-year/${year}`) || [];
+    } catch (error) {
+      console.error(`Error fetching events by year ${year}:`, error);
+      return [];
+    }
+  }
+
   async getEventGalleries(): Promise<EventGallery[]> {
     try {
       return await this.requestDirect<EventGallery[]>('/api/event-galleries/public') || [];
@@ -157,6 +175,16 @@ class CmsClient {
       return await this.requestDirect<MediaItem[]>('/api/gallery-items/public') || [];
     } catch (error) {
       console.error('Error fetching gallery items:', error);
+      return [];
+    }
+  }
+
+  // New function to get event gallery items specifically
+  async getEventGalleryItems(): Promise<Event[]> {
+    try {
+      return await this.requestDirect<Event[]>('/api/events/gallery') || [];
+    } catch (error) {
+      console.error('Error fetching event gallery items:', error);
       return [];
     }
   }

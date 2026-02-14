@@ -38,10 +38,18 @@ import StartupPitch from "./pages/apply/StartupPitch";
 import MembershipApplication from "./pages/apply/MembershipApplication";
 
 // Events pages
+import Events from "./pages/Events";
+import EventDebugFlow from "./pages/EventDebugFlow";
+import EventsVerification from "./pages/EventsVerification";
 import UpcomingEvents from "./pages/events/Upcoming";
 import PastEvents from "./pages/events/Past";
 import EventGallery from "./pages/events/Gallery";
 import EventHighlights from "./pages/events/Highlights";
+import TestEvents from "./pages/TestEvents";
+import TestUpcomingEvents from "./pages/TestUpcomingEvents";
+import DebugEvents from "./pages/DebugEvents";
+import SimpleTest from "./pages/SimpleTest";
+import MinimalEventsTest from "./pages/MinimalEventsTest";
 
 const queryClient = new QueryClient();
 
@@ -86,7 +94,15 @@ const App = () => (
             <Route path="/apply/membership-application" element={<MembershipApplication />} />
             
             {/* Events routes */}
+            <Route path="/events" element={<Events />} />
+            <Route path="/events/verification" element={<EventsVerification />} />
+            <Route path="/events/debug-flow" element={<EventDebugFlow />} />
             <Route path="/events/upcoming" element={<UpcomingEvents />} />
+            <Route path="/events/test" element={<TestEvents />} />
+            <Route path="/events/test-upcoming" element={<TestUpcomingEvents />} />
+            <Route path="/events/debug" element={<DebugEvents />} />
+            <Route path="/events/simple" element={<SimpleTest />} />
+            <Route path="/events/minimal" element={<MinimalEventsTest />} />
             {/* <Route path="/events/discover-meet-registration" element={<DiscoverMeetRegistration />} /> */}
             <Route path="/events/past" element={<PastEvents />} />
             <Route path="/events/gallery" element={<EventGallery />} />

@@ -79,7 +79,7 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
     { label: "Upcoming Events", href: "/events/upcoming" },
     { label: "Past Events", href: "/events/past" },
     { label: "Event Gallery", href: "/events/gallery" },
-    { label: "Event Highlights", href: "/events/highlights" },
+    // { label: "Event Highlights", href: "/events/highlights" }, // COMMENTED OUT: Highlights disabled
   ];
 
   // Clear all timeouts

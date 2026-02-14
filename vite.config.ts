@@ -11,6 +11,14 @@ export default defineConfig(({ mode }) => ({
     hmr: {
       overlay: false,
     },
+    // Proxy API requests to the CMS API server
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+        secure: false,
+      }
+    },
     // Allow requests from Render's deployment domains
     allowedHosts: [".onrender.com", "localhost", "127.0.0.1"]
   },

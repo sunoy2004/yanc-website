@@ -87,9 +87,16 @@ export interface MentorTalkGallery {
 export interface Event {
   id: string;
   title: string;
+  description?: string;
   date: string; // ISO date string
   location: string;
   imageUrl: string; // Google Drive shareable link
+  type: 'general' | 'upcoming' | 'past' | 'highlight';
+  isPast: boolean;
+  isUpcoming: boolean;
+  year: number;
+  month: string;
+  mediaItems?: MediaItem[];
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
@@ -226,6 +233,16 @@ export interface EventUI {
   date: string;
   location: string;
   image: string;
+  type?: 'general' | 'upcoming' | 'past' | 'highlight' | 'gallery';
+  description?: string;
+  isActive?: boolean;
+  mediaItems?: Array<{
+    id: string;
+    type: 'image' | 'video';
+    url: string;
+    alt: string;
+    altText?: string;
+  }>;
 }
 
 export interface TeamMemberUI {

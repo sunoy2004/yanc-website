@@ -10,11 +10,25 @@ export interface EventData {
   location: string;
   image: string;
   description?: string;
+  type?: 'general' | 'upcoming' | 'past' | 'highlight' | 'gallery';
+  category?: 'upcoming' | 'past'; // Add category field
+  isUpcoming?: boolean;
+  isPast?: boolean;
+  isActive?: boolean;
+  highlights?: string[]; // Add highlights array
+  gallery?: Array<{ // Add gallery array
+    id: string;
+    type: 'image' | 'video';
+    url: string;
+    alt: string;
+    altText?: string;
+  }>;
   mediaItems?: Array<{
     id: string;
     type: 'image' | 'video';
     url: string;
     alt: string;
+    altText?: string;
   }>;
 }
 

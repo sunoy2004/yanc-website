@@ -28,6 +28,7 @@ export interface Event {
   date: string;
   location: string;
   image: string;
+  type?: 'general' | 'upcoming' | 'past' | 'highlight' | 'gallery';
 }
 
 export interface EventGalleryItem {
@@ -115,9 +116,10 @@ export const programs: Program[] = [
 ];
 
 export const events: Event[] = [
-  { id: "1", title: "Event Title", date: "2025-02-15", location: "City, Country", image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&h=300&fit=crop" },
-  { id: "2", title: "Event Title", date: "2025-03-20", location: "City, Country", image: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=400&h=300&fit=crop" },
-  { id: "3", title: "Event Title", date: "2025-04-10", location: "City, Country", image: "https://images.unsplash.com/photo-1591115765373-5207764f72e7?w=400&h=300&fit=crop" },
+  { id: "1", title: "Upcoming Tech Summit 2024", date: "2024-12-31", location: "San Francisco, CA", image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&h=300&fit=crop", type: "upcoming" },
+  { id: "2", title: "Past Innovation Conference", date: "2024-06-15", location: "New York, NY", image: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=400&h=300&fit=crop", type: "past" },
+  { id: "3", title: "Annual Awards Gala", date: "2024-03-20", location: "Los Angeles, CA", image: "https://images.unsplash.com/photo-1591115765373-5207764f72e7?w=400&h=300&fit=crop", type: "highlight" },
+  { id: "4", title: "Summer Workshop Series", date: "2024-07-10", location: "Chicago, IL", image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&h=300&fit=crop", type: "gallery" },
 ];
 
 export const teamMembers: TeamMember[] = [

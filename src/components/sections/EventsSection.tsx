@@ -1,9 +1,33 @@
 import { useState, useEffect } from 'react';
 import ScrollAnimateWrapper from "@/components/ScrollAnimateWrapper";
-import { useEventsData } from "@/services/cms/useEventsData";
+import { getUpcomingEvents, WebsiteEvent } from "@/services/cms/events-service";
 
 const EventsSection = () => {
-  const { eventsData, loading, error } = useEventsData();
+  const [eventsData, setEventsData] = useState<WebsiteEvent[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        console.log("🚀 Loading upcoming events for EventsSection...");
+        const data = await getUpcomingEvents();
+        console.log("✅ EventsSection got data:", data);
+        console.log("📊 Data length:", data.length);
+        console.log("📅 Event dates:", data.map(e => ({title: e.title, date: e.date, category: e.type})));
+        setEventsData(data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to load events');
+        console.error('💥 EventsSection error:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEvents();
+  }, []);
 
   if (loading) {
     return (
@@ -23,15 +47,50 @@ const EventsSection = () => {
   }
 
   // Filter for live events (for demo purposes, we'll consider recent events as live)
+  // Also include events happening today or in the future
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Set to start of today
+  
   const liveEvents = eventsData.filter(event => 
     event.title.toLowerCase().includes('live') || 
     event.title.toLowerCase().includes('discover') ||
-    new Date(event.date) >= new Date()
+    (event.date && new Date(event.date) >= today)
   );
 
+  console.log("🚀 EVENTS SECTION COMPONENT RENDERING");
+  console.log("📊 STATE: eventsData.length =", eventsData.length, "| loading =", loading, "| error =", error);
+  
+  // DEBUG: Add a very visible indicator that this component is rendering
+  console.log("🔥 COMPONENT VISIBILITY CHECK - This should appear in console!");
+
+  // Show all upcoming events (excluding live ones to avoid duplication)
+  const upcomingEvents = eventsData.filter(event => 
+    !liveEvents.some(liveEvent => liveEvent.id === event.id)
+  );
+  
+  console.log("🎯 Upcoming events (non-live):", upcomingEvents.map(e => ({
+    title: e.title,
+    date: e.date,
+    id: e.id
+  })));
+
   return (
-    <section id="events" className="section section-alt">
+    <section id="events" className="section section-alt bg-yellow-100 border-4 border-red-500 p-4">
       <div className="container">
+        {/* DEBUG: Very obvious rendering confirmation */}
+        <div className="bg-blue-500 text-white p-4 rounded mb-4">
+          <h2 className="text-2xl font-bold">🔥 EVENTS SECTION IS RENDERING 🔥</h2>
+          <p className="text-lg">Events Count: {eventsData.length}</p>
+          <p className="text-sm">Loading: {loading ? 'YES' : 'NO'} | Error: {error || 'NONE'}</p>
+        </div>
+
+        {/* DEBUG: Show raw event data */}
+        <div className="bg-white p-4 rounded mb-4 border-2 border-green-500">
+          <h3 className="font-bold">Raw Event Data:</h3>
+          <pre className="text-xs bg-gray-100 p-2 rounded">
+            {JSON.stringify(eventsData, null, 2)}
+          </pre>
+        </div>
         {/* Live Event Strip - Only renders if there are live events */}
         {
           liveEvents.length > 0 && (
@@ -69,6 +128,32 @@ const EventsSection = () => {
               Check back soon for upcoming events.
             </p>
           </ScrollAnimateWrapper>
+        )}
+
+        {/* Display upcoming events list */}
+        {upcomingEvents.length > 0 && (
+          <div className="mt-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {upcomingEvents.map(event => (
+                <div key={event.id} className="bg-card border border-border rounded-lg p-6 hover:shadow-lg transition-shadow">
+                  <h3 className="text-xl font-bold mb-2">{event.title}</h3>
+                  <p className="text-sm text-muted-foreground mb-2">
+                    {new Date(event.date).toLocaleDateString()} • {event.location}
+                  </p>
+                  <p className="text-muted-foreground text-sm line-clamp-2">
+                    {event.description || 'Event details coming soon...'}
+                  </p>
+                  {event.type && (
+                    <div className="mt-3">
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary text-secondary-foreground">
+                        {event.type.charAt(0).toUpperCase() + event.type.slice(1)}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
         )}
       </div>
     </section>

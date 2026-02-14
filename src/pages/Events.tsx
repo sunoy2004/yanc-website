@@ -1,71 +1,140 @@
-import { useState } from "react";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import { useState, useEffect } from "react";
+import { getUpcomingEvents, WebsiteEvent } from "@/services/cms/events-service";
 
 const Events = () => {
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [events, setEvents] = useState<WebsiteEvent[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-    document.documentElement.classList.toggle("dark");
-  };
+  console.log("🚀 MAIN EVENTS PAGE LOADED");
+  console.log("🔄 Component render - events:", events.length, "loading:", loading, "error:", error);
+
+  useEffect(() => {
+    console.log("🔄 useEffect triggered - loading data...");
+    const loadData = async () => {
+      try {
+        console.log("🚀 Loading events in main Events page...");
+        setLoading(true);
+        setError(null);
+        const data = await getUpcomingEvents();
+        console.log("✅ Got data:", data);
+        console.log("📊 Data length:", data.length);
+        setEvents(data);
+        console.log("💾 State updated");
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Failed to load");
+        console.error("💥 Error:", err);
+      } finally {
+        setLoading(false);
+        console.log("🏁 Loading finished");
+      }
+    };
+    
+    loadData();
+  }, []);
+
+  // Monitor state changes
+  useEffect(() => {
+    console.log("🔄 State changed - events:", events.length, "loading:", loading, "error:", error);
+  }, [events, loading, error]);
+
+  if (loading) {
+    return (
+      <div style={{ padding: "50px", backgroundColor: "yellow", border: "2px solid black", textAlign: "center" }}>
+        <h1 style={{ fontSize: "2rem" }}>LOADING UPCOMING EVENTS...</h1>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div style={{ padding: "50px", backgroundColor: "red", color: "white", textAlign: "center" }}>
+        <h1 style={{ fontSize: "2rem" }}>ERROR: {error}</h1>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Header isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
-      
-      <main className="py-20">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <h1 className="text-3xl md:text-4xl font-bold text-center mb-4">
-              Events
-            </h1>
-            <div className="w-16 h-1 bg-primary rounded-full mx-auto mb-8"></div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-              <a 
-                href="/events/upcoming" 
-                className="bg-card border border-border rounded-lg p-6 text-center hover:bg-accent transition-colors"
-              >
-                <h2 className="text-xl font-semibold mb-2">Upcoming Events</h2>
-                <p className="text-muted-foreground">Check our future events</p>
-              </a>
-              
-              <a 
-                href="/events/past" 
-                className="bg-card border border-border rounded-lg p-6 text-center hover:bg-accent transition-colors"
-              >
-                <h2 className="text-xl font-semibold mb-2">Past Events</h2>
-                <p className="text-muted-foreground">View our event history</p>
-              </a>
-              
-              <a 
-                href="/events/gallery" 
-                className="bg-card border border-border rounded-lg p-6 text-center hover:bg-accent transition-colors"
-              >
-                <h2 className="text-xl font-semibold mb-2">Event Gallery</h2>
-                <p className="text-muted-foreground">Photos and memories</p>
-              </a>
-              
-              <a 
-                href="/events/highlights" 
-                className="bg-card border border-border rounded-lg p-6 text-center hover:bg-accent transition-colors"
-              >
-                <h2 className="text-xl font-semibold mb-2">Event Highlights</h2>
-                <p className="text-muted-foreground">Key moments and achievements</p>
-              </a>
-            </div>
-            
-            <div className="bg-card border border-border rounded-lg p-8 text-center">
-              <p className="text-muted-foreground">
-                Stay tuned for exciting events and activities!
-              </p>
-            </div>
-          </div>
-        </div>
-      </main>
+    <div style={{ padding: "30px", maxWidth: "1200px", margin: "0 auto" }}>
+      <div style={{ textAlign: "center", marginBottom: "30px" }}>
+        <h1 style={{ fontSize: "2.5rem", color: "#333", marginBottom: "10px" }}>Events</h1>
+        <div style={{ width: "60px", height: "4px", backgroundColor: "#007bff", margin: "0 auto 20px" }}></div>
+        <p style={{ fontSize: "1.2rem", color: "#666" }}>Discover our upcoming events and activities</p>
+      </div>
 
-      <Footer />
+      <div style={{ textAlign: "center", marginBottom: "30px" }}>
+        <div style={{ 
+          display: "inline-block", 
+          padding: "20px", 
+          backgroundColor: "#f8f9fa", 
+          borderRadius: "10px",
+          border: "2px solid #007bff"
+        }}>
+          <div style={{ fontSize: "2rem", fontWeight: "bold", color: "#007bff" }}>{events.length}</div>
+          <div style={{ fontSize: "1rem", color: "#666" }}>Upcoming Events</div>
+        </div>
+      </div>
+
+      <div style={{ marginBottom: "50px" }}>
+        <div style={{ 
+          display: "flex", 
+          justifyContent: "space-between", 
+          alignItems: "center", 
+          marginBottom: "20px" 
+        }}>
+          <h2 style={{ fontSize: "1.8rem", fontWeight: "bold" }}>Upcoming Events</h2>
+          <a href="/events/upcoming" style={{ color: "#007bff", textDecoration: "none", fontSize: "1rem" }}>
+            View All
+          </a>
+        </div>
+        
+        {events.length > 0 ? (
+          <div style={{ marginTop: "20px" }}>
+            {events.map(event => (
+              <div 
+                key={event.id} 
+                style={{ 
+                  border: "2px solid #007bff", 
+                  margin: "15px 0", 
+                  padding: "25px",
+                  backgroundColor: "#f8f9fa",
+                  borderRadius: "8px",
+                  boxShadow: "0 2px 4px rgba(0,0,0,0.1)"
+                }}
+              >
+                <h3 style={{ color: "#007bff", fontSize: "1.5rem", marginBottom: "10px" }}>
+                  {event.title}
+                </h3>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "10px" }}>
+                  <p><strong>Date:</strong> {new Date(event.date).toLocaleDateString()}</p>
+                  <p><strong>Location:</strong> {event.location}</p>
+                  <p><strong>Active:</strong> {event.isActive ? "Yes" : "No"}</p>
+                  <p><strong>Type:</strong> {event.type}</p>
+                </div>
+                <p style={{ marginTop: "15px", lineHeight: "1.6" }}>
+                  <strong>Description:</strong> {event.description || "No description available"}
+                </p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div style={{ 
+            padding: "50px", 
+            backgroundColor: "#fff3cd", 
+            border: "2px solid #ffc107",
+            borderRadius: "8px",
+            textAlign: "center"
+          }}>
+            <div style={{ fontSize: "4rem", marginBottom: "20px" }}>📅</div>
+            <h3 style={{ fontSize: "1.5rem", fontWeight: "bold", marginBottom: "10px" }}>
+              No Upcoming Events
+            </h3>
+            <p style={{ color: "#856404" }}>
+              Check back soon for exciting upcoming events!
+            </p>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

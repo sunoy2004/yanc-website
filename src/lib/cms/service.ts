@@ -548,6 +548,176 @@ class CmsService {
   }
 
   /**
+   * Fetch upcoming events
+   */
+  async getUpcomingEvents(): Promise<any[]> {
+    const cacheKey = 'upcoming-events';
+    const cached = cmsCache.get(cacheKey);
+    
+    if (cached) {
+      return cached;
+    }
+    
+    try {
+      // Try to get events with type 'upcoming' first
+      const cmsEvents = await cmsClient.getEventsByType('upcoming');
+      
+      if (cmsEvents && cmsEvents.length > 0) {
+        const serializedEvents = serializeEvents(cmsEvents);
+        cmsCache.set(cacheKey, serializedEvents);
+        return serializedEvents;
+      }
+      
+      // Fallback: get all events and filter by type
+      console.log('Using fallback: getting all events and filtering by type');
+      const allEvents = await this.getEvents();
+      const filteredEvents = allEvents.filter(event => event.type === 'upcoming');
+      
+      if (filteredEvents.length > 0) {
+        cmsCache.set(cacheKey, filteredEvents);
+        return filteredEvents;
+      }
+      
+      // Final fallback to mock data
+      console.log('Using mock upcoming events');
+      const mockEventsData = serializeMockEvents(mockEvents.filter(e => new Date(e.date) >= new Date()));
+      cmsCache.set(cacheKey, mockEventsData);
+      return mockEventsData;
+    } catch (error) {
+      console.error('Error in getUpcomingEvents, using mock data:', error);
+      const mockEventsData = serializeMockEvents(mockEvents.filter(e => new Date(e.date) >= new Date()));
+      cmsCache.set(cacheKey, mockEventsData);
+      return mockEventsData;
+    }
+  }
+
+  /**
+   * Fetch past events
+   */
+  async getPastEvents(): Promise<any[]> {
+    const cacheKey = 'past-events';
+    const cached = cmsCache.get(cacheKey);
+    
+    if (cached) {
+      return cached;
+    }
+    
+    try {
+      // Try to get events with type 'past' first
+      const cmsEvents = await cmsClient.getEventsByType('past');
+      
+      if (cmsEvents && cmsEvents.length > 0) {
+        const serializedEvents = serializeEvents(cmsEvents);
+        cmsCache.set(cacheKey, serializedEvents);
+        return serializedEvents;
+      }
+      
+      // Fallback: get all events and filter by type
+      console.log('Using fallback: getting all events and filtering by type');
+      const allEvents = await this.getEvents();
+      const filteredEvents = allEvents.filter(event => event.type === 'past');
+      
+      if (filteredEvents.length > 0) {
+        cmsCache.set(cacheKey, filteredEvents);
+        return filteredEvents;
+      }
+      
+      // Final fallback to mock data
+      console.log('Using mock past events');
+      const mockEventsData = serializeMockEvents(mockEvents.filter(e => new Date(e.date) < new Date()));
+      cmsCache.set(cacheKey, mockEventsData);
+      return mockEventsData;
+    } catch (error) {
+      console.error('Error in getPastEvents, using mock data:', error);
+      const mockEventsData = serializeMockEvents(mockEvents.filter(e => new Date(e.date) < new Date()));
+      cmsCache.set(cacheKey, mockEventsData);
+      return mockEventsData;
+    }
+  }
+
+  /**
+      const mockEventsData = serializeMockEvents(mockEvents.filter(e => e.title.toLowerCase().includes('highlight') || e.title.toLowerCase().includes('award')));
+      cmsCache.set(cacheKey, mockEventsData);
+      return mockEventsData;
+    }
+  }
+
+  /**
+   * Fetch event gallery items
+   */
+  async getEventGalleryItems(): Promise<any[]> {
+    const cacheKey = 'event-gallery-items';
+    const cached = cmsCache.get(cacheKey);
+    
+    if (cached) {
+      return cached;
+    }
+    
+    try {
+      // Try to get events with type 'gallery' first
+      const cmsEvents = await cmsClient.getEventsByType('gallery');
+      
+      if (cmsEvents && cmsEvents.length > 0) {
+        const serializedEvents = serializeEvents(cmsEvents);
+        cmsCache.set(cacheKey, serializedEvents);
+        return serializedEvents;
+      }
+      
+      // Fallback: get all events and filter by type
+      console.log('Using fallback: getting all events and filtering by type');
+      const allEvents = await this.getEvents();
+      const filteredEvents = allEvents.filter(event => event.type === 'gallery');
+      
+      if (filteredEvents.length > 0) {
+        cmsCache.set(cacheKey, filteredEvents);
+        return filteredEvents;
+      }
+      
+      // Final fallback to mock data
+      console.log('Using mock event gallery items');
+      const mockEventsData = serializeMockEvents(mockEvents.filter(e => e.title.toLowerCase().includes('gallery') || e.title.toLowerCase().includes('photo')));
+      cmsCache.set(cacheKey, mockEventsData);
+      return mockEventsData;
+    } catch (error) {
+      console.error('Error in getEventGalleryItems, using mock data:', error);
+      const mockEventsData = serializeMockEvents(mockEvents.filter(e => e.title.toLowerCase().includes('gallery') || e.title.toLowerCase().includes('photo')));
+      cmsCache.set(cacheKey, mockEventsData);
+      return mockEventsData;
+    }
+  }
+
+  /**
+   * Fetch events by year
+   */
+  async getEventsByYear(year: number): Promise<any[]> {
+    const cacheKey = `events-${year}`;
+    const cached = cmsCache.get(cacheKey);
+    
+    if (cached) {
+      return cached;
+    }
+    
+    try {
+      const cmsEvents = await cmsClient.getEventsByYear(year);
+      
+      if (!cmsEvents || cmsEvents.length === 0) {
+        console.log(`Using mock events for year ${year}`);
+        const mockEventsData = serializeMockEvents(mockEvents.filter(e => new Date(e.date).getFullYear() === year));
+        cmsCache.set(cacheKey, mockEventsData);
+        return mockEventsData;
+      }
+      
+      cmsCache.set(cacheKey, cmsEvents);
+      return cmsEvents;
+    } catch (error) {
+      console.error(`Error in getEventsByYear(${year}), using mock data:`, error);
+      const mockEventsData = serializeMockEvents(mockEvents.filter(e => new Date(e.date).getFullYear() === year));
+      cmsCache.set(cacheKey, mockEventsData);
+      return mockEventsData;
+    }
+  }
+
+  /**
    * Fetch specific section content by name
    */
   async getSectionContent(sectionName: string) {

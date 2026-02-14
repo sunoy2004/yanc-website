@@ -62,7 +62,7 @@ const Footer = () => {
               <li><Link to="/events/upcoming" className="footer-link">Upcoming Events</Link></li>
               <li><Link to="/events/past" className="footer-link">Past Events</Link></li>
               <li><Link to="/events/gallery" className="footer-link">Event Gallery</Link></li>
-              <li><Link to="/events/highlights" className="footer-link">Highlights</Link></li>
+              {/* <li><Link to="/events/highlights" className="footer-link">Highlights</Link></li> */} {/* COMMENTED OUT: Highlights disabled */}
             </ul>
           </div>
           

@@ -66,9 +66,24 @@ export const serializeEvents = (cmsEvents: Event[]): EventUI[] => {
     .map(event => ({
       id: event.id,
       title: event.title,
-      date: event.date,
+      date: event.date || (event as any).event_date || '',
       location: event.location,
-      image: event.imageUrl || (event as any).image_url || '' // Handle both camelCase and snake_case
+      image: event.imageUrl || 
+             (event as any).image_url || 
+             (event.mediaItems && event.mediaItems.length > 0 ? event.mediaItems[0].url : '') || 
+             '',
+      type: event.type || (event as any).category || 'general',
+      description: event.description,
+      isActive: event.isActive || (event as any).is_active,
+      isUpcoming: (event as any).isUpcoming || event.type === 'upcoming' || (event as any).category === 'upcoming',
+      isPast: (event as any).isPast || event.type === 'past' || (event as any).category === 'past',
+      mediaItems: event.mediaItems?.map(item => ({
+        id: item.id,
+        type: item.type.toLowerCase() as 'image' | 'video',
+        url: item.url,
+        alt: item.altText || (item as any).alt_text || (item as any).alt || '',
+        altText: item.altText || (item as any).alt_text || (item as any).alt || ''
+      })) || []
     }));
 };
 
