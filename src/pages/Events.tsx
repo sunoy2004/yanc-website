@@ -19,7 +19,17 @@ const Events = () => {
         const data = await getUpcomingEvents();
         console.log("✅ Got data:", data);
         console.log("📊 Data length:", data.length);
-        setEvents(data);
+        console.log("📅 Raw event dates:", data.map(e => ({title: e.title, date: e.date})));
+              
+        // Ensure events are sorted by date (soonest first)
+        const sortedEvents = [...data].sort((a, b) => {
+          const dateA = new Date(a.date).getTime();
+          const dateB = new Date(b.date).getTime();
+          return dateA - dateB;
+        });
+              
+        console.log("📋 Sorted events:", sortedEvents.map(e => ({title: e.title, date: e.date})));
+        setEvents(sortedEvents);
         console.log("💾 State updated");
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to load");
@@ -83,6 +93,9 @@ const Events = () => {
           marginBottom: "20px" 
         }}>
           <h2 style={{ fontSize: "1.8rem", fontWeight: "bold" }}>Upcoming Events</h2>
+          <div style={{ fontSize: "0.9rem", color: "#666", fontStyle: "italic" }}>
+            Sorted by date - Soonest events first
+          </div>
           <a href="/events/upcoming" style={{ color: "#007bff", textDecoration: "none", fontSize: "1rem" }}>
             View All
           </a>
@@ -106,10 +119,10 @@ const Events = () => {
                   {event.title}
                 </h3>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "10px" }}>
-                  <p><strong>Date:</strong> {new Date(event.date).toLocaleDateString()}</p>
+                  <p><strong>Date:</strong> {new Date(event.date).toLocaleDateString()} ({new Date(event.date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})})</p>
+                  <p><strong>Days Until:</strong> {Math.ceil((new Date(event.date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))} days</p>
                   <p><strong>Location:</strong> {event.location}</p>
-                  <p><strong>Active:</strong> {event.isActive ? "Yes" : "No"}</p>
-                  <p><strong>Type:</strong> {event.type}</p>
+                  <p><strong>Status:</strong> {event.isActive ? "Active" : "Inactive"}</p>
                 </div>
                 <p style={{ marginTop: "15px", lineHeight: "1.6" }}>
                   <strong>Description:</strong> {event.description || "No description available"}

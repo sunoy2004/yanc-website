@@ -17,7 +17,15 @@ const EventsSection = () => {
         console.log("✅ EventsSection got data:", data);
         console.log("📊 Data length:", data.length);
         console.log("📅 Event dates:", data.map(e => ({title: e.title, date: e.date, category: e.type})));
-        setEventsData(data);
+        
+        // Sort events by date (soonest first)
+        const sortedEvents = [...data].sort((a, b) => {
+          const dateA = new Date(a.date).getTime();
+          const dateB = new Date(b.date).getTime();
+          return dateA - dateB;
+        });
+        
+        setEventsData(sortedEvents);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to load events');
         console.error('💥 EventsSection error:', err);
@@ -46,113 +54,159 @@ const EventsSection = () => {
     console.error('Error loading events:', error);
   }
 
-  // Filter for live events (for demo purposes, we'll consider recent events as live)
-  // Also include events happening today or in the future
-  const today = new Date();
-  today.setHours(0, 0, 0, 0); // Set to start of today
-  
-  const liveEvents = eventsData.filter(event => 
-    event.title.toLowerCase().includes('live') || 
-    event.title.toLowerCase().includes('discover') ||
-    (event.date && new Date(event.date) >= today)
-  );
+
 
   console.log("🚀 EVENTS SECTION COMPONENT RENDERING");
   console.log("📊 STATE: eventsData.length =", eventsData.length, "| loading =", loading, "| error =", error);
   
-  // DEBUG: Add a very visible indicator that this component is rendering
-  console.log("🔥 COMPONENT VISIBILITY CHECK - This should appear in console!");
-
-  // Show all upcoming events (excluding live ones to avoid duplication)
+  // Filter upcoming events - show active upcoming events
   const upcomingEvents = eventsData.filter(event => 
-    !liveEvents.some(liveEvent => liveEvent.id === event.id)
+    event.isActive !== false &&
+    (event.type === 'upcoming' || !event.type)
   );
   
-  console.log("🎯 Upcoming events (non-live):", upcomingEvents.map(e => ({
-    title: e.title,
-    date: e.date,
-    id: e.id
-  })));
+  // Get the closest (soonest) event for display
+  const closestEvent = upcomingEvents.length > 0 ? upcomingEvents[0] : null;
+
+  // Helper function to check if event date matches today
+  const isEventToday = (eventDate: string) => {
+    const today = new Date();
+    const eventDay = new Date(eventDate);
+    
+    return (
+      eventDay.getDate() === today.getDate() &&
+      eventDay.getMonth() === today.getMonth() &&
+      eventDay.getFullYear() === today.getFullYear()
+    );
+  };
 
   return (
-    <section id="events" className="section section-alt bg-yellow-100 border-4 border-red-500 p-4">
-      <div className="container">
-        {/* DEBUG: Very obvious rendering confirmation */}
-        <div className="bg-blue-500 text-white p-4 rounded mb-4">
-          <h2 className="text-2xl font-bold">🔥 EVENTS SECTION IS RENDERING 🔥</h2>
-          <p className="text-lg">Events Count: {eventsData.length}</p>
-          <p className="text-sm">Loading: {loading ? 'YES' : 'NO'} | Error: {error || 'NONE'}</p>
-        </div>
+    <section id="events" className="section section-alt">
+      <div className="container mx-auto px-4 max-w-3xl">
+        {/* Section Title */}
+        <ScrollAnimateWrapper>
+          <h2 className="section-title text-center">Upcoming Events</h2>
+          <p className="section-subtitle text-center">
+            Join us for exciting events and activities
+          </p>
+        </ScrollAnimateWrapper>
 
-        {/* DEBUG: Show raw event data */}
-        <div className="bg-white p-4 rounded mb-4 border-2 border-green-500">
-          <h3 className="font-bold">Raw Event Data:</h3>
-          <pre className="text-xs bg-gray-100 p-2 rounded">
-            {JSON.stringify(eventsData, null, 2)}
-          </pre>
-        </div>
-        {/* Live Event Strip - Only renders if there are live events */}
-        {
-          liveEvents.length > 0 && (
-            <div className="mb-8">
-              <section 
-                className="live-event-strip bg-gray-900 rounded-lg p-4 cursor-pointer hover:opacity-90 transition-opacity"
+        {/* Closest Event - Horizontal Layout (Only ONE event) */}
+        {closestEvent && (
+          <div className="mt-12 mb-16">
+            <ScrollAnimateWrapper>
+              <div 
+                className="bg-card border border-border rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer"
                 onClick={() => window.location.href = `/events/upcoming`}
-                aria-label="Live Event"
-                role="banner"
               >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <div className="flex items-center">
-                      <div className="w-3 h-3 bg-red-500 rounded-full mr-2 animate-pulse"></div>
-                      <span className="text-red-500 font-bold text-sm uppercase tracking-wider">LIVE NOW</span>
+                <div className="flex flex-col md:flex-row">
+                  {/* Image - Right side on desktop, top on mobile */}
+                  <div className="md:w-2/5">
+                    <div className="h-64 md:h-full relative">
+                      {closestEvent.mediaItems && closestEvent.mediaItems.length > 0 ? (
+                        <img 
+                          src={closestEvent.mediaItems[0].url} 
+                          alt={closestEvent.mediaItems[0].altText || closestEvent.mediaItems[0].alt || closestEvent.title}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
+                          <span className="text-muted-foreground text-lg">No image available</span>
+                        </div>
+                      )}
+                      <div className="absolute top-4 right-4">
+                        {isEventToday(closestEvent.date) ? (
+                          <span className="bg-red-500 text-white text-sm font-medium px-3 py-1 rounded-full animate-pulse">
+                            LIVE NOW
+                          </span>
+                        ) : (
+                          <span className="bg-primary text-primary-foreground text-sm font-medium px-3 py-1 rounded-full">
+                            Next Event
+                          </span>
+                        )}
+                      </div>
+                      {!isEventToday(closestEvent.date) && (
+                        <div className="absolute bottom-4 left-4">
+                          <div className="bg-black/70 text-white px-3 py-1 rounded-lg text-sm">
+                            {new Date(closestEvent.date).toLocaleDateString('en-US', { 
+                              weekday: 'short', 
+                              month: 'short', 
+                              day: 'numeric' 
+                            })}
+                          </div>
+                        </div>
+                      )}
                     </div>
-                    <span className="text-white font-medium">{liveEvents[0].title}</span>
                   </div>
-                  <div className="text-green-400">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-                    </svg>
+                  
+                  {/* Content - Left side on desktop, bottom on mobile */}
+                  <div className="md:w-3/5 p-6 md:p-8 flex flex-col justify-center">
+                    <h3 className="text-2xl md:text-3xl font-bold mb-3 text-foreground">
+                      {closestEvent.title}
+                    </h3>
+                    <div className="flex flex-wrap gap-3 mb-4">
+                      <div className="flex items-center text-muted-foreground">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        <span>{new Date(closestEvent.date).toLocaleDateString('en-US', { 
+                          weekday: 'long', 
+                          year: 'numeric', 
+                          month: 'long', 
+                          day: 'numeric' 
+                        })}</span>
+                      </div>
+                      <div className="flex items-center text-muted-foreground">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        <span>{closestEvent.location}</span>
+                      </div>
+                    </div>
+                    <p className="text-muted-foreground mb-6 leading-relaxed">
+                      {closestEvent.description || 'Event details coming soon...'}
+                    </p>
+                    <div className="flex flex-wrap items-center justify-between gap-4">
+                      <div className="flex items-center">
+                        {closestEvent.type && !isEventToday(closestEvent.date) && (
+                          <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-secondary text-secondary-foreground">
+                            {closestEvent.type.charAt(0).toUpperCase() + closestEvent.type.slice(1)}
+                          </span>
+                        )}
+                        <div className="ml-3 text-sm text-muted-foreground">
+                          {Math.ceil((new Date(closestEvent.date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))} days away
+                        </div>
+                      </div>
+                      <button className="bg-primary text-primary-foreground px-6 py-2 rounded-lg font-medium hover:bg-primary/90 transition-colors">
+                        View Details
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </section>
-            </div>
-          )
-        }
-        
-        {/* Only show section title if there are no live events */}
-        {liveEvents.length === 0 && (
-          <ScrollAnimateWrapper>
-            <h2 className="section-title">Upcoming Events</h2>
-            <p className="section-subtitle">
-              Check back soon for upcoming events.
-            </p>
-          </ScrollAnimateWrapper>
+              </div>
+            </ScrollAnimateWrapper>
+          </div>
         )}
 
-        {/* Display upcoming events list */}
-        {upcomingEvents.length > 0 && (
-          <div className="mt-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {upcomingEvents.map(event => (
-                <div key={event.id} className="bg-card border border-border rounded-lg p-6 hover:shadow-lg transition-shadow">
-                  <h3 className="text-xl font-bold mb-2">{event.title}</h3>
-                  <p className="text-sm text-muted-foreground mb-2">
-                    {new Date(event.date).toLocaleDateString()} • {event.location}
-                  </p>
-                  <p className="text-muted-foreground text-sm line-clamp-2">
-                    {event.description || 'Event details coming soon...'}
-                  </p>
-                  {event.type && (
-                    <div className="mt-3">
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary text-secondary-foreground">
-                        {event.type.charAt(0).toUpperCase() + event.type.slice(1)}
-                      </span>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
+        {/* View All Events Button */}
+        <div className="text-center mt-8 mb-12">
+          <a 
+            href="/events/upcoming"
+            className="inline-block bg-primary text-primary-foreground px-8 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors shadow-lg hover:shadow-xl"
+          >
+            View All Upcoming Events
+          </a>
+        </div>
+
+        {/* No Events Message */}
+        {upcomingEvents.length === 0 && !loading && (
+          <div className="bg-card border border-border rounded-lg p-12 text-center mt-8">
+            <div className="text-5xl mb-4">📅</div>
+            <h3 className="text-xl font-semibold mb-2">No Upcoming Events</h3>
+            <p className="text-muted-foreground">
+              Check back later for exciting events and activities!
+            </p>
           </div>
         )}
       </div>

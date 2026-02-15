@@ -33,19 +33,31 @@ const UpcomingEvents = () => {
     document.documentElement.classList.toggle("dark");
   };
 
-  // Filter upcoming events - show active upcoming events
-  const upcomingEvents = events.filter(event => 
-    event.isActive !== false &&
-    (event.category === 'upcoming' || event.type === 'upcoming')
-  );
+  // Filter and sort upcoming events - show active upcoming events, sorted by date (closest first)
+  const upcomingEvents = events
+    .filter(event => 
+      event.isActive !== false &&
+      (event.category === 'upcoming' || event.type === 'upcoming')
+    )
+    .sort((a, b) => {
+      const dateA = new Date(a.date).getTime();
+      const dateB = new Date(b.date).getTime();
+      return dateA - dateB; // Ascending order (closest dates first)
+    });
 
-  // Check for live events (events happening today or in the next 24 hours)
-  const liveEvents = upcomingEvents.filter(event => {
-    const eventDate = new Date(event.date);
-    const now = new Date();
-    const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000);
-    return eventDate >= now && eventDate <= tomorrow;
-  });
+  // Helper function to check if event date matches today
+  const isEventToday = (eventDate: string) => {
+    const today = new Date();
+    const eventDay = new Date(eventDate);
+    
+    return (
+      eventDay.getDate() === today.getDate() &&
+      eventDay.getMonth() === today.getMonth() &&
+      eventDay.getFullYear() === today.getFullYear()
+    );
+  };
+
+
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -58,33 +70,6 @@ const UpcomingEvents = () => {
               Upcoming Events
             </h1>
             <div className="w-16 h-1 bg-primary rounded-full mx-auto mb-8"></div>
-            
-            {/* Live Events Banner */}
-            {liveEvents.length > 0 && (
-              <div className="mb-8">
-                <section 
-                  className="live-event-strip bg-gradient-to-r from-red-600 to-orange-500 rounded-lg p-4 cursor-pointer hover:opacity-90 transition-opacity"
-                  onClick={() => window.location.href = `/events/${liveEvents[0].id}`}
-                  aria-label="Live Event"
-                  role="banner"
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-3">
-                      <div className="flex items-center">
-                        <div className="w-3 h-3 bg-white rounded-full mr-2 animate-pulse"></div>
-                        <span className="text-white font-bold text-sm uppercase tracking-wider">LIVE NOW</span>
-                      </div>
-                      <span className="text-white font-medium">{liveEvents[0].title}</span>
-                    </div>
-                    <div className="text-white">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                  </div>
-                </section>
-              </div>
-            )}
             
             {/* Upcoming Events Grid */}
             {loading ? (
@@ -110,10 +95,17 @@ const UpcomingEvents = () => {
                           <span className="text-muted-foreground">No image</span>
                         </div>
                       )}
-                      <div className="absolute top-3 right-3">
-                        <span className="bg-primary text-primary-foreground text-xs font-medium px-2 py-1 rounded-full">
-                          {event.type || 'Event'}
-                        </span>
+                      <div className="absolute top-3 right-3 flex flex-col gap-2">
+                        {isEventToday(event.date) && (
+                          <span className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse">
+                            LIVE NOW
+                          </span>
+                        )}
+                        {!isEventToday(event.date) && (
+                          <span className="bg-primary text-primary-foreground text-xs font-medium px-2 py-1 rounded-full">
+                            {event.type || 'Event'}
+                          </span>
+                        )}
                       </div>
                     </div>
                     <div className="p-6">
