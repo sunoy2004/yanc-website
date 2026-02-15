@@ -63,19 +63,58 @@ const EventGallery = () => {
               </div>
             ) : galleryItems.length > 0 ? (
               <div className="space-y-12">
-                {/* Group gallery items by event title */}
+                {/* Flatten gallery items to handle multiple media per item */}
                 {(() => {
-                  // Group items by title
-                  const groupedItems: Record<string, WebsiteGalleryItem[]> = {};
+                  // Flatten all media from all gallery items
+                  const flattenedMedia: Array<{
+                    id: string;
+                    src: string;
+                    alt: string;
+                    type: 'image' | 'video';
+                    eventId: string;
+                    eventTitle: string;
+                    eventDescription?: string;
+                  }> = [];
+                  
                   galleryItems.forEach(item => {
-                    const title = item.title || 'Untitled Event';
-                    if (!groupedItems[title]) {
-                      groupedItems[title] = [];
+                    const eventTitle = item.title || 'Untitled Event';
+                    if (Array.isArray(item.media)) {
+                      // Handle multiple media per item
+                      item.media.forEach((media, index) => {
+                        flattenedMedia.push({
+                          id: `${item.id}-${index}`,
+                          src: media.url,
+                          alt: media.alt || item.title || `Gallery item ${index + 1}`,
+                          type: media.type,
+                          eventId: item.id,
+                          eventTitle,
+                          eventDescription: item.description
+                        });
+                      });
+                    } else {
+                      // Handle single media (backward compatibility)
+                      flattenedMedia.push({
+                        id: item.id,
+                        src: item.media.url,
+                        alt: item.media.alt || item.title || 'Gallery item',
+                        type: item.media.type,
+                        eventId: item.id,
+                        eventTitle,
+                        eventDescription: item.description
+                      });
                     }
-                    groupedItems[title].push(item);
                   });
 
-                  return Object.entries(groupedItems).map(([eventTitle, items]) => (
+                  // Group by event title for display
+                  const groupedByEvent: Record<string, typeof flattenedMedia> = {};
+                  flattenedMedia.forEach(media => {
+                    if (!groupedByEvent[media.eventTitle]) {
+                      groupedByEvent[media.eventTitle] = [];
+                    }
+                    groupedByEvent[media.eventTitle].push(media);
+                  });
+
+                  return Object.entries(groupedByEvent).map(([eventTitle, mediaItems]) => (
                     <div key={eventTitle} className="bg-card border border-border rounded-lg p-6">
                       <div className="mb-6 pb-4 border-b border-border">
                         <div className="flex items-start justify-between">
@@ -84,44 +123,50 @@ const EventGallery = () => {
                             <p className="text-sm text-muted-foreground">
                               Event Gallery
                             </p>
-                            {items[0]?.description && (
+                            {mediaItems[0]?.eventDescription && (
                               <p className="text-xs text-muted-foreground mt-1">
-                                {items[0].description}
+                                {mediaItems[0].eventDescription}
                               </p>
                             )}
                           </div>
                           <div className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded">
-                            {Math.min(items.length, 10)} photos
+                            {mediaItems.length > 10 ? (
+                              <span className="text-orange-600 dark:text-orange-400">
+                                Showing 10 of {mediaItems.length} photos
+                              </span>
+                            ) : (
+                              `${mediaItems.length} photo${mediaItems.length !== 1 ? 's' : ''}`
+                            )}
                           </div>
                         </div>
                       </div>
                       
                       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                         {/* Limit to maximum 10 images per event */}
-                        {items.slice(0, 10).map((item, index) => (
+                        {mediaItems.slice(0, 10).map((mediaItem, index) => (
                           <div 
-                            key={`${item.id}-${index}`}
+                            key={mediaItem.id}
                             className="relative group cursor-pointer overflow-hidden rounded-lg aspect-square border border-border hover:border-primary transition-colors"
                             onClick={() => handleMediaClick(
-                              items.slice(0, 10).map((gItem, idx) => ({
-                                id: gItem.id,
-                                src: gItem.media.url,
-                                alt: gItem.media.alt || gItem.title || `Gallery item ${idx + 1}`,
-                                type: gItem.media.type
+                              mediaItems.slice(0, 10).map((item, idx) => ({
+                                id: item.id,
+                                src: item.src,
+                                alt: item.alt,
+                                type: item.type
                               })), 
                               index
                             )}
                           >
-                            {item.media.type === "image" ? (
+                            {mediaItem.type === "image" ? (
                               <img
-                                src={item.media.url}
-                                alt={item.media.alt || item.title || `Gallery item ${index + 1}`}
+                                src={mediaItem.src}
+                                alt={mediaItem.alt}
                                 className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                               />
                             ) : (
                               <div className="relative bg-gray-900 rounded-lg overflow-hidden w-full h-full">
                                 <video
-                                  src={item.media.url}
+                                  src={mediaItem.src}
                                   className="w-full h-full object-cover"
                                   muted
                                   preload="metadata"
@@ -134,20 +179,26 @@ const EventGallery = () => {
                                 </div>
                               </div>
                             )}
-                            {(item.media.alt || item.title) && (
-                              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2">
-                                <p className="text-white text-xs line-clamp-2">
-                                  {item.media.alt || item.title}
-                                </p>
-                              </div>
-                            )}
+                            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2">
+                              <p className="text-white text-xs line-clamp-2">
+                                {mediaItem.alt}
+                              </p>
+                            </div>
                           </div>
                         ))}
                       </div>
                       
-                      {items.length > 10 && (
-                        <div className="mt-4 text-center text-sm text-muted-foreground">
-                          Showing 10 of {items.length} images from this event
+                      {mediaItems.length > 10 && (
+                        <div className="mt-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg text-center">
+                          <div className="flex items-center justify-center gap-2 text-sm text-yellow-800 dark:text-yellow-200">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            </svg>
+                            <span>
+                              Displaying only the most recent 10 images from this event. 
+                              <span className="font-medium ml-1">{mediaItems.length - 10} additional images available</span>
+                            </span>
+                          </div>
                         </div>
                       )}
                     </div>
@@ -161,9 +212,11 @@ const EventGallery = () => {
                     <p className="text-muted-foreground">
                       Displaying gallery items grouped by event title
                     </p>
-                    <p className="text-xs text-muted-foreground mt-2">
-                      Each event shown in its own separate section with up to 10 images
-                    </p>
+                    <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                      <p className="text-sm text-blue-800 dark:text-blue-200">
+                        <span className="font-medium">Maximum 10 images per event:</span> Only the most recent 10 images are displayed for each event to ensure optimal loading performance and user experience.
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
