@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link as RouterLink } from "react-router-dom";
 import { getUpcomingEvents, WebsiteEvent } from "@/services/cms/events-service";
 
 const Events = () => {
@@ -96,9 +97,9 @@ const Events = () => {
           <div style={{ fontSize: "0.9rem", color: "#666", fontStyle: "italic" }}>
             Sorted by date - Soonest events first
           </div>
-          <a href="/events/upcoming" style={{ color: "#007bff", textDecoration: "none", fontSize: "1rem" }}>
+          <RouterLink to="/events/upcoming" style={{ color: "#007bff", textDecoration: "none", fontSize: "1rem" }}>
             View All
-          </a>
+          </RouterLink>
         </div>
         
         {events.length > 0 ? (

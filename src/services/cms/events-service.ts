@@ -47,8 +47,10 @@ export interface WebsiteGalleryItem {
 // Upcoming Events Service
 export async function getUpcomingEvents(): Promise<WebsiteEvent[]> {
   try {
-    console.log('🔍 Calling /api/events/upcoming');
-    const response = await fetch('/api/events/upcoming');
+    const API_BASE_URL = import.meta.env.VITE_CMS_BASE_URL || 'http://localhost:3001';
+    const url = `${API_BASE_URL}/api/events/upcoming`;
+    console.log('🔍 Calling', url);
+    const response = await fetch(url);
     console.log('📊 Upcoming events response status:', response.status);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -80,8 +82,10 @@ export async function getUpcomingEvents(): Promise<WebsiteEvent[]> {
 // Past Events Service
 export async function getPastEvents(): Promise<WebsiteEvent[]> {
   try {
-    console.log('🔍 Calling /api/events/past');
-    const response = await fetch('/api/events/past');
+    const API_BASE_URL = import.meta.env.VITE_CMS_BASE_URL || 'http://localhost:3001';
+    const url = `${API_BASE_URL}/api/events/past`;
+    console.log('🔍 Calling', url);
+    const response = await fetch(url);
     console.log('📊 Past events response status:', response.status);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -113,8 +117,10 @@ export async function getPastEvents(): Promise<WebsiteEvent[]> {
 // Event Gallery Service (Completely Independent)
 export async function getEventGallery(): Promise<WebsiteGalleryItem[]> {
   try {
-    console.log('🔍 Calling /api/event-gallery-items/public');
-    const response = await fetch('/api/event-gallery-items/public');
+    const API_BASE_URL = import.meta.env.VITE_CMS_BASE_URL || 'http://localhost:3001';
+    const url = `${API_BASE_URL}/api/event-gallery-items/public`;
+    console.log('🔍 Calling', url);
+    const response = await fetch(url);
     console.log('📊 Gallery response status:', response.status);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);

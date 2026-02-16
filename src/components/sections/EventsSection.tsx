@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import ScrollAnimateWrapper from "@/components/ScrollAnimateWrapper";
 import { getUpcomingEvents, WebsiteEvent } from "@/services/cms/events-service";
 
 const EventsSection = () => {
+  const navigate = useNavigate();
   const [eventsData, setEventsData] = useState<WebsiteEvent[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -59,10 +61,11 @@ const EventsSection = () => {
   console.log("🚀 EVENTS SECTION COMPONENT RENDERING");
   console.log("📊 STATE: eventsData.length =", eventsData.length, "| loading =", loading, "| error =", error);
   
-  // Filter upcoming events - show active upcoming events
+  // Filter upcoming events - show active upcoming events that are not in the past
   const upcomingEvents = eventsData.filter(event => 
     event.isActive !== false &&
-    (event.type === 'upcoming' || !event.type)
+    (event.type === 'upcoming' || !event.type) &&
+    new Date(event.date).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0) // Only include events that are today or in the future (by date only, ignoring time)
   );
   
   // Get the closest (soonest) event for display
@@ -97,7 +100,7 @@ const EventsSection = () => {
             <ScrollAnimateWrapper>
               <div 
                 className="bg-card border border-border rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer"
-                onClick={() => window.location.href = `/events/upcoming`}
+                onClick={() => navigate('/events/upcoming')}
               >
                 <div className="flex flex-col md:flex-row">
                   {/* Image - Right side on desktop, top on mobile */}
@@ -191,12 +194,12 @@ const EventsSection = () => {
 
         {/* View All Events Button */}
         <div className="text-center mt-8 mb-12">
-          <a 
-            href="/events/upcoming"
+          <RouterLink 
+            to="/events/upcoming"
             className="inline-block bg-primary text-primary-foreground px-8 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors shadow-lg hover:shadow-xl"
           >
             View All Upcoming Events
-          </a>
+          </RouterLink>
         </div>
 
         {/* No Events Message */}

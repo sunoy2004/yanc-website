@@ -12,7 +12,14 @@ const EventsVerification = () => {
         setLoading(true);
         setError(null);
         const data = await getUpcomingEvents();
-        setEvents(data);
+        
+        // Filter out past events, keeping only today's and future events
+        const today = new Date(new Date().setHours(0, 0, 0, 0));
+        const filteredData = data.filter(event => 
+          new Date(event.date) >= today // Include today's events and future events only
+        );
+        
+        setEvents(filteredData);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to load events");
       } finally {
