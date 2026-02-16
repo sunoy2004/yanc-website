@@ -49,7 +49,15 @@ const Hero = () => {
               Placeholder tagline goes here. Connect, collaborate, create.
             </p>
             <div className="hero-cta">
-              <Button variant="primary" size="lg">
+              <Button 
+                variant="primary" 
+                size="lg"
+                onClick={() => {
+                  // Open CTA URL directly with https prefix
+                  const fullUrl = 'https://apply/membership';
+                  window.open(fullUrl, '_blank', 'noopener,noreferrer');
+                }}
+              >
                 Join the Community
               </Button>
             </div>
@@ -108,7 +116,11 @@ const Hero = () => {
             <Button 
               variant="primary" 
               size="lg"
-              onClick={() => window.location.href = ctaUrl}
+              onClick={() => {
+                // Open CTA URL directly with https prefix
+                const fullUrl = ctaUrl.startsWith('http') ? ctaUrl : `https://${ctaUrl}`;
+                window.open(fullUrl, '_blank', 'noopener,noreferrer');
+              }}
             >
               {ctaText}
             </Button>
