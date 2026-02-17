@@ -84,7 +84,7 @@ export async function getUpcomingEvents(): Promise<WebsiteEvent[]> {
 // Past Events Service
 export async function getPastEvents(): Promise<WebsiteEvent[]> {
   try {
-    const API_BASE_URL = import.meta.env.VITE_CMS_BASE_URL || 'http://localhost:3001';
+    const API_BASE_URL = getCmsBaseUrl();
     const url = `${API_BASE_URL}/api/events/past`;
     console.log('🔍 Calling', url);
     const response = await fetch(url);
@@ -119,7 +119,7 @@ export async function getPastEvents(): Promise<WebsiteEvent[]> {
 // Event Gallery Service (Completely Independent)
 export async function getEventGallery(): Promise<WebsiteGalleryItem[]> {
   try {
-    const API_BASE_URL = import.meta.env.VITE_CMS_BASE_URL || 'http://localhost:3001';
+    const API_BASE_URL = getCmsBaseUrl();
     const url = `${API_BASE_URL}/api/event-gallery-items/public`;
     console.log('🔍 Calling', url);
     const response = await fetch(url);
