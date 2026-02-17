@@ -45,9 +45,11 @@ export interface WebsiteGalleryItem {
 }
 
 // Upcoming Events Service
+import { getCmsBaseUrl } from '@/lib/getCmsBaseUrl';
+
 export async function getUpcomingEvents(): Promise<WebsiteEvent[]> {
   try {
-    const API_BASE_URL = import.meta.env.VITE_CMS_BASE_URL || 'http://localhost:3001';
+    const API_BASE_URL = getCmsBaseUrl();
     const url = `${API_BASE_URL}/api/events/upcoming`;
     console.log('🔍 Calling', url);
     const response = await fetch(url);

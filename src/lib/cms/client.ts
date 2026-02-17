@@ -13,8 +13,9 @@ import {
   MediaItem
 } from './types';
 
-// Environment variables
-const CMS_BASE_URL = import.meta.env.VITE_CMS_BASE_URL || 'http://localhost:3001';
+// Environment variables / runtime detection
+import { getCmsBaseUrl } from '@/lib/getCmsBaseUrl';
+const CMS_BASE_URL = getCmsBaseUrl();
 const CMS_TIMEOUT = parseInt(import.meta.env.VITE_CMS_TIMEOUT || '10000');
 
 class CmsClient {
