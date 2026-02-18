@@ -129,12 +129,12 @@ const UpcomingEvents = () => {
                           </svg>
                           {event.location}
                         </span>
-                        <button 
+                        {/* <button 
                           className="text-primary hover:text-primary/80 font-medium text-sm"
                           onClick={() => window.location.href = `/events/${event.id}`}
                         >
                           View Details
-                        </button>
+                        </button> */}
                       </div>
                     </div>
                   </div>
