@@ -371,6 +371,8 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
         </nav>
 
         <div className="header-actions">
+          {/* Theme toggle temporarily disabled */}
+          {/*
           <button
             onClick={toggleTheme}
             className="theme-toggle"
@@ -378,6 +380,7 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
           >
             {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
           </button>
+          */}
           <a href="https://web.yanc.in/" className="hidden md:flex items-center justify-center px-4 py-2 text-sm font-medium text-foreground bg-background border border-border rounded-md hover:bg-accent transition-colors" target="_blank" rel="noopener noreferrer">
             Member login
           </a>
