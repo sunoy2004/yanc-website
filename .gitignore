@@ -25,4 +25,4 @@ dist-ssr
 *.sw?
 
 # cms-directories
-#yanc-cms/
+yanc-cms/
