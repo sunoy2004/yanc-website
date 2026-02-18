@@ -46,7 +46,7 @@ const Hero = () => {
         <div className="hero-overlay">
           <div className="hero-content">
             <p className="hero-description">
-              Placeholder tagline goes here. Connect, collaborate, create.
+            Young Minds | Networking | Life Skills
             </p>
             <div className="hero-cta">
               <Button 
@@ -70,9 +70,9 @@ const Hero = () => {
   // Use CMS content if available, otherwise fallback to default structure
   const title = heroContent?.title || "YANC";
   const subtitle = heroContent?.subtitle || "Yet Another Networking Club";
-  const description = heroContent?.description || "Placeholder tagline goes here. Connect, collaborate, create.";
+  const description = heroContent?.description || "Young Minds | Networking | Life Skills";
   const ctaText = heroContent?.ctaText || "Join the Community";
-  const ctaUrl = heroContent?.ctaUrl || "/apply/membership";
+  const ctaUrl = heroContent?.ctaUrl || "https://web.yanc.in/membership-application";
   const mediaItems = heroContent?.mediaItems || [];
 
   // Convert CMS media items to HeroMediaItem format expected by CurvedSlider
