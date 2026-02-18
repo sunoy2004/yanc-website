@@ -44,10 +44,10 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
 
   // Team dropdown items
   const teamDropdownItems = [
-    { label: "Executive Management", href: "/team/executive-management" },
     { label: "Cohort Founders", href: "/team/cohort-founders" },
-    { label: "Advisory Board", href: "/team/advisory-board" },
     { label: "Our Global Mentors", href: "/team/global-mentors" },
+    { label: "Advisory Board", href: "/team/advisory-board" },
+    { label: "Executive Management", href: "/team/executive-management" },
   ];
 
   // Our Offerings dropdown items
