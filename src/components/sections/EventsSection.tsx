@@ -181,9 +181,9 @@ const EventsSection = () => {
                           {Math.ceil((new Date(closestEvent.date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))} days away
                         </div>
                       </div>
-                      <button className="bg-primary text-primary-foreground px-6 py-2 rounded-lg font-medium hover:bg-primary/90 transition-colors">
+                      {/* <button className="bg-primary text-primary-foreground px-6 py-2 rounded-lg font-medium hover:bg-primary/90 transition-colors">
                         View Details
-                      </button>
+                      </button> */}
                     </div>
                   </div>
                 </div>
