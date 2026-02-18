@@ -22,8 +22,8 @@ const Footer = () => {
 
               {/* Follow Us moved inside the brand column so it appears below the logo on all sizes */}
               <div className="footer-social-col mt-4 md:mt-6 lg:mt-8">
-                <h3 className="footer-heading mb-0">Follow Us</h3>
-                <div className="social-icons">
+                <h3 className="footer-heading mb-0 text-left">Follow Us</h3>
+                <div className="social-icons justify-start">
                   <a href="https://www.facebook.com/p/YANC-61565847200938" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Facebook">
                     <img src={facebookIcon} alt="Facebook" className="social-icon-img" />
                   </a>
