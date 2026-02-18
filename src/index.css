@@ -1014,15 +1014,21 @@
   }
 
   .social-icons {
-    @apply flex gap-3 sm:gap-4 mt-2;
+    @apply flex gap-3 sm:gap-4 mt-2 items-center;
   }
 
+  /* Make icons larger, centered inside circular backgrounds and retain color transitions */
   .social-icon {
-    @apply text-muted-foreground hover:text-primary transition-colors duration-300;
+    @apply inline-flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-transparent text-muted-foreground hover:bg-primary/10 hover:text-primary transition-colors duration-200;
   }
 
   .social-icon-svg {
-    @apply w-4 sm:w-5 h-4 sm:h-5;
+    @apply w-5 h-5 sm:w-6 sm:h-6;
+  }
+
+  /* Images for social icons */
+  .social-icon-img {
+    @apply w-5 h-5 sm:w-6 sm:h-6 object-contain;
   }
 
   .footer-bottom {

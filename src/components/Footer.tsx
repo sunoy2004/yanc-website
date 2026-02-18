@@ -1,4 +1,9 @@
 import { Link } from 'react-router-dom';
+import facebookIcon from './icons/facebook.png';
+import xIcon from './icons/twitter.png';
+import instagramIcon from './icons/instagram.png';
+import linkedinIcon from './icons/linkedin.png';
+import whatsappIcon from './icons/whatsapp.png';
 
 const Footer = () => {
   return (
@@ -16,23 +21,25 @@ const Footer = () => {
             </div>
             <div className="footer-social-col">
               <h3 className="footer-heading mb-0">Follow Us</h3>
-              <div className="social-icons flex space-x-4">
-                <a href="https://twitter.com/yanc" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Twitter">
-                  <svg className="social-icon-svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z" />
-                  </svg>
+              <div className="social-icons flex space-x-4 items-center">
+                <a href="https://www.facebook.com/p/YANC-61565847200938" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Facebook">
+                  <img src={facebookIcon} alt="Facebook" className="social-icon-img" />
                 </a>
-                <a href="https://linkedin.com/company/yanc" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="LinkedIn">
-                  <svg className="social-icon-svg" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
-                  </svg>
+
+                <a href="https://x.com/OneYanc" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="X">
+                  <img src={xIcon} alt="X" className="social-icon-img" />
                 </a>
-                <a href="https://instagram.com/yanc" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Instagram">
-                  <svg className="social-icon-svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <rect width="20" height="20" x="2" y="2" rx="5" ry="5" strokeWidth={2} />
-                    <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z" strokeWidth={2} />
-                    <circle cx="17.5" cy="6.5" r=".5" fill="currentColor" strokeWidth={2} />
-                  </svg>
+
+                <a href="https://www.instagram.com/oneyanc/" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Instagram">
+                  <img src={instagramIcon} alt="Instagram" className="social-icon-img" />
+                </a>
+
+                <a href="https://www.linkedin.com/company/oneyanc/posts/?feedView=all" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="LinkedIn">
+                  <img src={linkedinIcon} alt="LinkedIn" className="social-icon-img" />
+                </a>
+
+                <a href="https://api.whatsapp.com/send/?phone=%2B917671819335&text&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="WhatsApp">
+                  <img src={whatsappIcon} alt="WhatsApp" className="social-icon-img" />
                 </a>
               </div>
             </div>
