@@ -26,7 +26,7 @@ const HorizontalTeamSection = () => {
   if (loading) {
     return (
       <section id="team-horizontal" className="horizontal-team-section py-16 bg-background">
-        <div className="container mx-auto px-4 text-center">
+      <div className="container text-center">
           <h2 className="section-title text-3xl md:text-4xl font-bold">Cohort Founders</h2>
           <p className="section-subtitle">
             Loading cohort founders...
@@ -50,7 +50,7 @@ const HorizontalTeamSection = () => {
 
   return (
     <section id="team-horizontal" className="horizontal-team-section py-16 bg-background">
-      <div className="container mx-auto px-4">
+      <div className="container">
         <div className="flex justify-between items-center mb-10">
           <h2 className="section-title text-3xl md:text-4xl font-bold">Cohort Founders</h2>
           <button 
@@ -118,7 +118,7 @@ const HorizontalTeamSection = () => {
             ))}
           </div>
           */}
-        </div>
+          </div>
       </div>
       {isModalOpen && selectedMember && (
         <TeamMemberModal 
