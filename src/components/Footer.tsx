@@ -30,7 +30,7 @@ const Footer = () => {
                   <img src={xIcon} alt="X" className="social-icon-img" />
                 </a>
 
-                <a href="https://www.instagram.com/oneyanc/" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Instagram">
+                <a href="https://www.instagram.com/yancclub/" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Instagram">
                   <img src={instagramIcon} alt="Instagram" className="social-icon-img" />
                 </a>
 
