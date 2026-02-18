@@ -96,8 +96,26 @@ const Footer = () => {
           <div className="footer-column">
             <h3 className="footer-heading">Careers</h3>
             <ul className="footer-links-list">
-              <li><Link to="/careers/jobs" className="footer-link">Job Openings</Link></li>
-              <li><Link to="/careers/internships" className="footer-link">Internships</Link></li>
+              <li>
+                <a
+                  href="https://web.yanc.in/careers"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="footer-link"
+                >
+                  Job Openings
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://web.yanc.in/careers"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="footer-link"
+                >
+                  Internships
+                </a>
+              </li>
             </ul>
           </div>
         </div>
