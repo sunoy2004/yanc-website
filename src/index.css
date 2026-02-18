@@ -974,11 +974,12 @@
   }
 
   .footer-grid {
-    @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 mb-6 sm:mb-8;
+    @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-6 md:gap-6 lg:gap-8 mb-6 sm:mb-8;
   }
 
   .footer-brand-col {
-    @apply col-span-2 sm:col-span-1 md:col-span-1 lg:col-span-1;
+    /* Always occupy a single column to avoid unexpected spanning on small screens */
+    @apply col-span-1;
   }
 
   .footer-column {
@@ -990,7 +991,8 @@
   }
 
   .footer-brand {
-    @apply text-left;
+    /* Center brand on small screens, left-align from small upwards */
+    @apply text-center sm:text-left;
   }
 
   .footer-logo {
@@ -1018,12 +1020,16 @@
   }
 
   .social-icons {
-    @apply flex gap-3 sm:gap-4 mt-2 items-center;
+    /* Keep icons on a single horizontal line; allow horizontal scrolling on very small viewports */
+    @apply flex gap-3 sm:gap-4 mt-2 items-center flex-nowrap overflow-x-auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   /* Make icons larger, centered inside circular backgrounds and retain color transitions */
   .social-icon {
     @apply inline-flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-transparent text-muted-foreground hover:bg-primary/10 hover:text-primary transition-colors duration-200;
+    /* Provide a little margin to avoid overlap when wrapping */
+    margin: 0.125rem;
   }
 
   .social-icon-svg {
@@ -1032,11 +1038,30 @@
 
   /* Images for social icons */
   .social-icon-img {
-    @apply w-5 h-5 sm:w-6 sm:h-6 object-contain;
+    /* Slightly smaller images on very small screens to avoid layout break */
+    @apply w-4 h-4 sm:w-5 sm:h-5 object-contain;
+  }
+
+  /* Make footer links easier to tap on mobile */
+  .footer-link {
+    @apply text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors duration-300 py-1 block;
   }
 
   .footer-bottom {
     @apply pt-6 sm:pt-8 border-t border-border/20 text-center;
+  }
+
+  /* Add subtle vertical separators between columns on large screens for visual clarity */
+  @media (min-width: 1024px) {
+    .footer-grid > .footer-column:not(:first-child) {
+      border-left: 1px solid rgba(var(--border), 0.12);
+      padding-left: 1.5rem;
+    }
+
+    /* Give the brand column a bit more breathing room on large screens */
+    .footer-brand-col {
+      padding-right: 1.5rem;
+    }
   }
 
   .footer-copyright {
