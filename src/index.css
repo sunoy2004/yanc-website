@@ -996,6 +996,10 @@
   .footer-logo {
     @apply text-xl sm:text-2xl font-bold text-primary;
   }
+  
+  .footer-logo-img {
+    @apply w-12 h-12 sm:w-12 sm:h-12 object-contain;
+  }
 
   .footer-tagline {
     @apply text-xs sm:text-sm text-muted-foreground mt-2;

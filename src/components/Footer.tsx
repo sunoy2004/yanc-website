@@ -13,9 +13,11 @@ const Footer = () => {
           {/* Brand Column */}
           <div className="footer-brand-col">
             <div className="footer-brand flex flex-col justify-between h-full">
-              <div>
-                <span className="footer-logo">YANC</span>
-                <p className="footer-tagline">Yet Another Networking Club</p>
+              <div className="flex items-center gap-3">
+                <div className="flex flex-col items-start">
+                  <img src="/favicon.svg" alt="YANC" className="footer-logo-img" />
+                  <p className="footer-tagline mt-1">Yet Another Networking Club</p>
+                </div>
               </div>
               <div className="mt-auto"></div>
             </div>
@@ -78,17 +80,66 @@ const Footer = () => {
             <h3 className="footer-heading">Support</h3>
             <ul className="footer-links-list">
               <li><Link to="/faq" className="footer-link">FAQ</Link></li>
-              <li><Link to="/#contact" className="footer-link">Contact Us</Link></li>
-              <li><Link to="/#about" className="footer-link">About Us</Link></li>
-              <li><Link to="/#testimonials" className="footer-link">Testimonials</Link></li>
+              <li>
+                <a
+                  href="https://web.yanc.in/contact-us"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="footer-link"
+                >
+                  Contact Us
+                </a>
+              </li>
+              <li>
+                <a href="/#about-us" className="footer-link">
+                  About Us
+                </a>
+              </li>
+              {/* <li><Link to="/#testimonials" className="footer-link">Testimonials</Link></li> */}
             </ul>
             
             <h3 className="footer-heading mt-4">Applications</h3>
             <ul className="footer-links-list">
-              <li><Link to="/apply/membership" className="footer-link">YANC Membership</Link></li>
-              <li><Link to="/apply/discover-meet-registration" className="footer-link">Discover Meet Registration</Link></li>
-              <li><Link to="/apply/mentor-registration" className="footer-link">Mentor Registration</Link></li>
-              <li><Link to="/apply/startup-pitch" className="footer-link">Startup Pitch</Link></li>
+              <li>
+                <a
+                  href="https://web.yanc.in/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="footer-link"
+                >
+                  YANC Membership
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://web.yanc.in/membership-application"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="footer-link"
+                >
+                  Discover Meet Registration
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://web.yanc.in/mentor-registration"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="footer-link"
+                >
+                  Mentor Registration
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://web.yanc.in/startup-pitch"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="footer-link"
+                >
+                  Startup Pitch
+                </a>
+              </li>
             </ul>
           </div>
           
