@@ -58,9 +58,9 @@ const EventCardHorizontal: React.FC<EventCardHorizontalProps> = ({ event }) => {
             </div>
           )} */}
         </div>
-        <div className="mt-4">
+        {/* <div className="mt-4">
           <Button>View Details</Button>
-        </div>
+        </div> */}
       </div>
     </div>
   );
