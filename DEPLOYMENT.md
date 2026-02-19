@@ -1,3 +1,65 @@
+# DEPLOYMENT GUIDE
+
+This document gives clear, repeatable steps to deploy the YANC site to common static hosts and contains CI recommendations.
+
+## Build (local)
+
+1. Install dependencies:
+
+```bash
+npm ci
+```
+
+2. Build production assets:
+
+```bash
+npm run build
+```
+
+3. Preview the production build locally:
+
+```bash
+npm run preview
+# opens at http://localhost:4173 by default (Vite preview)
+```
+
+## Netlify
+
+1. Connect your GitHub repository to Netlify.
+2. Set the build command to:
+
+```
+npm ci && npm run build
+```
+
+3. Set the publish directory to:
+
+```
+dist
+```
+
+4. Add environment variables in Netlify UI:
+ - VITE_API_BASE_URL
+ - VITE_OPENAI_API_KEY (if used)
+
+5. Optional: add `netlify.toml` to repository for redirects, security headers, and headers caching.
+
+6. Deploy from Netlify web UI or enable automatic deploys on push to `main`.
+
+## Render
+
+1. Create a new Static Site on Render.
+2. Link the repository and set the build command:
+
+```
+npm ci && npm run build
+```
+
+3. Set publish directory to `dist`.
+4. Add environment variables in Render UI.
+
+## GitHub Actions (CI/CD)
+
 # Deployment Guide
 
 This document explains how to deploy the YANC website to Google Cloud Platform using Cloud Build, Artifact Registry, and Cloud Run.

@@ -954,3 +954,25 @@ These changes improve the user experience by:
 - Consistent UI/UX across all gallery implementations
 - Preparation for CMS integration with structured data models
 - Supabase Storage integration ready architecture
+ 
+---
+
+## 16. APPENDIX — RECENT MAINTENANCE & CLEANUP
+
+These notes summarize small housekeeping and responsive fixes applied to the codebase during the recent update:
+
+- Default dark theme: App now forces dark theme by default (see `src/main.tsx`) and avoids following system preference.
+- Hero responsiveness: Hero overlay and CTA are in-flow on small screens to avoid overlapping the carousel; absolute layered layout remains on md+.
+- Sections spacing: All major sections now use the shared `.section` utility (in `src/index.css`) so vertical padding is consistent across the site.
+- Gallery improvements: `ImageVideoGallery.tsx` updated to use square aspect thumbnails and responsive default grid (2/3/4+ columns).
+- Footer cleanup: Social icons now use static images in `src/components/icons/`; links updated to production targets; layout improved for mobile.
+- Removed development banner from About Us section (production UX).
+- Test/debug files identified: consider moving `src/pages/DebugEvents.tsx`, `src/pages/TestEvents.tsx`, `src/pages/TestUpcomingEvents.tsx`, `src/pages/MinimalEventsTest.tsx`, `src/pages/SimpleTest.tsx`, and scripts like `test-hero-api.js` into a `dev/` folder or archiving them.
+
+If you want, I can:
+- Move development/test files into `src/dev/` and add a README explaining purpose.
+- Create a production-ready checklist and remove all `.bak` / test files automatically.
+
+---
+
+*Documentation updated automatically.*
