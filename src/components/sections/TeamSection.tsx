@@ -8,7 +8,7 @@ const TeamSection = () => {
   if (loading) {
     return (
       <section id="team" className="section">
-        <div className="container mx-auto px-4 py-20 text-center">
+        <div className="container">
           <h2 className="section-title">Meet the Team</h2>
           <p className="section-subtitle">
             Loading team members...

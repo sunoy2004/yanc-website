@@ -9,7 +9,7 @@ const TestimonialsSection = () => {
   if (loading) {
     return (
       <section className="section section-alt">
-        <div className="container mx-auto px-4 py-20 text-center">
+        <div className="container">
           <h2 className="section-title">Testimonials</h2>
           <p className="section-subtitle">
             Loading testimonials...

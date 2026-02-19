@@ -85,14 +85,16 @@ const EventsSection = () => {
 
   return (
     <section id="events" className="section section-alt">
-      <div className="container mx-auto px-4 max-w-3xl">
+      <div className="container">
         {/* Section Title */}
         <ScrollAnimateWrapper>
-          <h2 className="section-title text-center">Upcoming Events</h2>
-          <div className="w-16 h-1 bg-primary rounded-full mx-auto mb-6" />
-          <p className="section-subtitle text-center">
-            Join us for exciting events and activities
-          </p>
+          <div>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Upcoming Events</h2>
+            <div className="w-16 h-1 bg-primary rounded-full mb-6" />
+            <p className="text-muted-foreground mb-6">
+              Join us for exciting events and activities
+            </p>
+          </div>
         </ScrollAnimateWrapper>
 
         {/* Closest Event - Horizontal Layout (Only ONE event) */}

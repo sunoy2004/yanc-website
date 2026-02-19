@@ -312,11 +312,33 @@
    ====================================== */
 @layer components {
   .hero-section {
-    @apply relative w-full h-screen min-h-[600px] overflow-hidden bg-background;
+    @apply relative w-full min-h-[420px] overflow-hidden bg-background;
+    /* Larger minimum heights on wider screens */
+    min-height: 420px;
+  }
+
+  @media (min-width: 768px) {
+    .hero-section {
+      min-height: 600px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero-section {
+      height: 100vh; /* full viewport on large screens */
+    }
   }
 
   .hero-top-content {
-    @apply absolute top-0 left-0 right-0 z-20 pt-20 px-4 sm:px-6 text-center;
+    /* On small screens keep top content in the document flow so it doesn't overlap the carousel */
+    @apply relative pt-6 sm:pt-8 px-4 sm:px-6 text-center z-20;
+  }
+
+  @media (min-width: 768px) {
+    .hero-top-content {
+      /* On medium and larger screens position absolutely for layered hero */
+      @apply absolute top-0 left-0 right-0 z-20 pt-6 sm:pt-20 px-4 sm:px-6 text-center;
+    }
   }
 
   .hero-title-top {
@@ -341,7 +363,14 @@
   }
 
   .hero-overlay {
-    @apply absolute inset-0 flex items-center justify-center bg-background/0 z-10;
+    /* Keep overlay content in-flow on small screens so CTA and tagline don't overlap the carousel */
+    @apply relative flex items-center justify-center bg-background/0 z-10;
+  }
+
+  @media (min-width: 768px) {
+    .hero-overlay {
+      @apply absolute inset-0 flex items-center justify-center bg-background/0 z-10;
+    }
   }
 
   .hero-bottom-content {
@@ -350,7 +379,14 @@
 
   .hero-content {
     @apply text-center z-10 px-4 sm:px-8 py-8;
-    margin-top: 10rem;
+    /* Small top spacing on mobile (moved lower to avoid overlapping carousel), larger offset on desktop */
+    margin-top: 3.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .hero-content {
+      margin-top: 10rem;
+    }
   }
 
   .hero-title {

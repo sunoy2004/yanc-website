@@ -11,8 +11,8 @@ const FoundersSection = () => {
 
   if (loading) {
     return (
-      <section id="founders" className="py-16 bg-background">
-        <div className="container mx-auto px-4 text-center">
+      <section id="founders" className="section bg-background">
+        <div className="container">
           <h2 className="section-title text-3xl md:text-4xl font-bold text-center mb-4">Meet the Founders</h2>
           <p className="section-subtitle text-center text-muted-foreground max-w-2xl mx-auto mb-12">
             Loading founders...
@@ -32,8 +32,8 @@ const FoundersSection = () => {
   };
 
   return (
-    <section id="founders" className="py-16 bg-background">
-      <div className="container mx-auto px-4">
+    <section id="founders" className="section bg-background">
+      <div className="container">
         <ScrollAnimateWrapper>
           <h2 className="section-title text-3xl md:text-4xl font-bold text-center mb-4">Meet the Founders</h2>
           <p className="section-subtitle text-center text-muted-foreground max-w-2xl mx-auto mb-12">

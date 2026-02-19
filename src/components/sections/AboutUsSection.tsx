@@ -75,23 +75,7 @@ const AboutUsSection = () => {
   return (
     <section id="about-us" className="section">
       <div className="container">
-        {(showError || import.meta.env.DEV) && (
-          <div className="mb-8 p-4 bg-destructive/10 border border-destructive/20 rounded-lg text-center">
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-2">
-              <p className="text-destructive text-sm">
-                {showError 
-                  ? '⚠️ Having trouble loading content. Showing default information.' 
-                  : 'ℹ️ Development mode - CMS cache can be refreshed'}
-              </p>
-              <button 
-                onClick={refreshData}
-                className="px-3 py-1 bg-primary text-primary-foreground text-sm rounded-md hover:opacity-90 transition-opacity"
-              >
-                Refresh Content
-              </button>
-            </div>
-          </div>
-        )}
+        {/* Development banner removed for production UI */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
           {/* Left Column - About Us Text */}
           <ScrollAnimateWrapper delay={0}>

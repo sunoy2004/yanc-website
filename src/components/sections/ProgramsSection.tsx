@@ -16,7 +16,7 @@ const ProgramsSection = () => {
   if (loading) {
     return (
       <section id="programs" className="section">
-        <div className="container mx-auto px-4 py-20 text-center">
+        <div className="container">
           <h2 className="section-title">Our Programs</h2>
           <p className="section-subtitle">
             Loading programs...
