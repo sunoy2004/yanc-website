@@ -23,6 +23,17 @@ interface MentorTalk {
   updatedAt?: string;
 }
 
+// CMS gallery item shape (partial)
+type CmsGalleryItem = {
+  id?: string;
+  type?: string;
+  url?: string;
+  imageUrl?: string;
+  alt?: string;
+  altText?: string;
+  caption?: string;
+};
+
 const MentorTalks = () => {
   const [isDarkMode, setIsDarkMode] = useState(() => {
     // Check system preference for initial state
@@ -75,10 +86,10 @@ const MentorTalks = () => {
         content: '', // Not in CMS schema
         videoUrl: talk.videoUrl,
         thumbnail: talk.thumbnail,
-        media: talk.gallery.map((item: any) => ({
-          id: item.id,
-          type: item.type?.toLowerCase() || 'image',
-          src: item.url || item.imageUrl,
+        media: talk.gallery.map((item: CmsGalleryItem) => ({
+          id: item.id || '',
+          type: (item.type?.toLowerCase() === 'video' ? 'video' : 'image') as 'image' | 'video',
+          src: item.url || item.imageUrl || '',
           alt: item.alt || item.altText || item.caption || ''
         })),
         isPublished: talk.isActive,
@@ -170,9 +181,9 @@ const MentorTalks = () => {
                   <ImageVideoGallery 
                     media={talk.media}
                     onMediaClick={(mediaItem, mediaIndex) => handleMediaClick(talk.media, mediaIndex)}
-                    columns={3}
-                    maxVisible={isExpanded ? undefined : 6}
-                    showViewMore={talk.media.length > 4}
+                    columns={4}
+                    maxVisible={isExpanded ? undefined : 8}
+                    showViewMore={talk.media.length > 8}
                     onViewMoreClick={() => viewMoreTalk(talk.id)}
                     onViewLessClick={() => viewLessTalk(talk.id)}
                   />
