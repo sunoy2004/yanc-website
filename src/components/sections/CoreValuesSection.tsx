@@ -65,7 +65,7 @@ const CoreValuesSection = () => {
   }, []);
 
   return (
-    <section id="core-values" className="py-16 md:py-20 bg-background">
+    <section id="core-values" className="section bg-background">
       <div className="container">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
           {/* Left Column - Text Content (50%) */}

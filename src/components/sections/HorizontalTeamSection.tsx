@@ -25,8 +25,8 @@ const HorizontalTeamSection = () => {
 
   if (loading) {
     return (
-      <section id="team-horizontal" className="horizontal-team-section py-16 bg-background">
-      <div className="container text-center">
+      <section id="team-horizontal" className="section horizontal-team-section bg-background">
+        <div className="container text-center">
           <h2 className="section-title text-3xl md:text-4xl font-bold">Cohort Founders</h2>
           <p className="section-subtitle">
             Loading cohort founders...
@@ -49,19 +49,25 @@ const HorizontalTeamSection = () => {
   const tripledMembers = [...teamData, ...teamData, ...teamData];
 
   return (
-    <section id="team-horizontal" className="horizontal-team-section py-16 bg-background">
+    <section id="team-horizontal" className="section horizontal-team-section bg-background">
       <div className="container">
-        <div className="flex justify-between items-center mb-10">
-          <h2 className="section-title text-3xl md:text-4xl font-bold">Cohort Founders</h2>
-          <button 
-            className="view-all-button group px-6 py-2.5 bg-primary/10 text-primary font-medium rounded-lg hover:bg-primary/20 transition-all duration-300 flex items-center gap-1.5 border border-primary/20"
-            onClick={() => navigate('/team/cohort-founders')}
-          >
-            <span className="text-sm">View all members</span>
-            <svg className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-10">
+          <div className="w-full sm:w-auto">
+            <h2 className="section-title text-3xl md:text-4xl font-bold text-left">Cohort Founders</h2>
+            <div className="w-16 h-1 bg-primary rounded-full mt-2 sm:mt-0" />
+          </div>
+
+          <div className="self-start sm:self-center">
+            <button 
+              className="view-all-button group px-6 py-2.5 bg-primary/10 text-primary font-medium rounded-lg hover:bg-primary/20 transition-all duration-300 flex items-center gap-1.5 border border-primary/20"
+              onClick={() => navigate('/team/cohort-founders')}
+            >
+              <span className="text-sm">View all members</span>
+              <svg className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
         </div>
         
         <div className="team-belt-container overflow-hidden">

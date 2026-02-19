@@ -89,6 +89,7 @@ const EventsSection = () => {
         {/* Section Title */}
         <ScrollAnimateWrapper>
           <h2 className="section-title text-center">Upcoming Events</h2>
+          <div className="w-16 h-1 bg-primary rounded-full mx-auto mb-6" />
           <p className="section-subtitle text-center">
             Join us for exciting events and activities
           </p>
