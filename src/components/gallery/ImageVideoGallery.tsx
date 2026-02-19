@@ -34,7 +34,8 @@ const ImageVideoGallery: React.FC<ImageVideoGalleryProps> = ({
   };
 
   const getGridClass = () => {
-    let baseClasses = `grid grid-cols-1 sm:grid-cols-2 gap-4 ${className}`;
+    // Match EventGallery small-screen layout: 2 cols on very small, 3 on small, then expand at md/lg based on `columns`
+    let baseClasses = `grid grid-cols-2 sm:grid-cols-3 gap-4 ${className}`;
     
     switch(columns) {
       case 1:
@@ -55,23 +56,23 @@ const ImageVideoGallery: React.FC<ImageVideoGalleryProps> = ({
   return (
     <div className={getGridClass()}>
       {displayMedia.map((item, index) => (
-        <div 
+        <div
           key={item.id}
-          className="relative group cursor-pointer overflow-hidden rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300"
+          className="relative group cursor-pointer overflow-hidden rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 aspect-square"
           onClick={() => handleMediaClick(item, index)}
         >
           {item.type === "image" ? (
             <img
               src={item.src}
               alt={item.alt}
-              className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
               loading="lazy"
             />
           ) : (
-            <div className="relative bg-gray-900 rounded-lg overflow-hidden">
+            <div className="relative bg-gray-900 rounded-lg overflow-hidden w-full h-full">
               <video
                 src={item.src}
-                className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                 muted
                 preload="metadata"
                 onClick={(e) => e.stopPropagation()}
