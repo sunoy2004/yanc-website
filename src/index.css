@@ -380,7 +380,7 @@
   .hero-content {
     @apply text-center z-10 px-4 sm:px-8 py-8;
     /* Small top spacing on mobile (moved lower to avoid overlapping carousel), larger offset on desktop */
-    margin-top: 3.5rem;
+    margin-top: 9.5rem; /*This adjust the mobile view of hero */
   }
 
   @media (min-width: 768px) {
