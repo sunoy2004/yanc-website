@@ -33,7 +33,13 @@ steps:
 
   # Build the Docker image
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', '$_LOCATION-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/$REPO_NAME:$COMMIT_SHA', '.']
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        BUILD_DATE=$(date -u +%Y/%m/%d)
+        echo "Building with VITE_BUILD_DATE=${BUILD_DATE} and VITE_BUILD_SHA=${SHORT_SHA}"
+        docker build --build-arg VITE_BUILD_DATE="${BUILD_DATE}" --build-arg VITE_BUILD_SHA="${SHORT_SHA}" -t "$_LOCATION-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/$REPO_NAME:$COMMIT_SHA" .
 
   # Push the Docker image to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
