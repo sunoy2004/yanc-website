@@ -1,11 +1,7 @@
 # ---------- Build stage ----------
 FROM node:18-alpine AS builder
 
-# WORKDIR /app
-# ARG VITE_BUILD_DATE="${BUILD_DATE}" and --build-arg
-# ARG VITE_BUILD_SHA="${SHORT_SHA}"
-# ENV VITE_BUILD_DATE=${VITE_BUILD_DATE}
-# ENV VITE_BUILD_SHA=${VITE_BUILD_SHA}
+WORKDIR /app
 
 COPY package*.json ./
 RUN npm install
