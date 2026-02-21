@@ -216,7 +216,6 @@ export const serializeMockHeroContent = (mockHeroMedia: MockHeroMediaItem[]): He
   return {
     title: 'YANC',
     subtitle: 'Yet Another Networking Club',
-  };
     ctaText: 'Join the Community',
     ctaUrl: '/apply/membership',
     mediaItems: mockHeroMedia.map(item => ({
