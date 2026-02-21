@@ -1103,6 +1103,10 @@
   .footer-copyright {
     @apply text-xs sm:text-sm text-muted-foreground;
   }
+  
+  .footer-build {
+    @apply text-xs text-muted-foreground opacity-80;
+  }
 }
 
 /* ======================================

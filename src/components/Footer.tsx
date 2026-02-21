@@ -213,6 +213,9 @@ const Footer = () => {
             <p className="footer-copyright">
               © 2026 YANC. All rights reserved.
             </p>
+            <p className="footer-build text-xs text-muted-foreground mt-1">
+               v{import.meta.env.VITE_BUILD_DATE ?? "n/a"}
+            </p>
           </div>
         </div>
       </div>
