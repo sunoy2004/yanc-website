@@ -214,7 +214,7 @@ const Footer = () => {
               © 2026 YANC. All rights reserved.
             </p>
             <p className="footer-build text-xs text-muted-foreground mt-1">
-             v{"2026.02.21"}
+             v{"2026.02.23"}
             </p>
           </div>
         </div>

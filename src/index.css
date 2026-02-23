@@ -663,7 +663,8 @@
    ====================================== */
 @layer components {
   .section {
-    @apply py-12 sm:py-16 md:py-20 lg:py-28;
+    /* Keep top padding but remove bottom padding for tighter section spacing */
+    @apply pt-12 pb-0 sm:pt-16 sm:pb-0 md:pt-20 md:pb-0 lg:pt-28 lg:pb-0;
   }
 
   .section-alt {
@@ -747,6 +748,12 @@
 
   .event-meta-item {
     @apply flex items-center gap-1;
+  }
+
+  /* Move the "View All Upcoming Events" row slightly up */
+  #events .text-center.mt-0.mb-0 {
+    margin-top: 1rem !important; /* reduced from Tailwind mt-8 (2rem) */
+    padding-bottom: 1rem !important; /* Tailwind pb-1 */
   }
 }
 
