@@ -9,6 +9,17 @@ import whatsappIcon from './icons/whatsapp.png';
 
 const Footer = () => {
   const [modalOpen, setModalOpen] = useState(false);
+  const scrollToStart = () => {
+    // Ensure the page is scrolled to the top after navigation.
+    // Timeout allows SPA navigation to complete first.
+    setTimeout(() => {
+      try {
+        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+      } catch {
+        // noop in non-browser environments
+      }
+    }, 50);
+  };
   return (
     <footer className="footer">
       <div className="container mx-auto px-4">
@@ -57,10 +68,10 @@ const Footer = () => {
           <div className="footer-column">
             <h3 className="footer-heading">Our Offerings</h3>
             <ul className="footer-links-list">
-              <li><Link to="/offerings/value-proposition" className="footer-link">Value Propositions</Link></li>
-              <li><Link to="/offerings/why-us" className="footer-link">Why Us</Link></li>
-              <li><Link to="/offerings/who-can-join" className="footer-link">Who Can Join</Link></li>
-              <li><Link to="/offerings/young-minds-mashup" className="footer-link">Young Minds Mashup</Link></li>
+              <li><Link to="/offerings/value-proposition" onClick={scrollToStart} className="footer-link">Value Propositions</Link></li>
+              <li><Link to="/offerings/why-us" onClick={scrollToStart} className="footer-link">Why Us</Link></li>
+              <li><Link to="/offerings/who-can-join" onClick={scrollToStart} className="footer-link">Who Can Join</Link></li>
+              <li><Link to="/offerings/young-minds-mashup" onClick={scrollToStart} className="footer-link">Young Minds Mashup</Link></li>
               {/* <li><Link to="/offerings/mentor-talks" className="footer-link">Mentor Talks</Link></li> */}
             </ul>
 
@@ -137,9 +148,9 @@ const Footer = () => {
 
             <h3 className="footer-heading mt-4">Events</h3>
             <ul className="footer-links-list">
-              <li><Link to="/events/upcoming" className="footer-link">Upcoming Events</Link></li>
-              <li><Link to="/events/past" className="footer-link">Past Events</Link></li>
-              <li><Link to="/events/gallery" className="footer-link">Event Gallery</Link></li>
+              <li><Link to="/events/upcoming" onClick={scrollToStart} className="footer-link">Upcoming Events</Link></li>
+              <li><Link to="/events/past" onClick={scrollToStart} className="footer-link">Past Events</Link></li>
+              <li><Link to="/events/gallery" onClick={scrollToStart} className="footer-link">Event Gallery</Link></li>
             </ul>
           </div>
 
@@ -191,7 +202,7 @@ const Footer = () => {
 
             <h3 className="footer-heading mt-4">Support</h3>
             <ul className="footer-links-list">
-              <li><Link to="/faq" className="footer-link">FAQ</Link></li>
+              <li><Link to="/faq" onClick={scrollToStart} className="footer-link">FAQ</Link></li>
               <li>
                 <a
                   href="https://web.yanc.in/contact-us"
