@@ -1,4 +1,15 @@
 steps:
+
+    # Generate build metadata for Vite
+  - name: alpine
+    entrypoint: sh
+    args:
+      - -c
+      - |
+        BUILD_DATE=$(date -u +"%Y.%m.%d")
+        echo "VITE_BUILD_DATE=$BUILD_DATE" > apps/cms-web/.env.production
+        echo "VITE_BUILD_SHA=$SHORT_SHA" >> apps/cms-web/.env.production
+        
   # Create Artifact Registry repository if it doesn't exist
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
     entrypoint: gcloud
