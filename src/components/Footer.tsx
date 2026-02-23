@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { IssueModal } from './IssueModal.tsx';
 import facebookIcon from './icons/facebook.png';
 import xIcon from './icons/twitter.png';
 import instagramIcon from './icons/instagram.png';
@@ -6,6 +8,7 @@ import linkedinIcon from './icons/linkedin.png';
 import whatsappIcon from './icons/whatsapp.png';
 
 const Footer = () => {
+  const [modalOpen, setModalOpen] = useState(false);
   return (
     <footer className="footer">
       <div className="container mx-auto px-4">
@@ -205,10 +208,9 @@ const Footer = () => {
                 </a>
               </li> */}
               <li>
-              <a
-                  href="https://yanc-bug-tracker-1095720168864.asia-south1.run.app/"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <a
+                  href="#"
+                  onClick={(e) => { e.preventDefault(); setModalOpen(true); }}
                   className="footer-link"
                 >
                   Log Issues
@@ -224,12 +226,13 @@ const Footer = () => {
               © 2026 YANC. All rights reserved.
             </p>
             <p className="footer-build text-xs text-muted-foreground mt-1">
-             v{import.meta.env.VITE_BUILD_DATE}
-             {/* v{"2026.02.23"} */}
+             {/* v{import.meta.env.VITE_BUILD_DATE} */}
+             v{"2026.02.23"}
             </p>
           </div>
         </div>
       </div>
+      {modalOpen && <IssueModal onClose={() => setModalOpen(false)} />}
     </footer>
   );
 };
