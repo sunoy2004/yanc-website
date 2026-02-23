@@ -6,7 +6,7 @@ steps:
     args:
       - -c
       - |
-        BUILD_DATE=$(date -u +"%Y.%m.%d")
+        _BUILD_DATE=$(date -u +"%Y.%m.%d")
         echo "VITE_BUILD_DATE=$_BUILD_DATE" > .env.production
         echo "VITE_BUILD_SHA=$_SHORT_SHA" >> .env.production
         
