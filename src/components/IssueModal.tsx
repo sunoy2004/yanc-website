@@ -54,7 +54,10 @@ export function IssueModal({ onClose }: { onClose: () => void }) {
       try {
         const combinedVersion = `${yearPrefix}${versionSuffix.trim()}`;
         await addIssue({ title: title.trim(), version: combinedVersion, reporter: reporter.trim(), assignedTo, severity });
-        toast.success('Issue created successfully!', { description: `"${title}" has been added to the tracker.` });
+        toast.success('Thank you for reporting the issue.', {
+          description:
+            'Our development team has received your submission and will review it shortly.',
+        });
         onClose();
       } catch (err) {
         console.error('Issue submit error', err);
