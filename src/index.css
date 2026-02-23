@@ -678,6 +678,11 @@
   .section-subtitle {
     @apply text-sm sm:text-base md:text-lg text-muted-foreground text-center mb-6 sm:mb-8 md:mb-12 max-w-xs sm:max-w-sm md:max-w-2xl mx-auto;
   }
+ 
+  /* Specific inner container padding for centered sections */
+  .section.text-center > .max-w-2xl.mx-auto.px-4 {
+    padding-bottom: 1rem; /* 16px */
+  }
 }
 
 /* ======================================

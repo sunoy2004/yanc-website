@@ -199,9 +199,19 @@ const Footer = () => {
                   Contact Us
                 </a>
               </li>
-              <li>
+              {/* <li>
                 <a href="/#about-us" className="footer-link">
                   About Us
+                </a>
+              </li> */}
+              <li>
+              <a
+                  href="https://yanc-bug-tracker-1095720168864.asia-south1.run.app/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="footer-link"
+                >
+                  Log Issues
                 </a>
               </li>
             </ul>
