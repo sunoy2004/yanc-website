@@ -19,8 +19,8 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 
-# Expose port 80 for nginx
-EXPOSE 80
+# Expose port; Cloud Run expects 8080 by default
+EXPOSE 8080
 
 # Use the custom entrypoint to render runtime config then start nginx
 ENTRYPOINT ["/docker-entrypoint.sh"]

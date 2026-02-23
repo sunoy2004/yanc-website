@@ -15,5 +15,17 @@ echo "};" >> "$RUNTIME_FILE"
 chmod 644 "$RUNTIME_FILE"
 
 echo "Starting nginx..."
+# Cloud Run expects the container to listen on the port specified by $PORT (default 8080).
+# Update nginx default site to listen on $PORT at container start so the same image works locally and on Cloud Run.
+PORT="${PORT:-8080}"
+NGINX_DEFAULT_CONF="/etc/nginx/conf.d/default.conf"
+if [ -f "$NGINX_DEFAULT_CONF" ]; then
+  # Replace any "listen 80" with the desired port (keeps other directives intact).
+  sed -i "s/listen 80;/listen ${PORT};/g" "$NGINX_DEFAULT_CONF" || true
+fi
+
+echo "nginx will listen on port: $PORT"
+
+# Start nginx (pass through args)
 exec "$@"
 
