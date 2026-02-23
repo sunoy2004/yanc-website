@@ -12,9 +12,9 @@ export default function ScrollToTop(): null {
       const id = hash.replace('#', '');
       const el = document.getElementById(id);
       if (el) {
-        // Use smooth scrolling where available
+        // Scroll instantly to the target element (no smooth animation)
         try {
-          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          el.scrollIntoView({ behavior: 'auto', block: 'start' });
           return;
         } catch {
           el.scrollIntoView();
@@ -25,7 +25,8 @@ export default function ScrollToTop(): null {
 
     // Default: scroll to top on navigation
     try {
-      window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+      // Use instant scroll (no smooth animation)
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
     } catch {
       window.scrollTo(0, 0);
     }

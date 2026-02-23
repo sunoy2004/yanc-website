@@ -14,7 +14,8 @@ const Footer = () => {
     // Timeout allows SPA navigation to complete first.
     setTimeout(() => {
       try {
-        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+        // Use instant scroll (no smooth animation)
+        window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
       } catch {
         // noop in non-browser environments
       }
@@ -238,7 +239,7 @@ const Footer = () => {
             </p>
             <p className="footer-build text-xs text-muted-foreground mt-1">
              {/* v{import.meta.env.VITE_BUILD_DATE} */}
-             v{"2026.02.23"}
+             v{"2026.02.24"}
             </p>
           </div>
         </div>

@@ -336,8 +336,16 @@
 
   @media (min-width: 768px) {
     .hero-top-content {
-      /* On medium and larger screens position absolutely for layered hero */
-      @apply absolute top-0 left-0 right-0 z-20 pt-6 sm:pt-20 px-4 sm:px-6 text-center;
+      /* On medium and larger screens position absolutely for layered hero.
+         Move it down to visually align with the carousel. */
+      @apply absolute left-0 right-0 z-20 pt-6 sm:pt-20 px-4 sm:px-6 text-center;
+      top: 4rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero-top-content {
+      top: 2rem;
     }
   }
 
@@ -351,6 +359,21 @@
 
   .hero-carousel-container {
     @apply absolute inset-0;
+  }
+
+  /* Nudge the carousel lower so it's visually centered relative to navbar and section edges */
+  @media (min-width: 768px) {
+    .hero-carousel-container {
+      top: 6rem; /* push down on tablet */
+      bottom: 0;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero-carousel-container {
+      top: 4rem; /* push down on desktop */
+      bottom: 0;
+    }
   }
 
   /* Three.js Curved Slider Container */
@@ -385,7 +408,7 @@
 
   @media (min-width: 768px) {
     .hero-content {
-      margin-top: 10rem;
+      margin-top: 16rem;
     }
   }
 
@@ -465,12 +488,15 @@
     contain: layout style paint;
     -webkit-isolation: isolate;
     isolation: isolate;
+    overflow: visible; /* ensure children transforms are visible */
   }
 
   .hero-carousel-track {
-    @apply flex items-end;
+    @apply flex items-center;
     width: max-content;
-    height: 370px;
+    /* Allow taller carousel so center items are not visually clipped */
+    min-height: 520px;
+    overflow: visible;
     gap: 60px;
     padding: 0 70px;
     animation: carousel-slide 40s linear infinite;
@@ -498,10 +524,11 @@
   }
 
   .hero-carousel-item {
-    @apply flex-shrink-0 rounded-2xl overflow-hidden relative;
-    width: 380px;
-    height: 250px;
-    transform-origin: center bottom;
+    @apply flex-shrink-0 rounded-2xl overflow-visible relative flex items-center justify-center;
+    width: 420px;
+    height: 300px;
+    /* Use center center so scaling doesn't make center items appear shorter */
+    transform-origin: center center;
     box-shadow: 
       0 30px 60px -15px hsl(var(--background) / 0.9),
       0 0 0 1px hsl(var(--border) / 0.2);
@@ -513,10 +540,7 @@
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
     contain: layout style paint;
-    content-visibility: auto;
     isolation: isolate;
-    -webkit-mask-image: -webkit-radial-gradient(white, black);
-    mask-image: radial-gradient(white, black);
   }
 
   .hero-carousel-item img,
@@ -575,8 +599,8 @@
     opacity: 0.5;
     filter: brightness(0.7);
     z-index: 1;
-    transform: translateY(-150px) scale(0.78) translateZ(0);
-    -webkit-transform: translateY(-150px) scale(0.78) translateZ(0);
+    transform: translateY(-80px) scale(1) translateZ(0);
+    -webkit-transform: translateY(-80px) scale(1) translateZ(0);
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     contain: layout style paint;
@@ -587,8 +611,8 @@
     opacity: 0.6;
     filter: brightness(0.75);
     z-index: 2;
-    transform: translateY(-110px) scale(0.82) translateZ(0);
-    -webkit-transform: translateY(-110px) scale(0.82) translateZ(0);
+    transform: translateY(-60px) scale(1) translateZ(0);
+    -webkit-transform: translateY(-60px) scale(1) translateZ(0);
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     contain: layout style paint;
@@ -599,8 +623,8 @@
     opacity: 0.72;
     filter: brightness(0.82);
     z-index: 3;
-    transform: translateY(-70px) scale(0.86) translateZ(0);
-    -webkit-transform: translateY(-70px) scale(0.86) translateZ(0);
+    transform: translateY(-40px) scale(1) translateZ(0);
+    -webkit-transform: translateY(-40px) scale(1) translateZ(0);
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     contain: layout style paint;
@@ -611,8 +635,8 @@
     opacity: 0.84;
     filter: brightness(0.9);
     z-index: 4;
-    transform: translateY(-42px) scale(0.90) translateZ(0);
-    -webkit-transform: translateY(-42px) scale(0.90) translateZ(0);
+    transform: translateY(-24px) scale(1) translateZ(0);
+    -webkit-transform: translateY(-24px) scale(1) translateZ(0);
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     contain: layout style paint;
@@ -623,8 +647,8 @@
     opacity: 0.92;
     filter: brightness(0.95);
     z-index: 5;
-    transform: translateY(-20px) scale(0.94) translateZ(0);
-    -webkit-transform: translateY(-20px) scale(0.94) translateZ(0);
+    transform: translateY(-10px) scale(1) translateZ(0);
+    -webkit-transform: translateY(-10px) scale(1) translateZ(0);
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     contain: layout style paint;
@@ -635,8 +659,8 @@
     opacity: 0.97;
     filter: brightness(0.98);
     z-index: 6;
-    transform: translateY(-7px) scale(0.97) translateZ(0);
-    -webkit-transform: translateY(-7px) scale(0.97) translateZ(0);
+    transform: translateY(-3px) scale(1) translateZ(0);
+    -webkit-transform: translateY(-3px) scale(1) translateZ(0);
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     contain: layout style paint;
@@ -650,8 +674,8 @@
     opacity: 1;
     filter: brightness(1);
     z-index: 7;
-    transform: translateY(0) scale(1) translateZ(0);
-    -webkit-transform: translateY(0) scale(1) translateZ(0);
+    transform: translateY(0) scale(1.06) translateZ(0);
+    -webkit-transform: translateY(0) scale(2) translateZ(0);
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     contain: layout style paint;
@@ -1192,30 +1216,30 @@
     height: 180px;
   }
 
-  /* Reduced curve effect on mobile */
+  /* Reduced curve effect on mobile - shallower to avoid center shrink */
   .hero-carousel-track .hero-carousel-item:nth-child(16n+1),
   .hero-carousel-track .hero-carousel-item:nth-child(16n+16) {
-    transform: translateY(-80px) scale(0.85);
+    transform: translateY(-40px) scale(0.92);
   }
   
   .hero-carousel-track .hero-carousel-item:nth-child(16n+2),
   .hero-carousel-track .hero-carousel-item:nth-child(16n+15) {
-    transform: translateY(-55px) scale(0.88);
+    transform: translateY(-30px) scale(0.94);
   }
   
   .hero-carousel-track .hero-carousel-item:nth-child(16n+3),
   .hero-carousel-track .hero-carousel-item:nth-child(16n+14) {
-    transform: translateY(-35px) scale(0.92);
+    transform: translateY(-20px) scale(0.97);
   }
   
   .hero-carousel-track .hero-carousel-item:nth-child(16n+4),
   .hero-carousel-track .hero-carousel-item:nth-child(16n+13) {
-    transform: translateY(-18px) scale(0.96);
+    transform: translateY(-10px) scale(0.99);
   }
-
+  
   .hero-carousel-track .hero-carousel-item:nth-child(16n+5),
   .hero-carousel-track .hero-carousel-item:nth-child(16n+12) {
-    transform: translateY(-8px) scale(0.98);
+    transform: translateY(-4px) scale(0.995);
   }
 
   /* Mobile adjustments for top content */

@@ -242,6 +242,25 @@ const SliderScene = ({ mediaItems, speed, gap, curve, isPaused }: SliderScenePro
       timeRef.current = 0;
       groupRef.current.position.x = 0;
     }
+    
+    // Emphasize center item by scaling meshes based on distance from center.
+    // This is done client-side (three.js) so CSS transforms don't interfere.
+    try {
+      const maxScale = 1.02;
+      // Maximum distance before scale goes back to 1
+      const maxDistance = Math.max(1.0, viewport.width / 2);
+      groupRef.current.children.forEach((child: any) => {
+        if (!child || !child.position) return;
+        // Compute current world X for the child relative to the camera center
+        const worldX = child.position.x + groupRef.current.position.x;
+        const distance = Math.abs(worldX);
+        const t = Math.min(1, distance / maxDistance); // 0=center, 1=far
+        const scale = 1 + (maxScale - 1) * (1 - t); // linear interpolation
+        child.scale.setScalar(scale);
+      });
+    } catch (err) {
+      // ignore scaling errors
+    }
   });
 
   return (
@@ -269,7 +288,7 @@ interface CurvedSliderProps {
 const CurvedSlider = ({
   items,
   speed = 12,
-  gap = 25,
+  gap = 30,
   curve = 18,
 }: CurvedSliderProps) => {
   const [isPaused, setIsPaused] = useState(false);
