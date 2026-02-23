@@ -1,28 +1,33 @@
-# ---------- Build stage ----------
-FROM node:18-alpine AS builder
-
+# Multi-stage Dockerfile for building and serving the Vite React app with Nginx
+FROM node:18-alpine AS build
 WORKDIR /app
 
-COPY package*.json ./
-RUN npm install
+# Install dependencies (use legacy-peer-deps to avoid peer conflicts in CI)
+COPY package.json package-lock.json* ./
+RUN npm install --legacy-peer-deps
 
+# Copy source and build
 COPY . .
 RUN npm run build
 
-# ---------- Production stage ----------
-FROM nginx:stable-alpine AS production
+### Production image
+FROM nginx:stable-alpine
+WORKDIR /usr/share/nginx/html
 
-# Copy built assets into nginx html folder
-COPY --from=builder /app/dist /usr/share/nginx/html
+# Copy built assets
+COPY --from=build /app/dist /usr/share/nginx/html
 
-# Add entrypoint that generates runtime-config.js from env vars at container start
+# Copy entrypoint that generates runtime-config.js from container env vars
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 
-# Expose port; Cloud Run expects 8080 by default
-EXPOSE 8080
+# Custom nginx config (SPA fallback)
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Use the custom entrypoint to render runtime config then start nginx
+EXPOSE 8080
+HEALTHCHECK --interval=30s --timeout=3s CMD wget -qO- --timeout=3 http://localhost:8080/ || exit 1
+
+# Run the entrypoint which writes runtime-config.js then execs nginx
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]
 
