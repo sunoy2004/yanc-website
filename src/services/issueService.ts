@@ -19,8 +19,14 @@ export const createIssue = async (
 
   if ((!SUPABASE_URL || !SUPABASE_KEY) && typeof window !== 'undefined') {
     const w = window as any;
+    // support both direct runtime globals and the object injected by docker-entrypoint.sh
     if (!SUPABASE_URL && w.__RUNTIME_SUPABASE_URL) SUPABASE_URL = w.__RUNTIME_SUPABASE_URL;
     if (!SUPABASE_KEY && w.__RUNTIME_SUPABASE_ANON_KEY) SUPABASE_KEY = w.__RUNTIME_SUPABASE_ANON_KEY;
+    if (w.__RUNTIME_CONFIG__) {
+      if (!SUPABASE_URL && w.__RUNTIME_CONFIG__.VITE_SUPABASE_URL) SUPABASE_URL = w.__RUNTIME_CONFIG__.VITE_SUPABASE_URL;
+      if (!SUPABASE_KEY && w.__RUNTIME_CONFIG__.VITE_SUPABASE_ANON_KEY) SUPABASE_KEY = w.__RUNTIME_CONFIG__.VITE_SUPABASE_ANON_KEY;
+      if (!SUPABASE_KEY && w.__RUNTIME_CONFIG__.VITE_SUPABASE_KEY) SUPABASE_KEY = w.__RUNTIME_CONFIG__.VITE_SUPABASE_KEY;
+    }
   }
 
   if (!SUPABASE_URL || !SUPABASE_KEY) {
