@@ -10,23 +10,19 @@ COPY . .
 RUN npm run build
 
 # ---------- Production stage ----------
-FROM node:18-alpine
+FROM nginx:stable-alpine AS production
 
-WORKDIR /app
+# Copy built assets into nginx html folder
+COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Install a lightweight static server
-RUN npm install -g serve
+# Add entrypoint that generates runtime-config.js from env vars at container start
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
 
-# Copy built assets
-COPY --from=builder /app/dist ./dist
+# Expose port 80 for nginx
+EXPOSE 80
 
-# Cloud Run uses port 8080
-EXPOSE 8080
-
-# Health check endpoint
-HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:8080/ || exit 1
-
-# Serve static files
-CMD ["serve", "-s", "dist", "-l", "8080"]
+# Use the custom entrypoint to render runtime config then start nginx
+ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD ["nginx", "-g", "daemon off;"]
 
