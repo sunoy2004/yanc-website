@@ -6,7 +6,7 @@ import type { Issue } from '../services/issueService';
 
 export function IssueModal({ onClose }: { onClose: () => void }) {
   // lightweight local fallbacks for environments where context/types aren't present
-  const DEVELOPERS = ['Dev A', 'Dev B'];
+  const DEVELOPERS = ['YANC Dev'];
   const SEVERITIES = ['Low', 'Medium', 'High', 'Critical'];
 
   // Prefer direct Supabase-backed service (createIssueService).
@@ -110,7 +110,7 @@ export function IssueModal({ onClose }: { onClose: () => void }) {
             } as React.CSSProperties}
           >
             <div>
-              <label htmlFor="issue-title" className={labelClass}>Issue Title <span className="text-destructive">*</span></label>
+              <label htmlFor="issue-title" className={labelClass}>Issue<span className="text-destructive">*</span></label>
               <input id="issue-title" value={title} onChange={e => { setTitle(e.target.value); setErrors(prev => ({ ...prev, title: '' })); }} placeholder="Describe the bug briefly..." className={inputClass('title')} />
               {errors.title && (
                 <p className="flex items-center gap-1 mt-1.5 text-xs text-destructive"><AlertCircle size={12} />{errors.title}</p>
