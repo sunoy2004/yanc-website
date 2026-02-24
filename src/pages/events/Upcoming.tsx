@@ -35,10 +35,22 @@ const UpcomingEvents = () => {
 
   // Filter and sort upcoming events - show active upcoming events, sorted by date (closest first)
   const upcomingEvents = events
-    .filter(event => 
-      event.isActive !== false &&
-      (event.category === 'upcoming' || event.type === 'upcoming')
-    )
+    .filter(event => {
+      if (event.isActive === false) return false;
+      if (!(event.category === 'upcoming' || event.type === 'upcoming')) return false;
+      // Exclude events that are strictly before today's date (local)
+      try {
+        const eventDay = new Date(event.date);
+        const today = new Date();
+        // Normalize both to local date-only (set time to 00:00)
+        eventDay.setHours(0, 0, 0, 0);
+        today.setHours(0, 0, 0, 0);
+        if (eventDay.getTime() < today.getTime()) return false;
+      } catch {
+        // If date parsing fails, keep the event so it can be inspected
+      }
+      return true;
+    })
     .sort((a, b) => {
       const dateA = new Date(a.date).getTime();
       const dateB = new Date(b.date).getTime();

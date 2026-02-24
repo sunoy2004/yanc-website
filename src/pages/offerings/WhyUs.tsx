@@ -111,27 +111,42 @@ const WhyUs = () => {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {whyUsCards.map((card) => (
-                <div 
+              {whyUsCards.map((card, idx) => (
+                <div
                   key={card.id}
-                  className="bg-card rounded-xl p-6 border border-border shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 group"
+                  className="feature-card relative bg-card rounded-xl p-6 border border-border shadow-sm transform-gpu transition-all duration-500 group hover:shadow-2xl hover:-translate-y-2 hover:scale-[1.02] overflow-hidden"
                 >
-                  <div className="flex justify-center mb-4">
-                    {card.icon}
+                  {/* Reuse existing feature card glow + particles for consistency */}
+                  <div className="feature-card-glow" />
+                  <div className="feature-card-particle" style={{ top: '1rem', right: '1rem', animationDelay: '0.15s' }} />
+                  <div className="feature-card-particle" style={{ bottom: '1rem', left: '1rem', width: '0.375rem', height: '0.375rem', animationDelay: '0.45s' }} />
+
+                  <div className="flex justify-center mb-4 relative z-10">
+                    <div className="feature-card-icon w-16 h-16 rounded-full flex items-center justify-center bg-gradient-to-br from-primary to-secondary text-white shadow-lg transform transition-transform duration-500 group-hover:-translate-y-1">
+                      <div className="transition-transform duration-300 group-hover:scale-125 group-hover:-rotate-3">
+                        {card.icon}
+                      </div>
+                    </div>
+                    {/* Shine effect on hover */}
+                    <div className="absolute inset-0 rounded-full bg-gradient-to-r from-transparent via-white/12 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform -rotate-45 pointer-events-none" />
                   </div>
-                  <div className="mb-4">
-                    <span className="inline-block px-3 py-1 text-xs font-semibold text-primary bg-primary/10 rounded-full mb-3">
-                      {card.title}
-                    </span>
-                    <p className="text-muted-foreground">
+
+                  <div className="mb-4 relative z-10 text-center">
+                    <h3 className="feature-card-title">{card.title}</h3>
+                    <p className="feature-card-description">
                       {card.description}
                     </p>
                   </div>
-                  <div className="mt-auto pt-4 border-t border-border">
-                    <p className="text-xs font-semibold text-primary uppercase tracking-wider">
+
+                  <div className="mt-auto pt-4 border-t border-border relative z-10 text-center">
+                    <p className="feature-card-footer">
                       {card.footerLabel}
                     </p>
                   </div>
+
+                  {/* subtle floating accent in the background */}
+                  <div className={`absolute -right-6 -top-6 w-36 h-36 rounded-full bg-gradient-to-tr from-primary/8 to-transparent blur-3xl opacity-30 pointer-events-none transform ${idx % 2 === 0 ? 'rotate-12' : '-rotate-12'}`} />
+                  <div className="feature-card-border" />
                 </div>
               ))}
             </div>
