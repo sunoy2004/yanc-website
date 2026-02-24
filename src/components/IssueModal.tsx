@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { createIssue as createIssueService } from '../services/issueService';
@@ -6,7 +6,7 @@ import type { Issue } from '../services/issueService';
 
 export function IssueModal({ onClose }: { onClose: () => void }) {
   // lightweight local fallbacks for environments where context/types aren't present
-  const DEVELOPERS = ['YANC Dev'];
+  const DEVELOPERS = ['YANC Developers'];
   const SEVERITIES = ['Low', 'Medium', 'High', 'Critical'];
 
   // Prefer direct Supabase-backed service (createIssueService).
@@ -26,11 +26,29 @@ export function IssueModal({ onClose }: { onClose: () => void }) {
   // Split version into year prefix (auto) and user-entered month.date suffix
   const yearPrefix = `v${new Date().getFullYear()}.`;
   const [versionSuffix, setVersionSuffix] = useState('');
+  const [versionInput, setVersionInput] = useState('');
   const [reporter, setReporter] = useState('');
   const [assignedTo, setAssignedTo] = useState(DEVELOPERS[0]);
   const [severity, setSeverity] = useState('Low');
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Try to auto-fill the version suffix from the footer build text (e.g. "v2026.02.24")
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    try {
+      const el = document.querySelector('.footer-build');
+      const text = el?.textContent?.trim() ?? '';
+      // Match vYYYY.MM.DD or YYYY.MM.DD, capture the MM.DD portion
+      const m = text.match(/v?(\d{4})\.(\d{1,2}\.\d{1,2})/);
+      if (m && m[2]) {
+        setVersionSuffix(m[2]);
+        setVersionInput(`${yearPrefix}${m[2]}`);
+      }
+    } catch {
+      // ignore DOM access errors in non-browser environments
+    }
+  }, [yearPrefix]);
 
   const validate = () => {
     const e: Record<string, string> = {};
@@ -110,8 +128,15 @@ export function IssueModal({ onClose }: { onClose: () => void }) {
             } as React.CSSProperties}
           >
             <div>
-              <label htmlFor="issue-title" className={labelClass}>Issue<span className="text-destructive">*</span></label>
-              <input id="issue-title" value={title} onChange={e => { setTitle(e.target.value); setErrors(prev => ({ ...prev, title: '' })); }} placeholder="Describe the bug briefly..." className={inputClass('title')} />
+              <label htmlFor="issue-title" className={labelClass}>Issue Description<span className="text-destructive">*</span></label>
+              <textarea
+                id="issue-title"
+                value={title}
+                onChange={e => { setTitle(e.target.value); setErrors(prev => ({ ...prev, title: '' })); }}
+                placeholder="Describe the bug briefly..."
+                rows={4}
+                className={`${inputClass('title')} h-28 resize-y`}
+              />
               {errors.title && (
                 <p className="flex items-center gap-1 mt-1.5 text-xs text-destructive"><AlertCircle size={12} />{errors.title}</p>
               )}
@@ -119,23 +144,16 @@ export function IssueModal({ onClose }: { onClose: () => void }) {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label htmlFor="version-suffix" className={labelClass}>Version</label>
-                <div className="flex items-center gap-2 min-w-0">
-                  <div className="flex items-center bg-background border border-input rounded-xl overflow-hidden w-full">
-                    <input
-                      value={yearPrefix}
-                      disabled
-                      aria-hidden
-                      className="px-3 py-2.5 w-28 bg-transparent text-foreground placeholder:text-muted-foreground/60 focus:outline-none border-none"
-                    />
-                    <input
-                      id="version-suffix"
-                      value={versionSuffix}
-                      onChange={e => { setVersionSuffix(e.target.value); setErrors(prev => ({ ...prev, version: '' })); }}
-                      placeholder="MM.DD"
-                      className="flex-1 px-3 py-2.5 bg-transparent text-foreground placeholder:text-muted-foreground/60 focus:outline-none min-w-0 border-none"
-                    />
-                  </div>
+                <label htmlFor="version" className={labelClass}>Version</label>
+                <div className="min-w-0">
+                  <input
+                    id="version"
+                    value={versionInput}
+                    disabled
+                    aria-hidden
+                    title="Version is auto-filled from footer and cannot be edited"
+                    className="w-full px-3 py-2.5 rounded-xl border text-body bg-background text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all duration-200 opacity-60 cursor-not-allowed"
+                  />
                 </div>
                 {errors.version && (
                   <p className="flex items-center gap-1 mt-1.5 text-xs text-destructive"><AlertCircle size={12} />{errors.version}</p>
@@ -158,9 +176,14 @@ export function IssueModal({ onClose }: { onClose: () => void }) {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label htmlFor="assignee" className={labelClass}>Assigned To</label>
-                <select id="assignee" value={assignedTo} onChange={e => setAssignedTo(e.target.value)} className={inputClass()}>
-                  {DEVELOPERS.map(d => <option key={d} value={d}>{d}</option>)}
-                </select>
+                <input
+                  id="assignee"
+                  value={assignedTo}
+                  disabled
+                  aria-hidden
+                  title="Assigned to (not editable)"
+                  className={`${inputClass()} opacity-60 cursor-not-allowed`}
+                />
               </div>
               <div>
                 <label htmlFor="severity" className={labelClass}>Severity</label>

@@ -15,7 +15,8 @@ interface AccordionSection {
 
 const Faq = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
-  const [activeSection, setActiveSection] = useState<number | null>(null);
+  // Track multiple open sections (allow more than one open at a time)
+  const [openSections, setOpenSections] = useState<number[]>([]);
 
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode);
@@ -23,7 +24,9 @@ const Faq = () => {
   };
 
   const toggleSection = (index: number) => {
-    setActiveSection(activeSection === index ? null : index);
+    setOpenSections((prev) =>
+      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
+    );
   };
 
   const faqSections: AccordionSection[] = [
@@ -152,11 +155,11 @@ const Faq = () => {
                 <button
                   className="w-full px-6 py-4 text-left bg-card hover:bg-accent/50 transition-colors flex justify-between items-center"
                   onClick={() => toggleSection(sectionIndex)}
-                  aria-expanded={activeSection === sectionIndex}
+                  aria-expanded={openSections.includes(sectionIndex)}
                 >
                   <h2 className="text-xl font-semibold">{section.title}</h2>
                   <div className="text-primary">
-                    {activeSection === sectionIndex ? (
+                    {openSections.includes(sectionIndex) ? (
                       <ChevronUp size={24} />
                     ) : (
                       <ChevronDown size={24} />
@@ -164,7 +167,7 @@ const Faq = () => {
                   </div>
                 </button>
                 
-                {activeSection === sectionIndex && (
+                {openSections.includes(sectionIndex) && (
                   <div className="px-6 pb-6 pt-2 bg-background border-t border-border">
                     <div className="space-y-6">
                       {section.items.map((item, itemIndex) => (
