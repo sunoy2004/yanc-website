@@ -6,7 +6,11 @@ production(main):https://yanc-website.onrender.com
 
 development(dev):https://yanc-website-test.onrender.com
 
+<<<<<<< HEAD
 Gcp(feature):https://website-1095720168864.asia-south1.run.app
+=======
+Gcp(feature):https://website-1095720168864.asia-south1.run.app/
+>>>>>>> 389477883dec4808b4f327c66f8b595082ecb519
 
 ## Project Overview
 
