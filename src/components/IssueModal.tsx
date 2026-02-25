@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { X, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { createIssue as createIssueService } from '../services/issueService';
@@ -50,6 +50,40 @@ export function IssueModal({ onClose }: { onClose: () => void }) {
     }
   }, [yearPrefix]);
 
+  // Manage history so the browser back button closes the modal instead of navigating away.
+  const popHandlerRef = useRef<() => void>(() => {});
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      // Push a history entry so Back will trigger a popstate we can listen to.
+      window.history.pushState({ issueModal: true }, '');
+      const onPop = () => {
+        // Close the modal when the user navigates back.
+        onClose();
+      };
+      popHandlerRef.current = onPop;
+      window.addEventListener('popstate', onPop);
+      return () => {
+        window.removeEventListener('popstate', onPop);
+      };
+    } catch {
+      // ignore
+    }
+  }, [onClose]);
+
+  // Close helper: navigate back so the popstate listener will trigger modal close.
+  const handleClose = () => {
+    if (typeof window !== 'undefined' && window.history && typeof window.history.back === 'function') {
+      try {
+        window.history.back();
+        return;
+      } catch {
+        // fallback to direct close
+      }
+    }
+    onClose();
+  };
+
   const validate = () => {
     const e: Record<string, string> = {};
     if (!title.trim()) e.title = 'Issue title is required';
@@ -76,7 +110,7 @@ export function IssueModal({ onClose }: { onClose: () => void }) {
           description:
             'Our development team has received your submission and will review it shortly.',
         });
-        onClose();
+        handleClose();
       } catch (err) {
         console.error('Issue submit error', err);
         toast.error(`Failed to submit issue: ${err instanceof Error ? err.message : String(err)}`);
@@ -95,7 +129,7 @@ export function IssueModal({ onClose }: { onClose: () => void }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="modal-title">
       <div
         className="fixed inset-0 bg-foreground/15 backdrop-blur-sm z-40"
-        onClick={onClose}
+        onClick={handleClose}
       />
       <div
         className="relative z-50 bg-card shadow-modal w-full h-[90vh] md:h-auto max-w-sm sm:max-w-md md:max-w-lg border border-border overflow-y-auto rounded-none md:rounded-2xl max-h-[90vh]"
@@ -107,7 +141,7 @@ export function IssueModal({ onClose }: { onClose: () => void }) {
             <p className="text-body text-muted-foreground mt-0.5">Fill in the details to create a new bug report</p>
           </div>
           <button
-            onClick={onClose}
+            onClick={handleClose}
             className="p-2 rounded-xl hover:bg-muted transition-colors text-muted-foreground focus-ring"
             aria-label="Close modal"
           >
@@ -198,7 +232,7 @@ export function IssueModal({ onClose }: { onClose: () => void }) {
           <div className="flex flex-col sm:flex-row sm:justify-end gap-3 pt-3 border-t border-border -mx-6 px-6 mt-4 bg-card">
             <button
               type="button"
-              onClick={onClose}
+              onClick={handleClose}
               className="w-full sm:w-auto px-4 py-2.5 text-body font-medium rounded-xl border border-border text-foreground hover:bg-muted transition-colors focus-ring"
             >
               Cancel
