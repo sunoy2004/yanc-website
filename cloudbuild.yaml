@@ -1,0 +1,82 @@
+steps:
+
+    # Generate build metadata for Vite
+  - name: alpine
+    entrypoint: sh
+    args:
+      - -c
+      - |
+        _BUILD_DATE=$(date -u +"%Y.%m.%d")
+        echo "VITE_BUILD_DATE=$_BUILD_DATE" >> .env.production
+        echo "VITE_BUILD_SHA=$_SHORT_SHA" >> .env.production
+        
+  # Create Artifact Registry repository if it doesn't exist
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
+    entrypoint: gcloud
+    args:
+      - 'artifacts'
+      - 'repositories'
+      - 'describe'
+      - 'cloud-run-source-deploy'
+      - '--location=$_LOCATION'
+      - '--project=$PROJECT_ID'
+    env:
+      - 'CLOUDSDK_CORE_PROJECT=$PROJECT_ID'
+    # Continue even if repository doesn't exist yet
+    allowFailure: true
+
+  # Create repository if it didn't exist
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
+    entrypoint: gcloud
+    args:
+      - 'artifacts'
+      - 'repositories'
+      - 'create'
+      - 'cloud-run-source-deploy'
+      - '--repository-format=docker'
+      - '--location=$_LOCATION'
+      - '--project=$PROJECT_ID'
+    env:
+      - 'CLOUDSDK_CORE_PROJECT=$PROJECT_ID'
+    # Only run if the previous step failed (meaning repo doesn't exist)
+    waitFor: ['-']
+    allowFailure: true
+
+  # Build the Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', '$_LOCATION-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/$REPO_NAME:$COMMIT_SHA', '.']
+
+  # Push the Docker image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', '$_LOCATION-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/$REPO_NAME:$COMMIT_SHA']
+
+  # Deploy to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - 'website'
+      - '--image=$_LOCATION-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/$REPO_NAME:$COMMIT_SHA'
+      - '--region=$_LOCATION'
+      - '--platform=managed'
+      - '--allow-unauthenticated'
+      - '--port=8080'
+      - '--memory=256Mi'
+      - '--cpu=1'
+      - '--concurrency=80'
+      - '--max-instances=1'
+      #- '--set-env-vars=PORT=8080'
+    env:
+      - 'CLOUDSDK_CORE_PROJECT=$PROJECT_ID'
+
+# Define substitution variables
+substitutions:
+  _LOCATION: asia-south1
+
+# Options for logging
+options:
+  logging: CLOUD_LOGGING_ONLY
+
+# Timeout for the build
+timeout: 1200s

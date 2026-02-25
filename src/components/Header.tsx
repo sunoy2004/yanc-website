@@ -36,18 +36,18 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
     { label: "Events", href: "#events", hasDropdown: true },
     { label: "Programs", href: "/offerings/value-proposition", hasDropdown: true },
     { label: "Team", href: "/team/executive-management", hasDropdown: true },
-    { label: "Careers", href: "/careers" }, // Updated to single page
+    { label: "Careers", href: "https://web.yanc.in/careers", external: true }, // External redirect
     { label: "Applications", href: "/apply/membership", hasDropdown: true },
-    { label: "Contact", href: "/contact" },
+    { label: "Contact", href: "https://web.yanc.in/contact-us", external: true },
     { label: "FAQ", href: "/faq" },
   ];
 
   // Team dropdown items
   const teamDropdownItems = [
-    { label: "Executive Management", href: "/team/executive-management" },
     { label: "Cohort Founders", href: "/team/cohort-founders" },
-    { label: "Advisory Board", href: "/team/advisory-board" },
     { label: "Our Global Mentors", href: "/team/global-mentors" },
+    { label: "Advisory Board", href: "/team/advisory-board" },
+    { label: "Executive Management", href: "/team/executive-management" },
   ];
 
   // Our Offerings dropdown items
@@ -67,11 +67,11 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
 
   // Applications dropdown items
   const applicationsDropdownItems = [
-    { label: "Apply for YANC Membership", href: "/apply/membership-application" },
-    { label: "Discover Meet Registration", href: "/apply/discover-meet-registration" },
-    { label: "Discover Meet Feedback", href: "/apply/discover-meet-feedback" },
-    { label: "Mentor Registration", href: "/apply/mentor-registration" },
-    { label: "Startup Pitch", href: "/apply/startup-pitch" },
+    { label: "Apply for YANC Membership", href: "https://web.yanc.in/membership-application", external: true },
+    { label: "Discover Meet Registration", href: "https://web.yanc.in/discover-meet-registration", external: true },
+    { label: "Discover Meet Feedback", href: "https://web.yanc.in/discover-meet-feedback", external: true },
+    { label: "Mentor Registration", href: "https://web.yanc.in/mentor-registration", external: true },
+    { label: "Startup Pitch", href: "https://web.yanc.in/startup-pitch", external: true },
   ];
 
   // Events dropdown items
@@ -79,7 +79,7 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
     { label: "Upcoming Events", href: "/events/upcoming" },
     { label: "Past Events", href: "/events/past" },
     { label: "Event Gallery", href: "/events/gallery" },
-    { label: "Event Highlights", href: "/events/highlights" },
+    // { label: "Event Highlights", href: "/events/highlights" }, // COMMENTED OUT: Highlights disabled
   ];
 
   // Clear all timeouts
@@ -288,9 +288,15 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
             } else if (item.label === "Careers") {
               // Single page link - no dropdown
               return (
-                <Link key={item.label} to={item.href} className="header-nav-link">
+                <a 
+                  key={item.label} 
+                  href={item.href} 
+                  className="header-nav-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   {item.label}
-                </Link>
+                </a>
               );
             } else if (item.label === "Applications" && item.hasDropdown) {
               return (
@@ -314,13 +320,15 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
                       onMouseLeave={() => handleDropdownClose('applications')}
                     >
                       {applicationsDropdownItems.map((dropdownItem) => (
-                        <Link
+                        <a
                           key={dropdownItem.label}
-                          to={dropdownItem.href}
+                          href={dropdownItem.href}
                           className="dropdown-item"
+                          target="_blank"
+                          rel="noopener noreferrer"
                         >
                           {dropdownItem.label}
-                        </Link>
+                        </a>
                       ))}
                     </div>
                   )}
@@ -339,6 +347,19 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
                   {item.label}
                 </button>
               );
+            } else if (item.label === "Contact") {
+              // External redirect for contact
+              return (
+                <a 
+                  key={item.label} 
+                  href={item.href} 
+                  className="header-nav-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {item.label}
+                </a>
+              );
             } else {
               return (
                 <Link key={item.label} to={item.href} className="header-nav-link">
@@ -350,6 +371,8 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
         </nav>
 
         <div className="header-actions">
+          {/* Theme toggle temporarily disabled */}
+          {/*
           <button
             onClick={toggleTheme}
             className="theme-toggle"
@@ -357,9 +380,10 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
           >
             {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
           </button>
-          <Link to="/signup" className="hidden md:flex items-center justify-center px-4 py-2 text-sm font-medium text-foreground bg-background border border-border rounded-md hover:bg-accent transition-colors">
-            Join
-          </Link>
+          */}
+          <a href="https://web.yanc.in/" className="hidden md:flex items-center justify-center px-4 py-2 text-sm font-medium text-foreground bg-background border border-border rounded-md hover:bg-accent transition-colors" target="_blank" rel="noopener noreferrer">
+            Member login
+          </a>
           <button
             className="mobile-menu-toggle"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -485,14 +509,16 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
             } else if (item.label === "Careers") {
               // Single page link - no dropdown
               return (
-                <Link
+                <a
                   key={item.label}
-                  to={item.href}
+                  href={item.href}
                   className="mobile-nav-link"
                   onClick={() => setIsMenuOpen(false)}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   {item.label}
-                </Link>
+                </a>
               );
             } else if (item.label === "Applications" && item.hasDropdown) {
               return (
@@ -514,17 +540,19 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
                   {isApplicationsDropdownOpen && (
                     <div className="mobile-dropdown-content">
                       {applicationsDropdownItems.map((dropdownItem) => (
-                        <Link
+                        <a
                           key={dropdownItem.label}
-                          to={dropdownItem.href}
+                          href={dropdownItem.href}
                           className="mobile-dropdown-item"
                           onClick={() => {
                             setIsMenuOpen(false);
                             setIsApplicationsDropdownOpen(false);
                           }}
+                          target="_blank"
+                          rel="noopener noreferrer"
                         >
                           {dropdownItem.label}
-                        </Link>
+                        </a>
                       ))}
                     </div>
                   )}
@@ -544,6 +572,20 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
                   {item.label}
                 </button>
               );
+            } else if (item.label === "Contact") {
+              // External redirect for contact
+              return (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  className="mobile-nav-link"
+                  onClick={() => setIsMenuOpen(false)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {item.label}
+                </a>
+              );
             } else {
               return (
                 <Link
@@ -557,9 +599,9 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
               );
             }
           })}
-          <Link to="/signup" className="mt-4 w-full py-2 px-4 bg-primary text-primary-foreground rounded-md text-center text-sm font-medium hover:bg-primary/90 transition-colors" onClick={() => setIsMenuOpen(false)}>
-            Join
-          </Link>
+          <a href="https://web.yanc.in/" className="mt-4 w-full py-2 px-4 bg-primary text-primary-foreground rounded-md text-center text-sm font-medium hover:bg-primary/90 transition-colors" onClick={() => setIsMenuOpen(false)} target="_blank" rel="noopener noreferrer">
+            Member login
+          </a>
         </nav>
       )}
     </header>

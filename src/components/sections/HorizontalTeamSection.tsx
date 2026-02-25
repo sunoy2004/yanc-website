@@ -1,14 +1,17 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { teamMembers, TeamMember } from "@/data/mockData";
 import TeamMemberModal from "@/components/TeamMemberModal";
+import { useTeamData } from "@/services/cms/useTeamData";
+import { TeamMemberUI } from "@/lib/cms/types";
 
 const HorizontalTeamSection = () => {
   const navigate = useNavigate();
+  const { teamData, loading, error } = useTeamData(undefined, 'cohort_founders');
+  console.log('HorizontalTeamSection received teamData:', teamData);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [topBeltHovered, setTopBeltHovered] = useState(false);
   const [bottomBeltHovered, setBottomBeltHovered] = useState(false);
-  const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
+  const [selectedMember, setSelectedMember] = useState<TeamMemberUI | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
@@ -20,28 +23,51 @@ const HorizontalTeamSection = () => {
     return () => mediaQuery.removeEventListener("change", handler);
   }, []);
 
-  const handleCardClick = (member: TeamMember) => {
+  if (loading) {
+    return (
+      <section id="team-horizontal" className="section horizontal-team-section bg-background">
+        <div className="container text-center">
+          <h2 className="section-title text-3xl md:text-4xl font-bold">Cohort Founders</h2>
+          <p className="section-subtitle">
+            Loading cohort founders...
+          </p>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    console.error('Error loading team members:', error);
+  }
+
+  const handleCardClick = (member: TeamMemberUI) => {
     setSelectedMember(member);
     setIsModalOpen(true);
   };
 
   // Triple team members for truly seamless looping
-  const tripledMembers = [...teamMembers, ...teamMembers, ...teamMembers];
+  const tripledMembers = [...teamData, ...teamData, ...teamData];
 
   return (
-    <section id="team-horizontal" className="horizontal-team-section py-16 bg-background">
-      <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center mb-10">
-          <h2 className="section-title text-3xl md:text-4xl font-bold">Our Team</h2>
-          <button 
-            className="view-all-button group px-6 py-2.5 bg-primary/10 text-primary font-medium rounded-lg hover:bg-primary/20 transition-all duration-300 flex items-center gap-1.5 border border-primary/20"
-            onClick={() => navigate('/team/cohort-founders')}
-          >
-            <span className="text-sm">View all members</span>
-            <svg className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
+    <section id="team-horizontal" className="section horizontal-team-section bg-background">
+      <div className="container">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-10">
+          <div className="w-full sm:w-auto">
+            <h2 className="section-title text-3xl md:text-4xl font-bold text-left">Cohort Founders</h2>
+            <div className="w-16 h-1 bg-primary rounded-full mt-2 sm:mt-0" />
+          </div>
+
+          <div className="self-start sm:self-center">
+            <button 
+              className="view-all-button group px-6 py-2.5 bg-primary/10 text-primary font-medium rounded-lg hover:bg-primary/20 transition-all duration-300 flex items-center gap-1.5 border border-primary/20"
+              onClick={() => navigate('/team/cohort-founders')}
+            >
+              <span className="text-sm">View all members</span>
+              <svg className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
         </div>
         
         <div className="team-belt-container overflow-hidden">
@@ -98,7 +124,7 @@ const HorizontalTeamSection = () => {
             ))}
           </div>
           */}
-        </div>
+          </div>
       </div>
       {isModalOpen && selectedMember && (
         <TeamMemberModal 

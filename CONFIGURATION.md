@@ -29,8 +29,8 @@ cp .env.example .env
 Then update the values in `.env`:
 
 ```env
-VITE_API_BASE_URL=https://api.openai.com  # Base URL for API calls
-VITE_OPENAI_API_KEY=your-openai-api-key-here  # Your OpenAI API key
+VITE_API_BASE_URL=https://api.example.com  # Base URL for API calls (set to your backend/CMS)
+VITE_OPENAI_API_KEY=your-openai-api-key-here  # Your OpenAI API key (if using AI features)
 ```
 
 > ⚠️ **Security Note**: The `.env` file is included in `.gitignore` and should never be committed to version control.
@@ -106,13 +106,16 @@ The application includes a mock API service for the chatbot functionality. By de
 2. Change `USE_MOCK_SERVICE` to `false` in `src/services/apiService.ts`
 
 ## Styling
+The project uses Tailwind CSS with a custom design system defined in `src/index.css`. Dark theme is the default and the app ensures the `.dark` class is applied early to avoid flash-of-unstyled content. Theme is controlled via `src/main.tsx` (next-themes) and the document root class.
 
-The project uses Tailwind CSS with a custom design system defined in `src/index.css`. The theme supports both light and dark modes, with dark mode as the default.
+Recent styling choices to note:
+- Sections use a shared `.section` utility for consistent vertical spacing and responsive paddings (mobile-first).
+- Hero uses a 3‑tier layout (top content, carousel, CTA). On small screens top content/CTA are in-flow to avoid overlapping the carousel.
+- Gallery components use `ImageVideoGallery.tsx` with responsive grid defaults (2 cols very small, 3 on small, 4+ on md+ depending on `columns` prop).
 
 ## Deployment
-
 ### Netlify
-The project includes a `netlify.toml` configuration for easy deployment to Netlify.
+The project includes a `netlify.toml` configuration for easy deployment to Netlify (see DEPLOYMENT.md for details).
 
 ### General Static Hosting
 Since this is a client-side application, it can be deployed to any static hosting platform. Just run `npm run build` and deploy the `dist` folder.

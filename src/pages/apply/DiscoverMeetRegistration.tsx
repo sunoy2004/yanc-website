@@ -44,8 +44,8 @@ const DiscoverMeetRegistration = () => {
 
   // Download guide
   const handleDownloadGuide = () => {
-    // Google Drive link for event guide
-    const guideUrl = 'https://drive.google.com/file/d/1CD16xJkwwagf5lKC7zfM1euf2C9nMKgR/view?usp=drive_link';
+    // Supabase link for event guide
+    const guideUrl = '/assets/event-guide.pdf'; // Replace with actual Supabase asset URL
     window.open(guideUrl, '_blank');
   };
 

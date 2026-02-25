@@ -65,9 +65,9 @@ const CoreValuesSection = () => {
   }, []);
 
   return (
-    <section id="core-values" className="py-16 md:py-20 bg-background">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+    <section id="core-values" className="section bg-background">
+      <div className="container">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
           {/* Left Column - Text Content (50%) */}
           <ScrollAnimateWrapper delay={0}>
             <div className="lg:col-span-1">

@@ -4,23 +4,41 @@ import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import AboutUsSection from "@/components/sections/AboutUsSection";
 import CoreValuesSection from "@/components/sections/CoreValuesSection";
-// import ProgramsSection from "@/components/sections/ProgramsSection";
+import ProgramsSection from "@/components/sections/ProgramsSection";
 import EventsSection from "@/components/sections/EventsSection";
-import FoundersSection from "@/components/sections/FoundersSection";
 import HorizontalTeamSection from "@/components/sections/HorizontalTeamSection";
-import TestimonialsSection from "@/components/sections/TestimonialsSection";
-import Footer from "@/components/Footer";
+import TestimonialsSection from "@/components/sections/TestimonialsSection"; // Enabled 
 import Preloader from "@/components/Preloader";
-import Chatbot from "@/components/Chatbot";
+import Layout from "@/components/Layout";
 
 const Index = () => {
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    // Check system preference for initial state
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  });
   const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
 
   useEffect(() => {
-    // Default to dark mode
-    document.documentElement.classList.add("dark");
+    // Check for saved theme preference first, then system preference
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+      document.documentElement.classList.add("dark");
+      setIsDarkMode(true);
+    } else if (savedTheme === 'light') {
+      document.documentElement.classList.remove("dark");
+      setIsDarkMode(false);
+    } else {
+      // If no saved preference, use system preference
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (prefersDark) {
+        document.documentElement.classList.add("dark");
+        setIsDarkMode(true);
+      } else {
+        document.documentElement.classList.remove("dark");
+        setIsDarkMode(false);
+      }
+    }
     
     // Check if we're navigating from another page (not a fresh load)
     const fromNavigation = sessionStorage.getItem('fromNavigation');
@@ -48,8 +66,16 @@ const Index = () => {
   }, []);
 
   const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-    document.documentElement.classList.toggle("dark");
+    const newDarkMode = !isDarkMode;
+    setIsDarkMode(newDarkMode);
+    
+    if (newDarkMode) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem('theme', 'light');
+    }
   };
 
   return (
@@ -60,35 +86,35 @@ const Index = () => {
           isLoading ? "main-content-hidden" : "main-content-visible"
         }`}
       >
-        <Header isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
-        <main>
+        <Layout isDarkMode={isDarkMode} toggleTheme={toggleTheme}>
           <Hero />
           <AboutUsSection />
           <CoreValuesSection />
           {/* <ProgramsSection /> */}
           <EventsSection />
-          <FoundersSection />
           <HorizontalTeamSection />
-          <TestimonialsSection />
+          {/* <TestimonialsSection /> */} {/* Disabled per request */}
           
           {/* CTA Section */}
-          <div className="text-center p-8 md:p-12">
-            <h2 className="text-2xl md:text-3xl font-bold mb-4">
-              Ready to embark on your journey of growth and empowerment?
-            </h2>
-            <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-              Contact us today!
-            </p>
-            <a 
-              href="mailto:connect@yanc.in" 
-              className="inline-block bg-primary text-primary-foreground px-8 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors"
-            >
-              Reach out to us at connect@yanc.in
-            </a>
+          <div className="section text-center">
+            <div className="max-w-2xl mx-auto px-4">
+              <h2 className="text-2xl md:text-3xl font-bold mb-4">
+                Ready to embark on your journey of growth and empowerment?
+              </h2>
+              <p className="text-muted-foreground mb-6">
+                Contact us today!
+              </p>
+              <a 
+                href="mailto:connect@yanc.in" 
+                className="inline-block bg-primary text-primary-foreground px-8 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Reach out to us at connect@yanc.in
+              </a>
+            </div>
           </div>
-        </main>
-        <Footer />
-        <Chatbot />
+        </Layout>
       </div>
     </>
   );

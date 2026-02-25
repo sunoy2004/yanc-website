@@ -17,21 +17,24 @@ const WhoCanJoin = () => {
       title: "Youth (15–28)",
       description: "Access a world of opportunities to grow, learn, and connect.",
       image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769271736/5_kyixex.jpg",
-      link: "/apply/membership"
+      link: "https://web.yanc.in/contact-us",
+      external: true
     },
     {
       id: 2,
       title: "Mentors",
       description: "Share your expertise and make a difference in young lives.",
       image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769272876/7_xdv4gd.jpg",
-      link: "/apply/mentor-registration"
+      link: "https://web.yanc.in/mentor-registration",
+      external: true
     },
     {
       id: 3,
       title: "Partners",
       description: "Academia, Corporate and Entrepreneurs can empower the next generation.",
       image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=250&fit=crop",
-      link: "/#contact"
+      link: "https://web.yanc.in/contact-us",
+      external: true
     }
   ];
 
@@ -56,6 +59,7 @@ const WhoCanJoin = () => {
                 <a 
                   key={card.id}
                   href={card.link}
+                  {...(card.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                   className="bg-card rounded-xl overflow-hidden border border-border shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 group block"
                 >
                   <div className="aspect-video overflow-hidden">

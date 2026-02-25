@@ -1,6 +1,7 @@
-import { aboutUsContent } from "@/data/mockData";
+import React, { useState, useEffect } from 'react';
 import { Eye, Target } from "lucide-react";
 import ScrollAnimateWrapper from "@/components/ScrollAnimateWrapper";
+import { useAboutUsData } from "@/services/cms/useAboutUsData";
 
 const iconMap: Record<string, React.ElementType> = {
   eye: Eye,
@@ -8,11 +9,73 @@ const iconMap: Record<string, React.ElementType> = {
 };
 
 const AboutUsSection = () => {
-  const { headline, description, vision, mission } = aboutUsContent;
+  const { aboutUsData, loading, error, refreshData } = useAboutUsData({ 
+    refreshInterval: import.meta.env.DEV ? 30000 : 0 // Auto-refresh every 30s in dev mode
+  });
+
+  // Add keyboard shortcut for development
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ctrl+Shift+R to refresh CMS data
+      if (e.ctrlKey && e.shiftKey && e.key === 'R') {
+        e.preventDefault();
+        console.log('🔄 Manual CMS cache refresh triggered');
+        refreshData();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [refreshData]);
+
+  if (loading) {
+    return (
+      <section id="about-us" className="section">
+        <div className="container mx-auto px-4 py-20 text-center">
+          <div className="animate-pulse space-y-6">
+            <div className="h-10 bg-muted rounded w-1/3 mx-auto"></div>
+            <div className="h-1 bg-primary rounded w-16 mx-auto"></div>
+            <div className="space-y-4 max-w-2xl mx-auto">
+              <div className="h-4 bg-muted rounded"></div>
+              <div className="h-4 bg-muted rounded w-5/6 mx-auto"></div>
+              <div className="h-4 bg-muted rounded w-4/6 mx-auto"></div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
+              <div className="h-48 bg-muted rounded-lg"></div>
+              <div className="h-48 bg-muted rounded-lg"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    console.error('Error loading about us content:', error);
+  }
+
+  // Show error message if there was an error loading data and no fallback content
+  const showError = error && !aboutUsData;
+
+  const { headline, description, vision, mission } = aboutUsData || {
+    headline: "About Us",
+    description: "Empowering Young Minds through Life Skills\n\nNetworking and life skills are crucial in today's fast-paced world.",
+    vision: {
+      title: "Vision",
+      description: "Empowering young minds together.",
+      icon: "eye"
+    },
+    mission: {
+      title: "Mission",
+      description: "Building better people for better Tomorrow.",
+      icon: "target"
+    }
+  };
 
   return (
     <section id="about-us" className="section">
       <div className="container">
+        {/* Development banner removed for production UI */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
           {/* Left Column - About Us Text */}
           <ScrollAnimateWrapper delay={0}>

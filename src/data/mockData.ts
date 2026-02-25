@@ -15,12 +15,37 @@ export interface Program {
   icon: string;
 }
 
+export interface MediaItem {
+  id: string;
+  type: "image" | "video";
+  src: string;
+  alt: string;
+}
+
 export interface Event {
   id: string;
   title: string;
   date: string;
   location: string;
   image: string;
+  type?: 'general' | 'upcoming' | 'past' | 'highlight' | 'gallery';
+}
+
+export interface EventGalleryItem {
+  id: string;
+  title: string;
+  date: string;
+  description: string;
+  media: MediaItem[];
+}
+
+export interface MentorTalk {
+  id: string;
+  title: string;
+  speaker: string;
+  date: string;
+  description: string;
+  media: MediaItem[];
 }
 
 export interface SocialLinks {
@@ -91,24 +116,14 @@ export const programs: Program[] = [
 ];
 
 export const events: Event[] = [
-  { id: "1", title: "Event Title", date: "2025-02-15", location: "City, Country", image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&h=300&fit=crop" },
-  { id: "2", title: "Event Title", date: "2025-03-20", location: "City, Country", image: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=400&h=300&fit=crop" },
-  { id: "3", title: "Event Title", date: "2025-04-10", location: "City, Country", image: "https://images.unsplash.com/photo-1591115765373-5207764f72e7?w=400&h=300&fit=crop" },
+  { id: "1", title: "Upcoming Tech Summit 2024", date: "2024-12-31", location: "San Francisco, CA", image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&h=300&fit=crop", type: "upcoming" },
+  { id: "2", title: "Past Innovation Conference", date: "2024-06-15", location: "New York, NY", image: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=400&h=300&fit=crop", type: "past" },
+  { id: "3", title: "Annual Awards Gala", date: "2024-03-20", location: "Los Angeles, CA", image: "https://images.unsplash.com/photo-1591115765373-5207764f72e7?w=400&h=300&fit=crop", type: "highlight" },
+  { id: "4", title: "Summer Workshop Series", date: "2024-07-10", location: "Chicago, IL", image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&h=300&fit=crop", type: "gallery" },
 ];
 
 export const teamMembers: TeamMember[] = [
-  { 
-    id: "1", 
-    name: "Ms.Hasini Kanumuru", 
-    role: "Cohort Alumni Ambassador", 
-    image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769271721/tm_1_bmw2xm.png",
-    description: "Hasini is a Alumni Ambassador at YANC,She is a dynamic young changemaker with a passion for purposeful innovation and community empowerment. As the founder of Sama and Pratirodha, she embodies an entrepreneurial mindset driven to solve real-world challenges and make an impact. With leadership experience as Secretary General at ACC MUN and accolades in debates, elocution, and performing arts, Hasini seamlessly blends intellect, creativity, and social consciousness. A performer of 16 dance forms, she continues to shine across academic, artistic, and leadership platforms.",
-    socialLinks: {
-      twitter: "https://twitter.com",
-      linkedin: "https://linkedin.com",
-      github: "https://github.com"
-    }
-  },
+  
   { 
     id: "2", 
     name: "Mr.Mohana Karingula", 
@@ -166,17 +181,6 @@ export const teamMembers: TeamMember[] = [
     }
   },
   { 
-    id: "7", 
-    name: "Ms.Sanviti Reddy", 
-    role: "Cohort Social Media Ambassador", 
-    image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769271721/tm_8_i9ebwy.png",
-    description: "A recent graduate who enjoys making videos and taking pictures. She loves being creative and sharing stories through her work. She is excited to learn new things and be part of interesting projects..",
-    socialLinks: {
-      linkedin: "https://linkedin.com",
-      github: "https://github.com"
-    }
-  },
-  { 
     id: "8", 
     name: "Mr.Nisidh Reddy",
     role: "Cohort Chief Financial Officer", 
@@ -185,6 +189,17 @@ export const teamMembers: TeamMember[] = [
     socialLinks: {
       twitter: "https://twitter.com",
       linkedin: "https://linkedin.com"
+    }
+  },
+  { 
+    id: "7", 
+    name: "Ms.Sanviti Reddy", 
+    role: "Cohort Social Media Ambassador", 
+    image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769271721/tm_8_i9ebwy.png",
+    description: "A recent graduate who enjoys making videos and taking pictures. She loves being creative and sharing stories through her work. She is excited to learn new things and be part of interesting projects..",
+    socialLinks: {
+      linkedin: "https://linkedin.com",
+      github: "https://github.com"
     }
   },
   { 
@@ -198,54 +213,69 @@ export const teamMembers: TeamMember[] = [
       github: "https://github.com"
     }
   },
+  { 
+    id: "1", 
+    name: "Ms.Hasini Kanumuru", 
+    role: "Cohort Alumni Ambassador", 
+    image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769271721/tm_1_bmw2xm.png",
+    description: "Hasini is a Alumni Ambassador at YANC,She is a dynamic young changemaker with a passion for purposeful innovation and community empowerment. As the founder of Sama and Pratirodha, she embodies an entrepreneurial mindset driven to solve real-world challenges and make an impact. With leadership experience as Secretary General at ACC MUN and accolades in debates, elocution, and performing arts, Hasini seamlessly blends intellect, creativity, and social consciousness. A performer of 16 dance forms, she continues to shine across academic, artistic, and leadership platforms.",
+    socialLinks: {
+      twitter: "https://twitter.com",
+      linkedin: "https://linkedin.com",
+      github: "https://github.com"
+    }
+  }
 ];
 
-export const founders: Founder[] = [
+export const executiveManagement: TeamMember[] = [
   {
     id: "1",
-    name: "Ms.Aarti Khandeker",
-    title: "Co-Founder, Sales & Marketing",
-    image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769274547/em_2_rdyzwd.png",
-    bio: "Aarti Khandeker is founder of BentDesign Studio, an Entrepreneur and an architect with over a decade of experience in Design and Creativity. Worked on diverse projects - residential, commercial and institutional buildings.",
+    name: "Mr.Swaminathan Gopal",
+    role: "Founder & CEO",
+    image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769271719/em_1_tnhted.png",
+    description: "Swaminathan brings in over two decades of experience spanning technology, business strategy, and entrepreneurship. A hands-on entrepreneur and an IT executive, he has built high-performing engineering teams and spearheaded businesses from the ground up. He has led technology teams for Fortune 100 companies and is an alumnus of IIM-Calcutta. Whether it's leading startups or optimizing enterprise technology, Swami thrives on turning vision into reality.",
     socialLinks: {
-      linkedin: "https://linkedin.com/in/johnsmith",
-      twitter: "https://twitter.com/johnsmith"
+      linkedin: "https://linkedin.com/in/swaminathangopal",
+      twitter: "https://twitter.com/swaminathangopal"
     }
   },
   {
     id: "2",
     name: "Mr.Ajay Thota",
-    title: "Co-Founder & SPV, Technology",
+    role: "Co-Founder & SPV, Technology",
     image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769271720/em_3_fm69dl.png",
-    bio: "Ajay Thota is an IT leader with 20+ years of US experience in leading multiple product development and digital transformation initiatives at MNCs across the globe. He is passionate about building teams by driving cultural change in individuals to become more conscientious and successful at a young age. Ajay holds an MS degree from NIU, USA, and a B.E from Osmania University.",
+    description: "Ajay Thota is an IT leader with 20+ years of US experience in leading multiple product development and digital transformation initiatives at MNCs across the globe. He is passionate about building teams by driving cultural change in individuals to become more conscientious and successful at a young age. Ajay holds an MS degree from NIU, USA, and a B.E from Osmania University.",
     socialLinks: {
-      linkedin: "https://linkedin.com/in/mariagarcia",
-      twitter: "https://twitter.com/mariagarcia"
+      linkedin: "https://linkedin.com/in/ajaythota",
+      twitter: "https://twitter.com/ajaythota"
     }
   },
   {
     id: "3",
     name: "Mr.Ram Charan",
-    title: "Co-Founder & CTO",
+    role: "Co-Founder & CTO",
     image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769274464/em_4_reayvx.png",
-    bio: "Ram Charan currently is an entrepreneur and comes with 20+ years of experience building products in the Software Engineering space working with Fortune 500 companies. He is vividly experienced with the Startup space in the roles of Founding Member, Technology Leadership, and Sustainable Product Innovations. For YANC, he is playing the role of CTO.",
+    description: "Ram Charan currently is an entrepreneur and comes with 20+ years of experience building products in the Software Engineering space working with Fortune 500 companies. He is vividly experienced with the Startup space in the roles of Founding Member, Technology Leadership, and Sustainable Product Innovations. For YANC, he is playing the role of CTO.",
     socialLinks: {
-      linkedin: "https://linkedin.com/in/davidkim",
-      github: "https://github.com/davidkim"
+      linkedin: "https://linkedin.com/in/ramcharan",
+      github: "https://github.com/ramcharan"
     }
   },
   {
     id: "4",
-    name: "Mr.Swaminathan Gopal",
-    title: "Founder & CEO",
-    image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769271719/em_1_tnhted.png",
-    bio: "Swaminathan brings in over two decades of experience spanning technology, business strategy, and entrepreneurship. A hands-on entrepreneur and an IT executive, he has built high-performing engineering teams and spearheaded businesses from the ground up. He has led technology teams for Fortune 100 companies and is an alumnus of IIM-Calcutta. Whether it's leading startups or optimizing enterprise technology, Swami thrives on turning vision into reality.",
+    name: "Ms.Aarti Khandeker",
+    role: "Co-Founder, Sales & Marketing",
+    image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769274547/em_2_rdyzwd.png",
+    description: "Aarti Khandeker is founder of BentDesign Studio, an Entrepreneur and an architect with over a decade of experience in Design and Creativity. Worked on diverse projects - residential, commercial and institutional buildings.",
     socialLinks: {
-      linkedin: "https://linkedin.com/in/priyasharma",
-      twitter: "https://twitter.com/priyasharma"
+      linkedin: "https://linkedin.com/in/aartikhandeker",
+      twitter: "https://twitter.com/aartikhandeker"
     }
   }
 ];
+
+// Alias for backward compatibility
+export const founders = executiveManagement;
 
 export const mentors: TeamMember[] = [
   {
@@ -255,8 +285,8 @@ export const mentors: TeamMember[] = [
     image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769271719/gm_1_pgqxbt.png",
     description: "Mr. Daisuke Tanji has over 20 years experience with one of the biggest Japanese trading company as sales and marketing field, trading, investment etc. 5 years working experience in India (Delhi and Mumbai) as General Manager for development new business. Establishing Indo-Japan ecosystem to help young minds of both countries to learn and grow. His vision is The fusion of Japan and India creates new value. YANC and Indobox are collaborating in the space of cross-border education, cultural exchange, internships, workshops, industry exposure, and youth focused learning programs between India and Japan, with the shared vision of empowering young minds to learn, explore, and grow beyond borders.",
     socialLinks: {
-      linkedin: "https://linkedin.com/in/sarahjohnson",
-      twitter: "https://twitter.com/sarahjohnson"
+      linkedin: "https://linkedin.com/in/daisuketanji",
+      twitter: "https://twitter.com/daisuketanji"
     }
   },
   {
@@ -266,30 +296,8 @@ export const mentors: TeamMember[] = [
     image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769271718/gm_2_bipsmf.png",
     description: "Cosme Almeida is an experienced professional with a demonstrated history of working in the education management industry, around different Continents, managing international accredited projects. Skilled in Marketing Management, Negotiation, Team Management, Intercultural Communication and Business Planning. Strong marketing professional with skills in Management Control and Finance. Financial Brand Valuation Consultant. Basketball Coach. YANC and Cosme Almeida partnership will open the gates for young minds of India and Portugal to explore both the countries for internships, industry exposure, job opportunities, startup incubation, immersive experiences for the youth and more.",
     socialLinks: {
-      linkedin: "https://linkedin.com/in/michaelchen",
-      github: "https://github.com/michaelchen"
-    }
-  },
-  {
-    id: "3",
-    name: "Emma Rodriguez",
-    role: "Venture Partner, Growth Capital",
-    image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=200&h=200&fit=crop&facepad=2",
-    description: "Former startup founder turned investor. Focuses on early-stage technology companies with scalable business models.",
-    socialLinks: {
-      linkedin: "https://linkedin.com/in/emmarodriguez",
-      twitter: "https://twitter.com/emmarodriguez"
-    }
-  },
-  {
-    id: "4",
-    name: "David Park",
-    role: "Head of Engineering, GlobalTech",
-    image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=200&fit=crop&facepad=2",
-    description: "Engineering leader with 12+ years in building high-performance teams and delivering complex software solutions at scale.",
-    socialLinks: {
-      linkedin: "https://linkedin.com/in/davidpark",
-      github: "https://github.com/davidpark"
+      linkedin: "https://linkedin.com/in/cosmealmeida",
+      github: "https://github.com/cosmealmeida"
     }
   }
 ];
@@ -302,8 +310,8 @@ export const advisors: TeamMember[] = [
     image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769271731/ab_1_wmtwxr.png",
     description: "Lieven Cornelis is a seasoned psychologist and human capital strategist specializing in leadership development and behavioral assessment. He is the creator of the Koan-PM platform, a sophisticated tool designed to analyze personality traits and provide actionable insights for personal and professional growth. With extensive experience in 360-degree feedback and psychological safety, Lieven empowers individuals and organizations to enhance performance through self-awareness and targeted development.",
     socialLinks: {
-      linkedin: "https://linkedin.com/in/robertwilliams",
-      twitter: "https://twitter.com/robertwilliams"
+      linkedin: "https://linkedin.com/in/lievencornelis",
+      twitter: "https://twitter.com/lievencornelis"
     }
   },
   {
@@ -313,8 +321,8 @@ export const advisors: TeamMember[] = [
     image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769271731/ab_2_tqsain.png",
     description: "Mac Srinivasan is a Global Growth Mentor and the CEO of ‘The Abundant Group’ , with over 35+ years of business experience across 70+ countries. Mac is a Certified Franchise Executive (International Franchise Association, USA) and a highly sought-after keynote speaker who has inspired over 200,000 entrepreneurs in his journey.As the former Global Markets President of BNI, Mac led global expansion and delivered consistent year-over-year growth, even in challenging times of uncertainty. He now dedicates his time to helping entrepreneurs and global franchises scale exponentially, combining strategic insight with deep.Beyond business, Mac is passionate about education, supporting over 1,000s of underprivileged children.Adventurer at heart:a fire-walker, bungee jumper, skydiver …Mac’s passion and purpose fuels his endless energy to help you achieve exponential results.",
     socialLinks: {
-      linkedin: "https://linkedin.com/in/lisathompson",
-      twitter: "https://twitter.com/lisathompson"
+      linkedin: "https://linkedin.com/in/macsrinivasan",
+      twitter: "https://twitter.com/macsrinivasan"
     }
   },
   {
@@ -324,8 +332,8 @@ export const advisors: TeamMember[] = [
     image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769271730/ab_3_go3nzf.png",
     description: "Dr. Molly Joy is a distinguished psychologist and academic leader with over two decades of experience in higher education and mental health. She served as the Head of the Department of Psychology at reputed colleges. Dr. Molly's research encompasses areas such as educational psychology, organizational behavior, and ecological intelligence, contributing significantly to both academic literature and practical applications. Her dedication to student counseling and curriculum development has positively impacted numerous learners and professionals in the field.",
     socialLinks: {
-      linkedin: "https://linkedin.com/in/jamesmiller",
-      github: "https://github.com/jamesmiller"
+      linkedin: "https://linkedin.com/in/drmollyjoy",
+      github: "https://github.com/drmollyjoy"
     }
   },
   {
@@ -335,8 +343,8 @@ export const advisors: TeamMember[] = [
     image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769271729/ab_4_pbozij.png",
     description: "Neil Gogte is a visionary technologist, entrepreneur, and academic leader with over three decades of experience in IT and education. He is the founder and owner of multiple educational institutions, including engineering and junior colleges like Keshav Memorial and NGIT, shaping thousands of student careers. Neil is also the Founder of Genesis Solutions which trained 70K professionals since 1992. Neil’s leadership continues to impact thousands of young professionals and institutions across India.",
     socialLinks: {
-      linkedin: "https://linkedin.com/in/mariagarcia",
-      twitter: "https://twitter.com/mariagarcia"
+      linkedin: "https://linkedin.com/in/neilgogte",
+      twitter: "https://twitter.com/neilgogte"
     }
   }
 ];
@@ -385,6 +393,88 @@ export const indianStates = [
   "Puducherry",
   "Jammu and Kashmir",
   "Ladakh"
+];
+
+// Event gallery items
+export const eventGalleryItems: EventGalleryItem[] = [
+  {
+    id: "1",
+    title: "Annual Tech Conference 2024",
+    date: "2024-11-15",
+    description: "Our flagship annual tech conference featuring industry leaders and innovative startups.",
+    media: [
+      { id: "1", type: "image", src: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=600&fit=crop", alt: "Tech conference audience" },
+      { id: "2", type: "image", src: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800&h=600&fit=crop", alt: "Speaker presenting" },
+      { id: "3", type: "video", src: "https://res.cloudinary.com/dzjot5f7d/video/upload/v1769271732/vid4_vbbn9h.mp4", alt: "Conference highlights video" },
+      { id: "4", type: "image", src: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&h=600&fit=crop", alt: "Networking session" },
+      { id: "5", type: "image", src: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=600&fit=crop", alt: "Workshop session" },
+      { id: "6", type: "image", src: "https://images.unsplash.com/photo-1434494878194-7e9ce75f380f?w=800&h=600&fit=crop", alt: "Panel discussion" },
+    ]
+  },
+  {
+    id: "2",
+    title: "Women in Tech Summit",
+    date: "2024-10-22",
+    description: "Celebrating women's contributions to technology and innovation.",
+    media: [
+      { id: "7", type: "image", src: "https://images.unsplash.com/photo-1556761222-9d6ecab38ec6?w=800&h=600&fit=crop", alt: "Women in tech panel" },
+      { id: "8", type: "image", src: "https://images.unsplash.com/photo-1573164713988-8665fc963095?w=800&h=600&fit=crop", alt: "Female engineers discussing" },
+      { id: "9", type: "image", src: "https://images.unsplash.com/photo-1589391886645-d51941baf7fb?w=800&h=600&fit=crop", alt: "Tech workshop" },
+      { id: "10", type: "video", src: "https://res.cloudinary.com/dzjot5f7d/video/upload/v1769271735/vid1_tho4y2.mp4", alt: "Summit highlights" },
+    ]
+  },
+  {
+    id: "3",
+    title: "Startup Pitch Night",
+    date: "2024-09-18",
+    description: "Showcasing innovative startups and connecting entrepreneurs with investors.",
+    media: [
+      { id: "11", type: "image", src: "https://images.unsplash.com/photo-1552664100-c2f8dc44b03f?w=800&h=600&fit=crop", alt: "Startup pitch presentation" },
+      { id: "12", type: "image", src: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=800&h=600&fit=crop", alt: "Entrepreneurs networking" },
+      { id: "13", type: "image", src: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=600&fit=crop", alt: "Investor meeting" },
+    ]
+  }
+];
+
+// Mentor talks
+export const mentorTalks: MentorTalk[] = [
+  {
+    id: "1",
+    title: "Navigating Your Career Path",
+    speaker: "Emma Rodriguez",
+    date: "2024-11-05",
+    description: "Learn how to strategically plan and navigate your professional journey with industry expert Emma Rodriguez.",
+    media: [
+      { id: "14", type: "image", src: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=800&h=600&fit=crop", alt: "Emma Rodriguez speaking" },
+      { id: "15", type: "image", src: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&h=600&fit=crop", alt: "Audience listening" },
+      { id: "16", type: "image", src: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&h=600&fit=crop", alt: "Q&A session" },
+      { id: "17", type: "video", src: "https://res.cloudinary.com/dzjot5f7d/video/upload/v1769271734/vid2_fprt1h.mp4", alt: "Talk highlights" },
+    ]
+  },
+  {
+    id: "2",
+    title: "Building Resilient Teams",
+    speaker: "David Park",
+    date: "2024-10-15",
+    description: "Insights on creating strong, adaptable teams that thrive in challenging environments.",
+    media: [
+      { id: "18", type: "image", src: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&h=600&fit=crop", alt: "David Park presenting" },
+      { id: "19", type: "image", src: "https://images.unsplash.com/photo-1552664100-c2f8dc44b03f?w=800&h=600&fit=crop", alt: "Team building activity" },
+      { id: "20", type: "image", src: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=800&h=600&fit=crop", alt: "Collaboration session" },
+    ]
+  },
+  {
+    id: "3",
+    title: "Innovation in Startups",
+    speaker: "Mr.Daisuke Tanji",
+    date: "2024-09-25",
+    description: "Exploring how startups can drive innovation and create sustainable competitive advantages.",
+    media: [
+      { id: "21", type: "image", src: "https://images.unsplash.com/photo-1556761222-9d6ecab38ec6?w=800&h=600&fit=crop", alt: "Daisuke Tanji speaking" },
+      { id: "22", type: "image", src: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&h=600&fit=crop", alt: "Innovation workshop" },
+      { id: "23", type: "video", src: "https://res.cloudinary.com/dzjot5f7d/video/upload/v1769271733/vid3_zqqyvf.mp4", alt: "Innovation showcase" },
+    ]
+  }
 ];
 
 // About Us content - CMS-driven
