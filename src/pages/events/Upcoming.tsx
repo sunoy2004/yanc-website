@@ -101,6 +101,9 @@ const UpcomingEvents = () => {
                           src={event.mediaItems[0].url} 
                           alt={event.mediaItems[0].altText || event.mediaItems[0].alt || event.title}
                           className="w-full h-full object-cover"
+                          loading="lazy"
+                          decoding="async"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         />
                       ) : (
                         <div className="w-full h-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">

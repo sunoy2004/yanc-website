@@ -10,6 +10,8 @@ import HorizontalTeamSection from "@/components/sections/HorizontalTeamSection";
 import TestimonialsSection from "@/components/sections/TestimonialsSection"; // Enabled 
 import Preloader from "@/components/Preloader";
 import Layout from "@/components/Layout";
+import { cmsService } from "@/lib/cms/service";
+import { getUpcomingEvents, getPastEvents, getEventGallery } from "@/services/cms/events-service";
 
 const Index = () => {
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -77,6 +79,38 @@ const Index = () => {
       localStorage.setItem('theme', 'light');
     }
   };
+
+  // After main content is ready, prefetch CMS-backed data for other pages in the background
+  useEffect(() => {
+    if (isLoading) return;
+
+    const prefetch = async () => {
+      try {
+        console.log('🔄 Prefetching CMS data for secondary pages (events, team, mentor talks)...');
+        // Fire-and-forget: warm up caches for other sections/pages
+        const results = await Promise.allSettled([
+          // Events
+          getUpcomingEvents(),
+          getPastEvents(),
+          getEventGallery(),
+          // Team (all + all 4 sections)
+          cmsService.getTeamMembers(),
+          cmsService.getTeamMembersBySection("cohort_founders"),
+          cmsService.getTeamMembersBySection("executive_management"),
+          cmsService.getTeamMembersBySection("advisory_board"),
+          cmsService.getTeamMembersBySection("global_mentors"),
+          // Mentor talks
+          cmsService.getMentorTalks(),
+        ]);
+        console.log('✅ Prefetch completed for secondary pages:', results.map(r => r.status));
+      } catch {
+        // Swallow errors: prefetch should never break the main page
+        console.warn('⚠️ Prefetch for secondary pages failed (non-blocking).');
+      }
+    };
+
+    prefetch();
+  }, [isLoading]);
 
   return (
     <>

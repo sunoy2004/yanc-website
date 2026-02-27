@@ -47,8 +47,17 @@ export interface WebsiteGalleryItem {
 // Upcoming Events Service
 import { getCmsBaseUrl } from '@/lib/getCmsBaseUrl';
 
+// Simple in-module cache to avoid refetching upcoming events on every navigation
+let upcomingCache: { data: WebsiteEvent[]; timestamp: number } | null = null;
+const UPCOMING_TTL_MS = 5 * 60 * 1000; // 5 minutes
+
 export async function getUpcomingEvents(): Promise<WebsiteEvent[]> {
   try {
+    // Return cached data when still fresh
+    if (upcomingCache && Date.now() - upcomingCache.timestamp < UPCOMING_TTL_MS) {
+      return upcomingCache.data;
+    }
+
     const API_BASE_URL = getCmsBaseUrl();
     const url = `${API_BASE_URL}/api/events/upcoming`;
     console.log('🔍 Calling', url);
@@ -61,7 +70,7 @@ export async function getUpcomingEvents(): Promise<WebsiteEvent[]> {
     console.log("✅ UPCOMING DATA:", data);
     
     // Transform backend data to frontend format
-    const transformedData = data.map((event: any) => ({
+    const transformedData: WebsiteEvent[] = data.map((event: any) => ({
       id: event.id,
       title: event.title,
       description: event.description,
@@ -74,6 +83,7 @@ export async function getUpcomingEvents(): Promise<WebsiteEvent[]> {
     }));
     
     console.log("🔄 TRANSFORMED UPCOMING DATA:", transformedData);
+    upcomingCache = { data: transformedData, timestamp: Date.now() };
     return transformedData;
   } catch (error) {
     console.error('❌ Error fetching upcoming events:', error);
@@ -81,9 +91,16 @@ export async function getUpcomingEvents(): Promise<WebsiteEvent[]> {
   }
 }
 
-// Past Events Service
+// Past Events Service (with simple cache)
+let pastCache: { data: WebsiteEvent[]; timestamp: number } | null = null;
+const PAST_TTL_MS = 5 * 60 * 1000; // 5 minutes
+
 export async function getPastEvents(): Promise<WebsiteEvent[]> {
   try {
+    if (pastCache && Date.now() - pastCache.timestamp < PAST_TTL_MS) {
+      return pastCache.data;
+    }
+
     const API_BASE_URL = getCmsBaseUrl();
     const url = `${API_BASE_URL}/api/events/past`;
     console.log('🔍 Calling', url);
@@ -96,7 +113,7 @@ export async function getPastEvents(): Promise<WebsiteEvent[]> {
     console.log("✅ PAST DATA:", data);
     
     // Transform backend data to frontend format
-    const transformedData = data.map((event: any) => ({
+    const transformedData: WebsiteEvent[] = data.map((event: any) => ({
       id: event.id,
       title: event.title,
       description: event.description,
@@ -109,6 +126,7 @@ export async function getPastEvents(): Promise<WebsiteEvent[]> {
     }));
     
     console.log("🔄 TRANSFORMED PAST DATA:", transformedData);
+    pastCache = { data: transformedData, timestamp: Date.now() };
     return transformedData;
   } catch (error) {
     console.error('❌ Error fetching past events:', error);
@@ -116,9 +134,16 @@ export async function getPastEvents(): Promise<WebsiteEvent[]> {
   }
 }
 
-// Event Gallery Service (Completely Independent)
+// Event Gallery Service (Completely Independent, with simple cache)
+let galleryCache: { data: WebsiteGalleryItem[]; timestamp: number } | null = null;
+const GALLERY_TTL_MS = 5 * 60 * 1000;
+
 export async function getEventGallery(): Promise<WebsiteGalleryItem[]> {
   try {
+    if (galleryCache && Date.now() - galleryCache.timestamp < GALLERY_TTL_MS) {
+      return galleryCache.data;
+    }
+
     const API_BASE_URL = getCmsBaseUrl();
     const url = `${API_BASE_URL}/api/event-gallery-items/public`;
     console.log('🔍 Calling', url);
@@ -129,6 +154,7 @@ export async function getEventGallery(): Promise<WebsiteGalleryItem[]> {
     }
     const data = await response.json();
     console.log("✅ GALLERY DATA:", data);
+    galleryCache = { data, timestamp: Date.now() };
     return data;
   } catch (error) {
     console.error('❌ Error fetching event gallery:', error);

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { cmsService } from "@/lib/cms/service";
 import { HeroContentUI } from "@/lib/cms/types";
 import { HeroMediaItem } from "@/data/mockData";
+import { optimizeImageUrl } from "@/lib/cms/utils";
 
 const Hero = () => {
   const [heroContent, setHeroContent] = useState<HeroContentUI | null>(null);
@@ -79,7 +80,7 @@ const Hero = () => {
   const sliderItems: HeroMediaItem[] = mediaItems.map((item, index) => ({
     id: `cms-${index}`,
     type: item.type,
-    src: item.src,
+    src: optimizeImageUrl(item.src, 'hero'),
     alt: item.alt
   }));
 

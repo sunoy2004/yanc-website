@@ -146,7 +146,8 @@ export const serializeEventGalleries = (cmsEventGalleries: EventGallery[]): Even
 
 export const serializeMentorTalks = (cmsMentorTalks: MentorTalk[]): MentorTalkUI[] => {
   return cmsMentorTalks
-    .filter(talk => talk.isActive || (talk as any).is_active) // Handle both camelCase and snake_case
+    // Treat talks as active by default; only exclude when explicitly marked inactive
+    .filter(talk => (talk as any).is_active !== false && talk.isActive !== false)
     .map(talk => ({
       id: talk.id,
       title: talk.title,
@@ -155,17 +156,30 @@ export const serializeMentorTalks = (cmsMentorTalks: MentorTalk[]): MentorTalkUI
       description: talk.description,
       videoUrl: talk.videoUrl || (talk as any).video_url || '', // Handle both camelCase and snake_case
       thumbnail: talk.thumbnail || (talk as any).thumbnail_url || '', // Handle both camelCase and snake_case
-      media: serializeMediaItems(talk.gallery.map(galleryItem => ({
-        id: galleryItem.id,
-        type: 'IMAGE' as const,
-        url: galleryItem.imageUrl || (galleryItem as any).image_url || '', // Handle both camelCase and snake_case
-        altText: galleryItem.caption || 'Mentor talk media',
-        caption: galleryItem.caption,
-        order: galleryItem.order,
-        isActive: galleryItem.isActive || (galleryItem as any).is_active, // Handle both camelCase and snake_case
-        createdAt: galleryItem.createdAt,
-        updatedAt: galleryItem.updatedAt
-      })))
+      media: serializeMediaItems(
+        (talk.gallery || []).map(galleryItem => ({
+          id: galleryItem.id,
+          type: ((galleryItem as any).type || 'IMAGE').toString().toUpperCase() as 'IMAGE' | 'VIDEO',
+          // Support both imageUrl/image_url and the simpler url field from the current backend
+          url:
+            (galleryItem as any).imageUrl ||
+            (galleryItem as any).image_url ||
+            (galleryItem as any).url ||
+            '',
+          altText:
+            (galleryItem as any).caption ||
+            (galleryItem as any).alt ||
+            'Mentor talk media',
+          caption: (galleryItem as any).caption || (galleryItem as any).alt || '',
+          order: (galleryItem as any).order ?? 0,
+          // Default to active when flag is missing
+          isActive:
+            (galleryItem as any).isActive !== false &&
+            (galleryItem as any).is_active !== false,
+          createdAt: (galleryItem as any).createdAt,
+          updatedAt: (galleryItem as any).updatedAt
+        }))
+      )
     }));
 };
 

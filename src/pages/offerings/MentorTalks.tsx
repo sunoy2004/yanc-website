@@ -3,8 +3,8 @@ import Layout from "@/components/Layout";
 import ImageVideoGallery from "@/components/gallery/ImageVideoGallery";
 import Lightbox from "@/components/gallery/Lightbox";
 import { MediaItem } from "@/data/mockData";
-import { cmsClient } from "@/lib/cms/client";
-import type { MentorTalk as CMSTypeMentorTalk, MediaItemUI } from "@/lib/cms/types";
+import { cmsService } from "@/lib/cms/service";
+import type { MentorTalkUI } from "@/lib/cms/types";
 
 interface MentorTalk {
   id: string;
@@ -73,29 +73,29 @@ const MentorTalks = () => {
   const loadMentorTalks = async () => {
     try {
       setLoading(true);
-      const cmsTalks = await cmsClient.getMentorTalks();
+      const cmsTalks: MentorTalkUI[] = await cmsService.getMentorTalks();
       
-      // Convert CMS types to frontend types
+      // Convert MentorTalkUI to local MentorTalk shape
       const convertedTalks: MentorTalk[] = cmsTalks.map(talk => ({
         id: talk.id,
         title: talk.title,
         speaker: talk.speaker,
-        speakerBio: '', // Not in CMS schema
+        speakerBio: '',
         date: talk.date,
         description: talk.description,
-        content: '', // Not in CMS schema
+        content: '',
         videoUrl: talk.videoUrl,
         thumbnail: talk.thumbnail,
-        media: talk.gallery.map((item: CmsGalleryItem) => ({
-          id: item.id || '',
-          type: (item.type?.toLowerCase() === 'video' ? 'video' : 'image') as 'image' | 'video',
-          src: item.url || item.imageUrl || '',
-          alt: item.alt || item.altText || item.caption || ''
+        media: talk.media.map(item => ({
+          id: item.id,
+          type: item.type,
+          src: item.src,
+          alt: item.alt
         })),
-        isPublished: talk.isActive,
-        order: 0, // Not in CMS schema
-        createdAt: talk.createdAt,
-        updatedAt: talk.updatedAt
+        isPublished: true,
+        order: 0,
+        createdAt: undefined,
+        updatedAt: undefined
       }));
       
       setMentorTalks(convertedTalks);

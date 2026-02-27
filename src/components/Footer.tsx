@@ -39,13 +39,13 @@ const Footer = () => {
               <div className="footer-social-col mt-4 md:mt-6 lg:mt-8">
                 <h3 className="footer-heading mb-0 text-left">Follow Us</h3>
                 <div className="social-icons justify-start">
-                  <a href="https://www.facebook.com/p/YANC-61565847200938" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Facebook">
+                  {/* <a href="https://www.facebook.com/p/YANC-61565847200938" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Facebook">
                     <img src={facebookIcon} alt="Facebook" className="social-icon-img" />
-                  </a>
+                  </a> */}
 
-                  <a href="https://x.com/OneYanc" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="X">
+                  {/* <a href="https://x.com/OneYanc" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="X">
                     <img src={xIcon} alt="X" className="social-icon-img" />
-                  </a>
+                  </a> */}
 
                   <a href="https://www.instagram.com/oneyanc/" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Instagram">
                     <img src={instagramIcon} alt="Instagram" className="social-icon-img" />
@@ -239,7 +239,7 @@ const Footer = () => {
             </p>
             <p className="footer-build text-xs text-muted-foreground mt-1">
              {/* v{import.meta.env.VITE_BUILD_DATE} */}
-             v{"2026.02.25"}
+             v{"2026.02.27"}
             </p>
           </div>
         </div>
