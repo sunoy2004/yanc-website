@@ -11,6 +11,8 @@ export interface WebsiteEvent {
   type: 'upcoming' | 'past';
   isActive: boolean;
   category?: 'upcoming' | 'past';
+  /** Registration / CTA URL from CMS - when set, show "Register now" CTA */
+  registrationUrl?: string;
   highlights?: string[];
   gallery?: Array<{
     id: string;
@@ -79,7 +81,8 @@ export async function getUpcomingEvents(): Promise<WebsiteEvent[]> {
       image: event.imageUrl || event.image_url || '/placeholder.jpg', // Fallback image
       type: 'upcoming' as const,
       isActive: event.is_active !== undefined ? event.is_active : (event.isActive !== undefined ? event.isActive : true),
-      mediaItems: event.mediaItems || []
+      mediaItems: event.mediaItems || [],
+      registrationUrl: event.registration_url || event.registrationUrl || event.register_link || event.registration_link || event.event_link || event.link || event.cta_url || event.ctaUrl || undefined,
     }));
     
     console.log("🔄 TRANSFORMED UPCOMING DATA:", transformedData);

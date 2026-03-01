@@ -136,20 +136,33 @@ const UpcomingEvents = () => {
                       <p className="text-muted-foreground mb-4 line-clamp-3">
                         {event.description || 'Event details coming soon...'}
                       </p>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm text-muted-foreground flex items-center">
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                          </svg>
-                          {event.location}
-                        </span>
-                        {/* <button 
-                          className="text-primary hover:text-primary/80 font-medium text-sm"
-                          onClick={() => window.location.href = `/events/${event.id}`}
-                        >
-                          View Details
-                        </button> */}
+                      <div className="flex flex-col gap-3">
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm text-muted-foreground flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            {event.location}
+                          </span>
+                        </div>
+                        {event.registrationUrl ? (
+                          <a
+                            href={event.registrationUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center justify-center w-full sm:w-auto px-4 py-2.5 text-sm font-medium rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+                          >
+                            Register now
+                          </a>
+                        ) : (
+                          <span
+                            className="inline-flex items-center justify-center w-full sm:w-auto px-4 py-2.5 text-sm font-medium rounded-lg bg-primary/70 text-primary-foreground cursor-not-allowed"
+                            title="Registration link will be added from CMS"
+                          >
+                            Register now
+                          </span>
+                        )}
                       </div>
                     </div>
                   </div>

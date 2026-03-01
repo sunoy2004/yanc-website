@@ -184,9 +184,25 @@ const EventsSection = () => {
                           {Math.ceil((new Date(closestEvent.date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))} days away
                         </div>
                       </div>
-                      {/* <button className="bg-primary text-primary-foreground px-6 py-2 rounded-lg font-medium hover:bg-primary/90 transition-colors">
-                        View Details
-                      </button> */}
+                      <div onClick={(e) => e.stopPropagation()}>
+                        {closestEvent.registrationUrl ? (
+                          <a
+                            href={closestEvent.registrationUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center justify-center px-6 py-2.5 text-sm font-medium rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+                          >
+                            Register now
+                          </a>
+                        ) : (
+                          <span
+                            className="inline-flex items-center justify-center px-6 py-2.5 text-sm font-medium rounded-lg bg-primary/70 text-primary-foreground cursor-not-allowed"
+                            title="Registration link will be added from CMS"
+                          >
+                            Register now
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
