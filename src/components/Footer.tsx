@@ -107,7 +107,7 @@ const Footer = () => {
             <ul className="footer-links-list">
               <li>
                 <a
-                  href="https://web.yanc.in/"
+                  href="https://web.yanc.in/membership-application"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="footer-link"
@@ -117,7 +117,7 @@ const Footer = () => {
               </li>
               <li>
                 <a
-                  href="https://web.yanc.in/membership-application"
+                  href="https://web.yanc.in/discover-meet-registration"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="footer-link"
