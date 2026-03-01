@@ -173,8 +173,8 @@ const EventsSection = () => {
                     <p className="text-muted-foreground mb-6 leading-relaxed">
                       {closestEvent.description || 'Event details coming soon...'}
                     </p>
-                    <div className="flex flex-wrap items-center justify-between gap-4">
-                      <div className="flex items-center">
+                    <div className="flex flex-col items-center gap-4 md:flex-row md:flex-wrap md:items-center md:justify-between">
+                      <div className="flex items-center justify-center">
                         {closestEvent.type && !isEventToday(closestEvent.date) && (
                           <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-secondary text-secondary-foreground">
                             {closestEvent.type.charAt(0).toUpperCase() + closestEvent.type.slice(1)}
@@ -184,7 +184,7 @@ const EventsSection = () => {
                           {Math.ceil((new Date(closestEvent.date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))} days away
                         </div>
                       </div>
-                      <div onClick={(e) => e.stopPropagation()}>
+                      <div onClick={(e) => e.stopPropagation()} className="mt-4 md:mt-0 w-full md:w-auto flex justify-center md:block">
                         {closestEvent.registrationUrl ? (
                           <a
                             href={closestEvent.registrationUrl}

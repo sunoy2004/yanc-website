@@ -46,6 +46,10 @@ import UpcomingEvents from "./pages/events/Upcoming";
 import PastEvents from "./pages/events/Past";
 import EventGallery from "./pages/events/Gallery";
 import EventHighlights from "./pages/events/Highlights";
+import TermsAndConditions from "./pages/legal/TermsAndConditions";
+import PrivacyPolicy from "./pages/legal/PrivacyPolicy";
+import CookiePolicy from "./pages/legal/CookiePolicy";
+import RefundPolicy from "./pages/legal/RefundPolicy";
 import TestEvents from "./pages/TestEvents";
 import TestUpcomingEvents from "./pages/TestUpcomingEvents";
 import DebugEvents from "./pages/DebugEvents";
@@ -108,8 +112,14 @@ const App = () => (
             {/* <Route path="/events/discover-meet-registration" element={<DiscoverMeetRegistration />} /> */}
             <Route path="/events/past" element={<PastEvents />} />
             <Route path="/events/gallery" element={<EventGallery />} />
-            <Route path="/events/highlights" element={<EventHighlights />} />
-            
+<Route path="/events/highlights" element={<EventHighlights />} />
+
+            {/* Legal routes */}
+            <Route path="/legal/terms" element={<TermsAndConditions />} />
+            <Route path="/legal/privacy" element={<PrivacyPolicy />} />
+            <Route path="/legal/cookies" element={<CookiePolicy />} />
+            <Route path="/legal/refund" element={<RefundPolicy />} />
+
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

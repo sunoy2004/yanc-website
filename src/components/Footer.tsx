@@ -159,46 +159,10 @@ const Footer = () => {
           <div className="footer-column">
             <h3 className="footer-heading">Legal</h3>
             <ul className="footer-links-list">
-              <li>
-                <a
-                  href="https://yanc.in/tc.html"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="footer-link"
-                >
-                  Terms &amp; Conditions
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://yanc.in/privacy.html"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="footer-link"
-                >
-                  Privacy Policy
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://yanc.in/cookiepolicy.html"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="footer-link"
-                >
-                  Cookie Policy
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://yanc.in/refundpolicy.html"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="footer-link"
-                >
-                  Refund Policy
-                </a>
-              </li>
+              <li><Link to="/legal/terms" onClick={scrollToStart} className="footer-link">Terms &amp; Conditions</Link></li>
+              <li><Link to="/legal/privacy" onClick={scrollToStart} className="footer-link">Privacy Policy</Link></li>
+              <li><Link to="/legal/cookies" onClick={scrollToStart} className="footer-link">Cookie Policy</Link></li>
+              <li><Link to="/legal/refund" onClick={scrollToStart} className="footer-link">Refund Policy</Link></li>
             </ul>
 
             <h3 className="footer-heading mt-4">Support</h3>
