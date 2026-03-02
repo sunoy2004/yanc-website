@@ -13,6 +13,8 @@ export interface WebsiteEvent {
   category?: 'upcoming' | 'past';
   /** Registration / CTA URL from CMS - when set, show "Register now" CTA */
   registrationUrl?: string;
+  /** Speaker(s) for the event - from CMS */
+  speakers?: Array<{ name: string; role?: string; image?: string; bio?: string }>;
   highlights?: string[];
   gallery?: Array<{
     id: string;
@@ -49,6 +51,37 @@ export interface WebsiteGalleryItem {
 // Upcoming Events Service
 import { getCmsBaseUrl } from '@/lib/getCmsBaseUrl';
 
+/** Normalize speaker data from backend (array of objects, array of strings, or single speaker string). */
+function normalizeEventSpeakers(event: Record<string, unknown>): Array<{ name: string; role?: string; image?: string; bio?: string }> | undefined {
+  const raw = event.speakers ?? event.speaker ?? event.speaker_name ?? event.speaker_names;
+  if (raw == null || (Array.isArray(raw) && raw.length === 0)) return undefined;
+  if (typeof raw === 'string' && raw.trim()) {
+    return [{ name: raw.trim() }];
+  }
+  if (Array.isArray(raw)) {
+    return raw
+      .map((s: unknown) => {
+        if (typeof s === 'string') return s.trim() ? { name: s.trim() } : null;
+        const o = s as Record<string, unknown>;
+        const name = o?.name ?? o?.speaker_name ?? o?.title ?? '';
+        if (!name) return null;
+        return {
+          name: String(name),
+          role: (o?.role ?? o?.speaker_role) as string | undefined,
+          image: (o?.image ?? o?.image_url ?? o?.avatar) as string | undefined,
+          bio: (o?.bio ?? o?.bio_text) as string | undefined,
+        };
+      })
+      .filter(Boolean) as Array<{ name: string; role?: string; image?: string; bio?: string }>;
+  }
+  if (typeof raw === 'object' && raw !== null) {
+    const o = raw as Record<string, unknown>;
+    const name = o.name ?? o.speaker_name ?? '';
+    return name ? [{ name: String(name), role: o.role as string | undefined, image: o.image as string | undefined, bio: o.bio as string | undefined }] : undefined;
+  }
+  return undefined;
+}
+
 // Simple in-module cache to avoid refetching upcoming events on every navigation
 let upcomingCache: { data: WebsiteEvent[]; timestamp: number } | null = null;
 const UPCOMING_TTL_MS = 5 * 60 * 1000; // 5 minutes
@@ -72,7 +105,7 @@ export async function getUpcomingEvents(): Promise<WebsiteEvent[]> {
     console.log("✅ UPCOMING DATA:", data);
     
     // Transform backend data to frontend format
-    const transformedData: WebsiteEvent[] = data.map((event: any) => ({
+    const transformedData: WebsiteEvent[] = data.map((event: Record<string, unknown>) => ({
       id: event.id,
       title: event.title,
       description: event.description,
@@ -83,6 +116,7 @@ export async function getUpcomingEvents(): Promise<WebsiteEvent[]> {
       isActive: event.is_active !== undefined ? event.is_active : (event.isActive !== undefined ? event.isActive : true),
       mediaItems: event.mediaItems || [],
       registrationUrl: event.registration_url || event.registrationUrl || event.register_link || event.registration_link || event.event_link || event.link || event.cta_url || event.ctaUrl || undefined,
+      speakers: normalizeEventSpeakers(event),
     }));
     
     console.log("🔄 TRANSFORMED UPCOMING DATA:", transformedData);
@@ -116,7 +150,7 @@ export async function getPastEvents(): Promise<WebsiteEvent[]> {
     console.log("✅ PAST DATA:", data);
     
     // Transform backend data to frontend format
-    const transformedData: WebsiteEvent[] = data.map((event: any) => ({
+    const transformedData: WebsiteEvent[] = data.map((event: Record<string, unknown>) => ({
       id: event.id,
       title: event.title,
       description: event.description,

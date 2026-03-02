@@ -146,6 +146,12 @@ const UpcomingEvents = () => {
                             {event.location}
                           </span>
                         </div>
+                        {event.speakers && event.speakers.length > 0 && (
+                          <div className="text-sm text-muted-foreground flex items-center gap-1.5 flex-wrap">
+                            <span className="font-medium text-foreground/90">Speaker{event.speakers.length > 1 ? 's' : ''}:</span>
+                            <span>{event.speakers.map((s) => s.role ? `${s.name} (${s.role})` : s.name).join(', ')}</span>
+                          </div>
+                        )}
                         {event.registrationUrl ? (
                           <a
                             href={event.registrationUrl}

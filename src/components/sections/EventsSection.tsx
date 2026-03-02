@@ -170,6 +170,12 @@ const EventsSection = () => {
                         <span>{closestEvent.location}</span>
                       </div>
                     </div>
+                    {closestEvent.speakers && closestEvent.speakers.length > 0 && (
+                      <div className="text-sm text-muted-foreground mb-4 flex flex-wrap items-center gap-2 justify-center md:justify-start">
+                        <span className="font-medium text-foreground/90">Speaker{closestEvent.speakers.length > 1 ? 's' : ''}:</span>
+                        <span>{closestEvent.speakers.map((s) => s.role ? `${s.name} (${s.role})` : s.name).join(', ')}</span>
+                      </div>
+                    )}
                     <p className="text-muted-foreground mb-6 leading-relaxed">
                       {closestEvent.description || 'Event details coming soon...'}
                     </p>
