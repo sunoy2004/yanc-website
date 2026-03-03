@@ -49,7 +49,7 @@ export interface WebsiteGalleryItem {
 }
 
 // Upcoming Events Service
-import { getCmsBaseUrl } from '@/lib/getCmsBaseUrl';
+import { cmsService } from '@/lib/cms/service';
 
 /** Normalize speaker data from backend (array of objects, array of strings, or single speaker string). */
 function normalizeEventSpeakers(event: Record<string, unknown>): Array<{ name: string; role?: string; image?: string; bio?: string }> | undefined {
@@ -87,45 +87,50 @@ let upcomingCache: { data: WebsiteEvent[]; timestamp: number } | null = null;
 const UPCOMING_TTL_MS = 5 * 60 * 1000; // 5 minutes
 
 export async function getUpcomingEvents(): Promise<WebsiteEvent[]> {
-  try {
-    // Return cached data when still fresh
-    if (upcomingCache && Date.now() - upcomingCache.timestamp < UPCOMING_TTL_MS) {
-      return upcomingCache.data;
-    }
-
-    const API_BASE_URL = getCmsBaseUrl();
-    const url = `${API_BASE_URL}/api/events/upcoming`;
-    console.log('🔍 Calling', url);
-    const response = await fetch(url);
-    console.log('📊 Upcoming events response status:', response.status);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const data = await response.json();
-    console.log("✅ UPCOMING DATA:", data);
-    
-    // Transform backend data to frontend format
-    const transformedData: WebsiteEvent[] = data.map((event: Record<string, unknown>) => ({
-      id: event.id,
-      title: event.title,
-      description: event.description,
-      date: event.event_date || event.date || '',
-      location: event.location,
-      image: event.imageUrl || event.image_url || '/placeholder.jpg', // Fallback image
-      type: 'upcoming' as const,
-      isActive: event.is_active !== undefined ? event.is_active : (event.isActive !== undefined ? event.isActive : true),
-      mediaItems: event.mediaItems || [],
-      registrationUrl: event.registration_url || event.registrationUrl || event.register_link || event.registration_link || event.event_link || event.link || event.cta_url || event.ctaUrl || undefined,
-      speakers: normalizeEventSpeakers(event),
-    }));
-    
-    console.log("🔄 TRANSFORMED UPCOMING DATA:", transformedData);
-    upcomingCache = { data: transformedData, timestamp: Date.now() };
-    return transformedData;
-  } catch (error) {
-    console.error('❌ Error fetching upcoming events:', error);
-    throw error;
+  // Return cached data when still fresh
+  if (upcomingCache && Date.now() - upcomingCache.timestamp < UPCOMING_TTL_MS) {
+    return upcomingCache.data;
   }
+
+  // Use cmsService, which now reads from static JSON via cmsClient
+  const events = await cmsService.getUpcomingEvents();
+
+  const transformedData: WebsiteEvent[] = events.map((event: Record<string, unknown>) => ({
+    id: event.id,
+    title: event.title,
+    description: event.description,
+    date: event.date || event.event_date || '',
+    location: event.location,
+    image:
+      event.image ||
+      event.imageUrl ||
+      event.image_url ||
+      (event.mediaItems && Array.isArray(event.mediaItems) && event.mediaItems.length > 0
+        ? (event.mediaItems[0] as any).url
+        : '/placeholder.jpg'),
+    type: 'upcoming' as const,
+    isActive:
+      event.isActive !== undefined
+        ? (event.isActive as boolean)
+        : event.is_active !== undefined
+          ? (event.is_active as boolean)
+          : true,
+    mediaItems: (event.mediaItems as any[]) || [],
+    registrationUrl:
+      (event as any).registration_url ||
+      (event as any).registrationUrl ||
+      (event as any).register_link ||
+      (event as any).registration_link ||
+      (event as any).event_link ||
+      (event as any).link ||
+      (event as any).cta_url ||
+      (event as any).ctaUrl ||
+      undefined,
+    speakers: normalizeEventSpeakers(event),
+  }));
+
+  upcomingCache = { data: transformedData, timestamp: Date.now() };
+  return transformedData;
 }
 
 // Past Events Service (with simple cache)
@@ -133,42 +138,37 @@ let pastCache: { data: WebsiteEvent[]; timestamp: number } | null = null;
 const PAST_TTL_MS = 5 * 60 * 1000; // 5 minutes
 
 export async function getPastEvents(): Promise<WebsiteEvent[]> {
-  try {
-    if (pastCache && Date.now() - pastCache.timestamp < PAST_TTL_MS) {
-      return pastCache.data;
-    }
-
-    const API_BASE_URL = getCmsBaseUrl();
-    const url = `${API_BASE_URL}/api/events/past`;
-    console.log('🔍 Calling', url);
-    const response = await fetch(url);
-    console.log('📊 Past events response status:', response.status);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const data = await response.json();
-    console.log("✅ PAST DATA:", data);
-    
-    // Transform backend data to frontend format
-    const transformedData: WebsiteEvent[] = data.map((event: Record<string, unknown>) => ({
-      id: event.id,
-      title: event.title,
-      description: event.description,
-      date: event.event_date || event.date || '',
-      location: event.location,
-      image: event.imageUrl || event.image_url || '/placeholder.jpg', // Fallback image
-      type: 'past' as const,
-      isActive: event.is_active !== undefined ? event.is_active : (event.isActive !== undefined ? event.isActive : true),
-      mediaItems: event.mediaItems || []
-    }));
-    
-    console.log("🔄 TRANSFORMED PAST DATA:", transformedData);
-    pastCache = { data: transformedData, timestamp: Date.now() };
-    return transformedData;
-  } catch (error) {
-    console.error('❌ Error fetching past events:', error);
-    throw error;
+  if (pastCache && Date.now() - pastCache.timestamp < PAST_TTL_MS) {
+    return pastCache.data;
   }
+
+  const events = await cmsService.getPastEvents();
+
+  const transformedData: WebsiteEvent[] = events.map((event: Record<string, unknown>) => ({
+    id: event.id,
+    title: event.title,
+    description: event.description,
+    date: event.date || event.event_date || '',
+    location: event.location,
+    image:
+      event.image ||
+      event.imageUrl ||
+      event.image_url ||
+      (event.mediaItems && Array.isArray(event.mediaItems) && event.mediaItems.length > 0
+        ? (event.mediaItems[0] as any).url
+        : '/placeholder.jpg'),
+    type: 'past' as const,
+    isActive:
+      event.isActive !== undefined
+        ? (event.isActive as boolean)
+        : event.is_active !== undefined
+          ? (event.is_active as boolean)
+          : true,
+    mediaItems: (event.mediaItems as any[]) || [],
+  }));
+
+  pastCache = { data: transformedData, timestamp: Date.now() };
+  return transformedData;
 }
 
 // Event Gallery Service (Completely Independent, with simple cache)
@@ -176,27 +176,39 @@ let galleryCache: { data: WebsiteGalleryItem[]; timestamp: number } | null = nul
 const GALLERY_TTL_MS = 5 * 60 * 1000;
 
 export async function getEventGallery(): Promise<WebsiteGalleryItem[]> {
-  try {
-    if (galleryCache && Date.now() - galleryCache.timestamp < GALLERY_TTL_MS) {
-      return galleryCache.data;
-    }
-
-    const API_BASE_URL = getCmsBaseUrl();
-    const url = `${API_BASE_URL}/api/event-gallery-items/public`;
-    console.log('🔍 Calling', url);
-    const response = await fetch(url);
-    console.log('📊 Gallery response status:', response.status);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const data = await response.json();
-    console.log("✅ GALLERY DATA:", data);
-    galleryCache = { data, timestamp: Date.now() };
-    return data;
-  } catch (error) {
-    console.error('❌ Error fetching event gallery:', error);
-    throw error;
+  if (galleryCache && Date.now() - galleryCache.timestamp < GALLERY_TTL_MS) {
+    return galleryCache.data;
   }
+
+  const galleryItems = await cmsService.getEventGalleryItems();
+
+  const transformed: WebsiteGalleryItem[] = (galleryItems as any[]).map((item) => ({
+    id: item.id,
+    title: item.title,
+    description: item.description,
+    media: {
+      id: item.media?.[0]?.id ?? item.id,
+      url: item.media?.[0]?.url ?? item.imageUrl ?? item.image_url ?? '',
+      type: item.media?.[0]?.type?.toLowerCase?.() ?? 'image',
+      alt:
+        item.media?.[0]?.altText ??
+        item.media?.[0]?.alt ??
+        item.title ??
+        'Event image',
+    },
+    isActive:
+      item.isActive !== undefined
+        ? item.isActive
+        : item.is_active !== undefined
+          ? item.is_active
+          : true,
+    displayOrder: item.displayOrder ?? item.order ?? 0,
+    createdAt: item.createdAt ?? '',
+    updatedAt: item.updatedAt ?? '',
+  }));
+
+  galleryCache = { data: transformed, timestamp: Date.now() };
+  return transformed;
 }
 
 // Utility function to verify data isolation

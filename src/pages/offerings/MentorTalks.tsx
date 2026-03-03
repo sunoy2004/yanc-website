@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Layout from "@/components/Layout";
 import ImageVideoGallery from "@/components/gallery/ImageVideoGallery";
 import Lightbox from "@/components/gallery/Lightbox";
 import { MediaItem } from "@/data/mockData";
-import { cmsService } from "@/lib/cms/service";
+import { useContent } from "@/hooks/useContent";
+import { serializeMentorTalks } from "@/lib/cms/serializers";
 import type { MentorTalkUI } from "@/lib/cms/types";
 
 interface MentorTalk {
@@ -42,8 +43,34 @@ const MentorTalks = () => {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxMedia, setLightboxMedia] = useState<MediaItem[]>([]);
   const [lightboxInitialIndex, setLightboxInitialIndex] = useState(0);
-  const [mentorTalks, setMentorTalks] = useState<MentorTalk[]>([]);
-  const [loading, setLoading] = useState(true);
+  const cms = useContent();
+
+  const mentorTalks: MentorTalk[] = useMemo(() => {
+    const raw = cms.mentorTalks || [];
+    const cmsTalks: MentorTalkUI[] = serializeMentorTalks(raw as any);
+
+    return cmsTalks.map((talk) => ({
+      id: talk.id,
+      title: talk.title,
+      speaker: talk.speaker,
+      speakerBio: "",
+      date: talk.date,
+      description: talk.description,
+      content: "",
+      videoUrl: talk.videoUrl,
+      thumbnail: talk.thumbnail,
+      media: talk.media.map((item) => ({
+        id: item.id,
+        type: item.type,
+        src: item.src,
+        alt: item.alt,
+      })),
+      isPublished: true,
+      order: 0,
+      createdAt: undefined,
+      updatedAt: undefined,
+    }));
+  }, [cms.mentorTalks]);
 
   useEffect(() => {
     // Check for saved theme preference first, then system preference
@@ -65,46 +92,7 @@ const MentorTalks = () => {
         setIsDarkMode(false);
       }
     }
-    
-    // Fetch mentor talks from CMS
-    loadMentorTalks();
   }, []);
-
-  const loadMentorTalks = async () => {
-    try {
-      setLoading(true);
-      const cmsTalks: MentorTalkUI[] = await cmsService.getMentorTalks();
-      
-      // Convert MentorTalkUI to local MentorTalk shape
-      const convertedTalks: MentorTalk[] = cmsTalks.map(talk => ({
-        id: talk.id,
-        title: talk.title,
-        speaker: talk.speaker,
-        speakerBio: '',
-        date: talk.date,
-        description: talk.description,
-        content: '',
-        videoUrl: talk.videoUrl,
-        thumbnail: talk.thumbnail,
-        media: talk.media.map(item => ({
-          id: item.id,
-          type: item.type,
-          src: item.src,
-          alt: item.alt
-        })),
-        isPublished: true,
-        order: 0,
-        createdAt: undefined,
-        updatedAt: undefined
-      }));
-      
-      setMentorTalks(convertedTalks);
-    } catch (error) {
-      console.error('Error loading mentor talks:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const toggleTheme = () => {
     const newDarkMode = !isDarkMode;

@@ -1,256 +1,121 @@
-import { 
-  HeroContent, 
-  SectionContent, 
-  Program, 
-  MentorTalk, 
-  Event, 
-  TeamMember, 
-  Founder, 
-  Testimonial, 
-  AboutUs, 
+import {
+  HeroContent,
+  SectionContent,
+  Program,
+  MentorTalk,
+  Event,
+  TeamMember,
+  Founder,
+  Testimonial,
+  AboutUs,
   ContactInfo,
   EventGallery,
-  MediaItem
+  MediaItem,
 } from './types';
+import content from '@/data/content';
+import type { ContentSchema } from '@/types/content';
 
-// Environment variables / runtime detection
-import { getCmsBaseUrl } from '@/lib/getCmsBaseUrl';
-const CMS_BASE_URL = getCmsBaseUrl();
-const CMS_TIMEOUT = parseInt(import.meta.env.VITE_CMS_TIMEOUT || '10000');
+const cmsContent = content as ContentSchema;
 
 class CmsClient {
-  private baseUrl: string;
-  private timeout: number;
-
-  constructor() {
-    this.baseUrl = CMS_BASE_URL;
-    this.timeout = CMS_TIMEOUT;
-  }
-
-  private async request<T>(endpoint: string): Promise<T> {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), this.timeout);
-
-    try {
-      const response = await fetch(`${this.baseUrl}/api${endpoint}`, {
-        signal: controller.signal,
-        headers: {
-          'Content-Type': 'application/json',
-          // Add any required headers for CMS authentication if needed
-        },
-      });
-
-      clearTimeout(timeoutId);
-
-      if (!response.ok) {
-        throw new Error(`CMS API error: ${response.status} ${response.statusText}`);
-      }
-
-      return await response.json();
-    } catch (error) {
-      clearTimeout(timeoutId);
-      
-      if (error instanceof TypeError && error.message.includes('fetch')) {
-        throw new Error('Network error: Unable to reach CMS');
-      }
-      
-      if ((error as Error).name === 'AbortError') {
-        throw new Error('Request timeout: CMS took too long to respond');
-      }
-      
-      throw error;
-    }
-  }
-  
-  // Special request method for endpoints that don't follow /api/content pattern
-  private async requestDirect<T>(endpoint: string): Promise<T> {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), this.timeout);
-
-    try {
-      const response = await fetch(`${this.baseUrl}${endpoint}`, {
-        signal: controller.signal,
-        headers: {
-          'Content-Type': 'application/json',
-          // Add any required headers for CMS authentication if needed
-        },
-      });
-
-      clearTimeout(timeoutId);
-
-      if (!response.ok) {
-        throw new Error(`CMS API error: ${response.status} ${response.statusText}`);
-      }
-
-      return await response.json();
-    } catch (error) {
-      clearTimeout(timeoutId);
-      
-      if (error instanceof TypeError && error.message.includes('fetch')) {
-        throw new Error('Network error: Unable to reach CMS');
-      }
-      
-      if ((error as Error).name === 'AbortError') {
-        throw new Error('Request timeout: CMS took too long to respond');
-      }
-      
-      throw error;
-    }
-  }
+  // All methods below now read from the static JSON generated at build time.
+  // No runtime network calls are made for CMS content.
 
   // Public content endpoints
   async getHeroContent(): Promise<HeroContent | null> {
-    try {
-      return await this.requestDirect<HeroContent>('/api/hero');
-    } catch (error) {
-      console.error('Error fetching hero content:', error);
-      return null;
-    }
+    return (cmsContent.hero as HeroContent | null) ?? null;
   }
 
   async getSectionContent(sectionName: string): Promise<SectionContent | null> {
-    try {
-      return await this.request<SectionContent>(`/sections/${sectionName}`);
-    } catch (error) {
-      console.error(`Error fetching section content for ${sectionName}:`, error);
-      return null;
-    }
+    return (
+      (cmsContent.sections as SectionContent[]).find(
+        (section) => section.sectionName === sectionName,
+      ) ?? null
+    );
   }
 
   async getPrograms(): Promise<Program[]> {
-    try {
-      return await this.requestDirect<Program[]>('/api/programs/public') || [];
-    } catch (error) {
-      console.error('Error fetching programs:', error);
-      return [];
-    }
+    return (cmsContent.programs as Program[]) ?? [];
   }
 
   async getMentorTalks(): Promise<MentorTalk[]> {
-    try {
-      return await this.requestDirect<MentorTalk[]>('/api/mentor-talks/public') || [];
-    } catch (error) {
-      console.error('Error fetching mentor talks:', error);
-      return [];
-    }
+    return (cmsContent.mentorTalks as MentorTalk[]) ?? [];
   }
 
   async getEvents(): Promise<Event[]> {
-    try {
-      return await this.requestDirect<Event[]>('/api/events/public') || [];
-    } catch (error) {
-      console.error('Error fetching events:', error);
-      return [];
-    }
+    return (cmsContent.events as Event[]) ?? [];
   }
 
   async getEventsByType(type: string): Promise<Event[]> {
-    try {
-      return await this.requestDirect<Event[]>(`/api/events/${type}`) || [];
-    } catch (error) {
-      console.error(`Error fetching events by type ${type}:`, error);
-      return [];
-    }
+    return ((cmsContent.events as Event[]) ?? []).filter(
+      (event) =>
+        (event as any).type === type ||
+        (event as any).category === type ||
+        (type === 'upcoming' && ((event as any).isUpcoming || (event as any).is_upcoming)) ||
+        (type === 'past' && ((event as any).isPast || (event as any).is_past)),
+    );
   }
 
   async getEventsByYear(year: number): Promise<Event[]> {
-    try {
-      return await this.requestDirect<Event[]>(`/api/events/by-year/${year}`) || [];
-    } catch (error) {
-      console.error(`Error fetching events by year ${year}:`, error);
-      return [];
-    }
+    return ((cmsContent.events as Event[]) ?? []).filter((event) => {
+      const dateStr = (event as any).date || (event as any).event_date;
+      if (!dateStr) return false;
+      const d = new Date(dateStr);
+      return d.getFullYear() === year;
+    });
   }
 
   async getEventGalleries(): Promise<EventGallery[]> {
-    try {
-      return await this.requestDirect<EventGallery[]>('/api/event-galleries/public') || [];
-    } catch (error) {
-      console.error('Error fetching event galleries:', error);
-      return [];
-    }
+    return (cmsContent.eventGalleries as EventGallery[]) ?? [];
   }
 
   async getGalleryItems(): Promise<MediaItem[]> {
-    try {
-      return await this.requestDirect<MediaItem[]>('/api/gallery-items/public') || [];
-    } catch (error) {
-      console.error('Error fetching gallery items:', error);
-      return [];
-    }
+    return (cmsContent.galleryItems as MediaItem[]) ?? [];
   }
 
   // New function to get event gallery items specifically
   async getEventGalleryItems(): Promise<Event[]> {
-    try {
-      return await this.requestDirect<Event[]>('/api/events/gallery') || [];
-    } catch (error) {
-      console.error('Error fetching event gallery items:', error);
-      return [];
-    }
+    return ((cmsContent.events as Event[]) ?? []).filter(
+      (event) =>
+        (event as any).type === 'gallery' ||
+        (event as any).category === 'gallery',
+    );
   }
 
   async getTeamMembers(): Promise<TeamMember[]> {
-    try {
-      return await this.requestDirect<TeamMember[]>('/api/team/public') || [];
-    } catch (error) {
-      console.error('Error fetching team members:', error);
-      return [];
-    }
+    return (cmsContent.teamMembers as TeamMember[]) ?? [];
   }
 
   async getTeamMembersByType(type: string): Promise<TeamMember[]> {
-    try {
-      return await this.requestDirect<TeamMember[]>(`/api/team/public/${type}`) || [];
-    } catch (error) {
-      console.error(`Error fetching team members by type ${type}:`, error);
-      return [];
-    }
+    return ((cmsContent.teamMembers as TeamMember[]) ?? []).filter(
+      (member) =>
+        (member as any).type === type ||
+        (member as any).member_type === type,
+    );
   }
 
   async getTeamMembersBySection(section: string): Promise<TeamMember[]> {
-    try {
-      return await this.requestDirect<TeamMember[]>(`/api/team/public?section=${section}`) || [];
-    } catch (error) {
-      console.error(`Error fetching team members by section ${section}:`, error);
-      return [];
-    }
+    return ((cmsContent.teamMembers as TeamMember[]) ?? []).filter(
+      (member) =>
+        (member as any).section === section ||
+        (member as any).team_section === section,
+    );
   }
 
   async getFounders(): Promise<Founder[]> {
-    try {
-      return await this.requestDirect<Founder[]>('/api/founders/public') || [];
-    } catch (error) {
-      console.error('Error fetching founders:', error);
-      return [];
-    }
+    return (cmsContent.founders as Founder[]) ?? [];
   }
 
   async getTestimonials(): Promise<Testimonial[]> {
-    try {
-      return await this.requestDirect<Testimonial[]>('/api/testimonials/public') || [];
-    } catch (error) {
-      console.error('Error fetching testimonials:', error);
-      return [];
-    }
+    return (cmsContent.testimonials as Testimonial[]) ?? [];
   }
 
   async getAboutUs(): Promise<AboutUs | null> {
-    try {
-      return await this.requestDirect<AboutUs>('/api/about/public');
-    } catch (error) {
-      console.error('Error fetching about us content:', error);
-      return null;
-    }
+    return (cmsContent.aboutUs as AboutUs | null) ?? null;
   }
 
   async getContactInfo(): Promise<ContactInfo | null> {
-    try {
-      return await this.requestDirect<ContactInfo>('/api/contact/public');
-    } catch (error) {
-      console.error('Error fetching contact info:', error);
-      return null;
-    }
+    return (cmsContent.contactInfo as ContactInfo | null) ?? null;
   }
 }
 
