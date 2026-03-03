@@ -1,117 +1,127 @@
 import 'dotenv/config';
-import { createClient } from '@supabase/supabase-js';
 import fs from 'node:fs';
 import path from 'node:path';
+import fetch from 'node-fetch';
 import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 async function main() {
-  const supabaseUrl =
-    process.env.SUPABASE_URL ||
-    process.env.VITE_SUPABASE_URL ||
-    process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const serviceRoleKey =
-    process.env.SUPABASE_SERVICE_ROLE_KEY ||
-    process.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
+  const cmsBase =
+    process.env.VITE_CMS_BASE_URL ||
+    process.env.CMS_BASE_URL ||
+    process.env.API_BASE_URL;
 
-  if (!supabaseUrl) {
+  if (!cmsBase) {
     console.warn(
-      '⚠️  SUPABASE_URL (or VITE_SUPABASE_URL) is not set. Skipping CMS fetch and keeping existing src/data/content.json.',
-    );
-    console.warn(
-      '    To enable live CMS content in CI, configure SUPABASE_URL/VITE_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY as environment variables or secrets.',
+      '⚠️  VITE_CMS_BASE_URL / CMS_BASE_URL is not set. Skipping CMS fetch and keeping existing src/data/content.json.',
     );
     return;
   }
 
-  if (!serviceRoleKey) {
-    console.warn(
-      '⚠️  SUPABASE_SERVICE_ROLE_KEY is not set. Skipping CMS fetch and keeping existing src/data/content.json.',
-    );
-    console.warn(
-      '    To enable live CMS content in CI, configure SUPABASE_SERVICE_ROLE_KEY as a secure environment variable or secret.',
-    );
-    return;
-  }
+  console.log('🔗 Using CMS base URL:', cmsBase);
 
-  console.log('🔐 Using Supabase URL:', supabaseUrl);
-
-  const supabase = createClient(supabaseUrl, serviceRoleKey, {
-    auth: { persistSession: false },
-  });
-
-  async function fetchTable(table, select = '*') {
-    console.log(`🔍 Fetching table "${table}"...`);
-    const { data, error } = await supabase.from(table).select(select);
-    if (error) {
-      console.error(`❌ Failed to fetch "${table}":`, error.message);
-      throw error;
+  async function fetchJson(endpoint) {
+    const url = `${cmsBase}${endpoint}`;
+    console.log(`🔍 Fetching ${url} ...`);
+    const res = await fetch(url);
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status} ${res.statusText} for ${url}`);
     }
-    console.log(`✅ Fetched ${data?.length ?? 0} rows from "${table}"`);
-    return data ?? [];
+    return res.json();
   }
 
   try {
     const [
-      heroRows,
-      sectionRows,
-      programRows,
-      mentorTalkRows,
-      eventRows,
-      eventGalleryRows,
-      galleryItemRows,
-      teamMemberRows,
-      founderRows,
-      testimonialRows,
-      aboutUsRows,
-      contactInfoRows,
+      hero,
+      programs,
+      mentorTalks,
+      events,
+      eventGalleries,
+      galleryItems,
+      teamMembers,
+      founders,
+      testimonials,
+      aboutUs,
+      contactInfo,
     ] = await Promise.all([
-      // Adjust table names/select clauses here to match your actual Supabase schema
-      fetchTable('hero_content'),
-      fetchTable('section_content'),
-      fetchTable('programs'),
-      fetchTable('mentor_talks'),
-      fetchTable('events'),
-      fetchTable('event_galleries'),
-      fetchTable('gallery_items'),
-      fetchTable('team_members'),
-      fetchTable('founders'),
-      fetchTable('testimonials'),
-      fetchTable('about_us'),
-      fetchTable('contact_info'),
+      // Public content endpoints mirrored from cmsClient
+      fetchJson('/api/hero').catch((err) => {
+        console.warn('⚠️  Failed to fetch hero content:', err.message);
+        return null;
+      }),
+      fetchJson('/api/programs/public').catch((err) => {
+        console.warn('⚠️  Failed to fetch programs:', err.message);
+        return [];
+      }),
+      fetchJson('/api/mentor-talks/public').catch((err) => {
+        console.warn('⚠️  Failed to fetch mentor talks:', err.message);
+        return [];
+      }),
+      fetchJson('/api/events/public').catch((err) => {
+        console.warn('⚠️  Failed to fetch events:', err.message);
+        return [];
+      }),
+      fetchJson('/api/event-galleries/public').catch((err) => {
+        console.warn('⚠️  Failed to fetch event galleries:', err.message);
+        return [];
+      }),
+      fetchJson('/api/gallery-items/public').catch((err) => {
+        console.warn('⚠️  Failed to fetch gallery items:', err.message);
+        return [];
+      }),
+      fetchJson('/api/team/public').catch((err) => {
+        console.warn('⚠️  Failed to fetch team members:', err.message);
+        return [];
+      }),
+      fetchJson('/api/founders/public').catch((err) => {
+        console.warn('⚠️  Failed to fetch founders:', err.message);
+        return [];
+      }),
+      fetchJson('/api/testimonials/public').catch((err) => {
+        console.warn('⚠️  Failed to fetch testimonials:', err.message);
+        return [];
+      }),
+      fetchJson('/api/about/public').catch((err) => {
+        console.warn('⚠️  Failed to fetch about us content:', err.message);
+        return null;
+      }),
+      fetchJson('/api/contact/public').catch((err) => {
+        console.warn('⚠️  Failed to fetch contact info:', err.message);
+        return null;
+      }),
     ]);
 
     // Basic sanity checks for critical content
-    if (!heroRows || heroRows.length === 0) {
-      console.error('❌ No hero content found in "hero_content" table.');
-      process.exit(1);
+    if (!hero) {
+      console.error('❌ No hero content returned from /api/hero.');
+      // Still write what we have, but warn; frontend has fallbacks.
     }
 
-    if (!eventRows || eventRows.length === 0) {
-      console.error('❌ No events found in "events" table.');
-      process.exit(1);
+    if (!events || events.length === 0) {
+      console.error('❌ No events returned from /api/events/public.');
+      // Still continue; events sections will render empty state.
     }
 
-    if (!aboutUsRows || aboutUsRows.length === 0) {
-      console.error('❌ No About Us content found in "about_us" table.');
-      process.exit(1);
+    if (!aboutUs) {
+      console.error('❌ No About Us content returned from /api/about/public.');
+      // Frontend About section will fall back to its own copy.
     }
 
     const content = {
-      hero: heroRows[0] ?? null,
-      sections: sectionRows ?? [],
-      programs: programRows ?? [],
-      mentorTalks: mentorTalkRows ?? [],
-      events: eventRows ?? [],
-      eventGalleries: eventGalleryRows ?? [],
-      galleryItems: galleryItemRows ?? [],
-      teamMembers: teamMemberRows ?? [],
-      founders: founderRows ?? [],
-      testimonials: testimonialRows ?? [],
-      aboutUs: aboutUsRows[0] ?? null,
-      contactInfo: contactInfoRows[0] ?? null,
+      hero: hero ?? null,
+      sections: [], // Not exposed via HTTP API currently
+      programs: programs ?? [],
+      mentorTalks: mentorTalks ?? [],
+      events: events ?? [],
+      eventGalleries: eventGalleries ?? [],
+      galleryItems: galleryItems ?? [],
+      teamMembers: teamMembers ?? [],
+      founders: founders ?? [],
+      testimonials: testimonials ?? [],
+      aboutUs: aboutUs ?? null,
+      contactInfo: contactInfo ?? null,
       lastUpdated: new Date().toISOString(),
     };
 
