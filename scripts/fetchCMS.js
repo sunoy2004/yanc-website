@@ -12,17 +12,28 @@ async function main() {
     process.env.SUPABASE_URL ||
     process.env.VITE_SUPABASE_URL ||
     process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const serviceRoleKey =
+    process.env.SUPABASE_SERVICE_ROLE_KEY ||
+    process.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
 
   if (!supabaseUrl) {
-    console.error('❌ SUPABASE_URL (or VITE_SUPABASE_URL) is not set in environment.');
-    process.exit(1);
+    console.warn(
+      '⚠️  SUPABASE_URL (or VITE_SUPABASE_URL) is not set. Skipping CMS fetch and keeping existing src/data/content.json.',
+    );
+    console.warn(
+      '    To enable live CMS content in CI, configure SUPABASE_URL/VITE_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY as environment variables or secrets.',
+    );
+    return;
   }
 
   if (!serviceRoleKey) {
-    console.error('❌ SUPABASE_SERVICE_ROLE_KEY is not set in environment.');
-    console.error('   This script must run on the server/build environment only.');
-    process.exit(1);
+    console.warn(
+      '⚠️  SUPABASE_SERVICE_ROLE_KEY is not set. Skipping CMS fetch and keeping existing src/data/content.json.',
+    );
+    console.warn(
+      '    To enable live CMS content in CI, configure SUPABASE_SERVICE_ROLE_KEY as a secure environment variable or secret.',
+    );
+    return;
   }
 
   console.log('🔐 Using Supabase URL:', supabaseUrl);
