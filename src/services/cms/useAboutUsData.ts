@@ -12,27 +12,32 @@ export const useAboutUsData = (options?: { skipCache?: boolean; refreshInterval?
     try {
       setLoading(true);
       
-      // Clear cache if requested
+      // Clear in-memory cache if requested (still reads from static content.json)
       if (skipCache) {
-        console.log('🔄 Clearing CMS cache and fetching fresh data...');
+        if (import.meta.env.DEV) {
+          console.log('[content.json] Clearing in-memory cache and reloading about-us data...');
+        }
         cmsService.clearCache();
       }
       
-      // Attempt to fetch from CMS
+      // Fetch About Us via cmsService (which reads from static content.json)
       const cmsAboutUs = await cmsService.getAboutUs();
       
       if (cmsAboutUs) {
-        // CMS has published content, use it
-        console.log('ℹ️ Using CMS about us data');
+        if (import.meta.env.DEV) {
+          console.log('[content.json] About-us data loaded from static content.json:', cmsAboutUs);
+        }
         setAboutUsData(cmsAboutUs);
       } else {
-        // CMS has no published content, fall back to mock data
-        console.log('ℹ️ No published CMS about us found, falling back to mock data');
+        if (import.meta.env.DEV) {
+          console.log('[content.json] No about-us content in static content.json, falling back to mock data');
+        }
         setAboutUsData(mockAboutUs);
       }
     } catch (err) {
-      // CMS is down or had an error, fall back to mock data
-      console.error('⚠️ Error fetching about us from CMS, using mock data:', err);
+      if (import.meta.env.DEV) {
+        console.error('[content.json] Error loading about-us content, using mock data:', err);
+      }
       setAboutUsData(mockAboutUs);
       setError(err instanceof Error ? err.message : 'Unknown error');
     } finally {
@@ -44,11 +49,13 @@ export const useAboutUsData = (options?: { skipCache?: boolean; refreshInterval?
     fetchData();
   }, []);
 
-  // Periodic refresh if interval is specified
+  // Optional periodic refresh if interval is specified (still from static content.json)
   useEffect(() => {
     if (refreshInterval && refreshInterval > 0) {
       const intervalId = setInterval(() => {
-        console.log(`🔄 Auto-refreshing CMS data every ${refreshInterval}ms`);
+        if (import.meta.env.DEV) {
+          console.log(`[content.json] Auto-refreshing about-us data every ${refreshInterval}ms`);
+        }
         fetchData();
       }, refreshInterval);
 
@@ -56,7 +63,7 @@ export const useAboutUsData = (options?: { skipCache?: boolean; refreshInterval?
     }
   }, [refreshInterval]);
 
-  // Return refresh function
+  // Expose a manual refresh helper
   const refreshData = () => {
     fetchData();
   };

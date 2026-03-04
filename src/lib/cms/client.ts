@@ -74,12 +74,8 @@ class CmsClient {
   }
 
   // New function to get event gallery items specifically
-  async getEventGalleryItems(): Promise<Event[]> {
-    return ((cmsContent.events as Event[]) ?? []).filter(
-      (event) =>
-        (event as any).type === 'gallery' ||
-        (event as any).category === 'gallery',
-    );
+  async getEventGalleryItems(): Promise<any[]> {
+    return (cmsContent as any).eventGalleryItems ?? [];
   }
 
   async getTeamMembers(): Promise<TeamMember[]> {

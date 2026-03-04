@@ -22,6 +22,9 @@ export interface ContentSchema {
   events: Event[];
   eventGalleries: EventGallery[];
   galleryItems: MediaItem[];
+  // Flat event gallery items from /api/event-gallery-items/public
+  // (structure is close to WebsiteGalleryItem but kept loose here)
+  eventGalleryItems?: any[];
   teamMembers: TeamMember[];
   founders: Founder[];
   testimonials: Testimonial[];

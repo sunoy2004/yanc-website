@@ -40,6 +40,13 @@ export const useTeamData = (type?: string, section?: string) => {
 
     const serialized = serializeTeamMembers(filtered as any);
     if (serialized.length > 0) {
+      if (import.meta.env.DEV) {
+        console.log('[content.json] useTeamData resolved members from static content.json', {
+          type,
+          section,
+          count: serialized.length,
+        });
+      }
       return { teamData: serialized, loading: false, error: null };
     }
 

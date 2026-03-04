@@ -632,28 +632,24 @@ class CmsService {
     }
     
     try {
-      // Try to get events with type 'gallery' first
-      const cmsEvents = await cmsClient.getEventsByType('gallery');
+      // Primary source: dedicated event gallery items from static content.json
+      // (backed by the event_gallery_items table in the CMS).
+      const cmsItems = await cmsClient.getEventGalleryItems();
       
-      if (cmsEvents && cmsEvents.length > 0) {
-        const serializedEvents = serializeEvents(cmsEvents);
-        cmsCache.set(cacheKey, serializedEvents);
-        return serializedEvents;
+      if (cmsItems && cmsItems.length > 0) {
+        if (import.meta.env.DEV) {
+          console.log('[content.json] getEventGalleryItems resolved event-gallery-items from static content.json', {
+            galleryCount: cmsItems.length,
+          });
+        }
+        cmsCache.set(cacheKey, cmsItems);
+        return cmsItems;
       }
       
-      // Fallback: get all events and filter by type
-      const allEvents = await this.getEvents();
-      const filteredEvents = allEvents.filter(event => event.type === 'gallery');
-      
-      if (filteredEvents.length > 0) {
-        cmsCache.set(cacheKey, filteredEvents);
-        return filteredEvents;
-      }
-      
-      // Final fallback to mock data
-      const mockEventsData = serializeMockEvents(mockEvents.filter(e => e.title.toLowerCase().includes('gallery') || e.title.toLowerCase().includes('photo')));
-      cmsCache.set(cacheKey, mockEventsData);
-      return mockEventsData;
+      // Final fallback to mock gallery data
+      const mockEventGalleriesData = serializeMockEventGalleries(mockEventGalleryItems);
+      cmsCache.set(cacheKey, mockEventGalleriesData);
+      return mockEventGalleriesData;
     } catch (error) {
       console.error('Error in getEventGalleryItems, using mock data:', error);
       const mockEventsData = serializeMockEvents(mockEvents.filter(e => e.title.toLowerCase().includes('gallery') || e.title.toLowerCase().includes('photo')));

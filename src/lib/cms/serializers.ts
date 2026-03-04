@@ -201,7 +201,9 @@ export const serializeTestimonials = (cmsTestimonials: Testimonial[]): any[] => 
 export const serializeAboutUs = (cmsAboutUs: AboutUs | null): any | null => {
   if (!cmsAboutUs) return null;
   
-  console.log('🔍 serializeAboutUs received:', cmsAboutUs);
+  if (import.meta.env.DEV) {
+    console.log('[content.json] serializeAboutUs received:', cmsAboutUs);
+  }
   
   // Handle both snake_case and camelCase properties
   const aboutUsData = cmsAboutUs as any;
@@ -221,7 +223,9 @@ export const serializeAboutUs = (cmsAboutUs: AboutUs | null): any | null => {
     }
   };
   
-  console.log('🔍 serializeAboutUs result:', result);
+  if (import.meta.env.DEV) {
+    console.log('[content.json] serializeAboutUs result:', result);
+  }
   return result;
 };
 

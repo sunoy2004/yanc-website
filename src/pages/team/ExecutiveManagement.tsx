@@ -9,9 +9,7 @@ const ExecutiveManagement = () => {
     // Check system preference for initial state
     return window.matchMedia('(prefers-color-scheme: dark)').matches;
   });
-  console.log('🚀 ExecutiveManagement component mounting');
   const { teamData, loading, error } = useTeamData(undefined, 'executive_management');
-  console.log('📋 ExecutiveManagement received:', teamData.length, 'members');
 
   useEffect(() => {
     // Check for saved theme preference first, then system preference

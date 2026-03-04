@@ -49,6 +49,13 @@ const MentorTalks = () => {
     const raw = cms.mentorTalks || [];
     const cmsTalks: MentorTalkUI[] = serializeMentorTalks(raw as any);
 
+    if (import.meta.env.DEV) {
+      console.log('[content.json] MentorTalks page resolved mentor talks from static content.json', {
+        rawCount: raw.length,
+        activeCount: cmsTalks.length,
+      });
+    }
+
     return cmsTalks.map((talk) => ({
       id: talk.id,
       title: talk.title,

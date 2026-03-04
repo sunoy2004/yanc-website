@@ -209,6 +209,78 @@
   ],
   "eventGalleries": [],
   "galleryItems": [],
+  "eventGalleryItems": [
+    {
+      "id": "b1bd7a5d-bc9e-4c20-8544-d8814f70b34c",
+      "title": "Discover Meet YANC",
+      "description": "YANC Insights",
+      "media": [
+        {
+          "id": "5075dfff-9d45-404b-89ba-60407e826e70",
+          "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/uploads/1771228851231_2.jpeg",
+          "type": "image",
+          "alt": "Discover Meet YANC"
+        },
+        {
+          "id": "c08fa7fe-7b5b-48dc-8fde-a4c1d342a8f7",
+          "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/uploads/1771228851254_3.jpeg",
+          "type": "image",
+          "alt": "Discover Meet YANC"
+        },
+        {
+          "id": "9c1d1c23-8774-4d26-bf36-eb501fd3db94",
+          "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/uploads/1771228851277_4.jpeg",
+          "type": "image",
+          "alt": "Discover Meet YANC"
+        },
+        {
+          "id": "5531ad53-bd74-4e70-933c-1ada48742ba5",
+          "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/uploads/1771228851282_5.jpeg",
+          "type": "image",
+          "alt": "Discover Meet YANC"
+        }
+      ],
+      "isActive": true,
+      "displayOrder": 1,
+      "createdAt": "2026-02-16T08:00:56.869461+00:00",
+      "updatedAt": "2026-03-02T06:47:05.267572+00:00"
+    },
+    {
+      "id": "36ff423a-7d31-4c05-b47d-4706eafdd811",
+      "title": "Event test",
+      "description": "Test event",
+      "media": [
+        {
+          "id": "10c494f0-3ae4-47b6-a73e-4db1d3cb8bd3",
+          "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/uploads/1771228891363_1.jpeg",
+          "type": "image",
+          "alt": "Event test"
+        },
+        {
+          "id": "0499032d-bf55-4f3f-9246-15812f8e76ec",
+          "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/uploads/1771228891400_2.jpeg",
+          "type": "image",
+          "alt": "Event test"
+        },
+        {
+          "id": "2da1fb0e-1fa2-43c7-ae91-32c2c18d002a",
+          "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/uploads/1771228891412_3.jpeg",
+          "type": "image",
+          "alt": "Event test"
+        },
+        {
+          "id": "b8506263-b141-41bc-b305-2a986463cf17",
+          "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/uploads/1771228891418_4.jpeg",
+          "type": "image",
+          "alt": "Event test"
+        }
+      ],
+      "isActive": true,
+      "displayOrder": 2,
+      "createdAt": "2026-02-16T08:01:40.725889+00:00",
+      "updatedAt": "2026-03-03T15:47:25.19185+00:00"
+    }
+  ],
   "teamMembers": [
     {
       "id": "f5980fa7-ba14-4140-9b7c-7ce91a9dbc3f",
@@ -731,5 +803,5 @@
     "mediaItems": []
   },
   "contactInfo": null,
-  "lastUpdated": "2026-03-04T06:20:02.417Z"
+  "lastUpdated": "2026-03-04T07:04:31.763Z"
 }

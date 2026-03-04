@@ -36,12 +36,13 @@ export interface WebsiteGalleryItem {
   id: string;
   title?: string;
   description?: string;
+  // One event can have many media items (images/videos)
   media: {
     id: string;
     url: string;
     type: 'image' | 'video';
     alt: string;
-  };
+  }[];
   isActive: boolean;
   displayOrder: number;
   createdAt: string;
@@ -206,30 +207,40 @@ export async function getEventGallery(): Promise<WebsiteGalleryItem[]> {
 
   const galleryItems = await cmsService.getEventGalleryItems();
 
-  const transformed: WebsiteGalleryItem[] = (galleryItems as any[]).map((item) => ({
-    id: item.id,
-    title: item.title,
-    description: item.description,
-    media: {
-      id: item.media?.[0]?.id ?? item.id,
-      url: item.media?.[0]?.url ?? item.imageUrl ?? item.image_url ?? '',
-      type: item.media?.[0]?.type?.toLowerCase?.() ?? 'image',
+  const transformed: WebsiteGalleryItem[] = (galleryItems as any[]).map((item) => {
+    const rawMedia = Array.isArray(item.media)
+      ? item.media
+      : item.media
+        ? [item.media]
+        : [];
+
+    const media = rawMedia.map((m: any, index: number) => ({
+      id: m.id ?? `${item.id}-${index}`,
+      url: m.url ?? m.imageUrl ?? m.image_url ?? '',
+      type: (m.type ?? 'image').toLowerCase() === 'video' ? 'video' : 'image',
       alt:
-        item.media?.[0]?.altText ??
-        item.media?.[0]?.alt ??
+        m.altText ??
+        m.alt ??
         item.title ??
         'Event image',
-    },
-    isActive:
-      item.isActive !== undefined
-        ? item.isActive
-        : item.is_active !== undefined
-          ? item.is_active
-          : true,
-    displayOrder: item.displayOrder ?? item.order ?? 0,
-    createdAt: item.createdAt ?? '',
-    updatedAt: item.updatedAt ?? '',
-  }));
+    }));
+
+    return {
+      id: item.id,
+      title: item.title,
+      description: item.description,
+      media,
+      isActive:
+        item.isActive !== undefined
+          ? item.isActive
+          : item.is_active !== undefined
+            ? item.is_active
+            : true,
+      displayOrder: item.displayOrder ?? item.order ?? 0,
+      createdAt: item.createdAt ?? '',
+      updatedAt: item.updatedAt ?? '',
+    };
+  });
 
   galleryCache = { data: transformed, timestamp: Date.now() };
   return transformed;

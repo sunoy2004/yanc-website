@@ -40,6 +40,7 @@ async function main() {
       events,
       eventGalleries,
       galleryItems,
+      eventGalleryItems,
       teamMembers,
       founders,
       testimonials,
@@ -69,6 +70,10 @@ async function main() {
       }),
       fetchJson('/api/gallery-items/public').catch((err) => {
         console.warn('⚠️  Failed to fetch gallery items:', err.message);
+        return [];
+      }),
+      fetchJson('/api/event-gallery-items/public').catch((err) => {
+        console.warn('⚠️  Failed to fetch event gallery items:', err.message);
         return [];
       }),
       fetchJson('/api/team/public').catch((err) => {
@@ -117,6 +122,7 @@ async function main() {
       events: events ?? [],
       eventGalleries: eventGalleries ?? [],
       galleryItems: galleryItems ?? [],
+      eventGalleryItems: eventGalleryItems ?? [],
       teamMembers: teamMembers ?? [],
       founders: founders ?? [],
       testimonials: testimonials ?? [],

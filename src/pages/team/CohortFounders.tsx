@@ -9,9 +9,7 @@ const CohortFounders = () => {
     // Check system preference for initial state
     return window.matchMedia('(prefers-color-scheme: dark)').matches;
   });
-  console.log('🚀 CohortFounders component mounting');
   const { teamData, loading, error } = useTeamData(undefined, 'cohort_founders');
-  console.log('📋 CohortFounders received:', teamData.length, 'members');
 
   useEffect(() => {
     // Check for saved theme preference first, then system preference
