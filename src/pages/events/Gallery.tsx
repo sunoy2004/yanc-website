@@ -161,7 +161,9 @@ const EventGallery = () => {
                               <img
                                 src={mediaItem.src}
                                 alt={mediaItem.alt}
-                                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 image-placeholder"
+                                loading="lazy"
+                                decoding="async"
                               />
                             ) : (
                               <div className="relative bg-gray-900 rounded-lg overflow-hidden w-full h-full">

@@ -58,7 +58,9 @@ const EventsSection = () => {
                         <img 
                           src={closestEvent.mediaItems[0].url} 
                           alt={closestEvent.mediaItems[0].altText || closestEvent.mediaItems[0].alt || closestEvent.title}
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-cover image-placeholder"
+                          loading="lazy"
+                          decoding="async"
                         />
                       ) : (
                         <div className="w-full h-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">

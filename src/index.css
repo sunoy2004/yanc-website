@@ -152,6 +152,11 @@
   .feature-card:hover .feature-card-particle {
     animation: bounce 1s ease-in-out infinite;
   }
+
+  /* Generic image loading placeholder to keep layout stable */
+  .image-placeholder {
+    @apply bg-muted;
+  }
 }
 
 @layer base {

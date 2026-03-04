@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -55,18 +56,34 @@ import TestUpcomingEvents from "./pages/TestUpcomingEvents";
 import DebugEvents from "./pages/DebugEvents";
 import SimpleTest from "./pages/SimpleTest";
 import MinimalEventsTest from "./pages/MinimalEventsTest";
+import content from "@/data/content";
+import { prefetchImages } from "@/utils/prefetchImages";
+import { extractImageUrls } from "@/utils/extractImageUrls";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <ScrollToTop />
-        <div className="min-h-screen flex flex-col bg-background text-foreground">
-          <Routes>
+const App = () => {
+  useEffect(() => {
+    try {
+      const urls = extractImageUrls(content);
+      prefetchImages(urls);
+    } catch (error) {
+      if (import.meta.env.DEV) {
+        // Best-effort optimization; failures should not break the app.
+        console.error("Error prefetching CMS images:", error);
+      }
+    }
+  }, []);
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <ScrollToTop />
+          <div className="min-h-screen flex flex-col bg-background text-foreground">
+            <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/signin" element={<SignIn />} />
@@ -120,14 +137,15 @@ const App = () => (
             <Route path="/legal/cookies" element={<CookiePolicy />} />
             <Route path="/legal/refund" element={<RefundPolicy />} />
 
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-          <Chatbot />
-        </div>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+            <Chatbot />
+          </div>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;

@@ -23,7 +23,9 @@ const EventCardHorizontal: React.FC<EventCardHorizontalProps> = ({ event }) => {
         <img 
           src={event.image} 
           alt={event.title} 
-          className="w-80 h-56 object-cover"
+          className="w-80 h-56 object-cover image-placeholder"
+          loading="lazy"
+          decoding="async"
         />
       )}
       <div className="flex flex-col justify-between p-4 flex-1">

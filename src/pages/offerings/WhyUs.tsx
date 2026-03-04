@@ -76,11 +76,13 @@ const WhyUs = () => {
                   key={card.id}
                   className="bg-card rounded-md p-3 border border-border shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 group"
                 >
-                  <div className="mb-3">
+                  <div className="mb-3 image-placeholder">
                     <img 
                       src={card.image} 
                       alt={card.title}
                       className="w-full h-32 object-cover rounded-md aspect-square object-center"
+                      loading="lazy"
+                      decoding="async"
                     />
                   </div>
                   <div className="p-2">

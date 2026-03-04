@@ -62,11 +62,13 @@ const WhoCanJoin = () => {
                   {...(card.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                   className="bg-card rounded-xl overflow-hidden border border-border shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 group block"
                 >
-                  <div className="aspect-video overflow-hidden">
+                  <div className="aspect-video overflow-hidden image-placeholder">
                     <img 
                       src={card.image} 
                       alt={card.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      loading="lazy"
+                      decoding="async"
                     />
                   </div>
                   <div className="p-6">

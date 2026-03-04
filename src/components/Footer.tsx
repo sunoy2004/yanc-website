@@ -29,8 +29,8 @@ const Footer = () => {
           <div className="footer-brand-col">
             <div className="footer-brand flex flex-col justify-between h-full">
               <div className="flex items-center gap-3">
-                <div className="flex flex-col items-start">
-                  <img src="/favicon.svg" alt="YANC" className="footer-logo-img" />
+                <div className="flex flex-col items-start image-placeholder">
+                  <img src="/favicon.svg" alt="YANC" className="footer-logo-img" loading="lazy" decoding="async" />
                   <p className="footer-tagline mt-1">Yet Another Networking Club</p>
                 </div>
               </div>
@@ -48,15 +48,15 @@ const Footer = () => {
                   </a> */}
 
                   <a href="https://www.instagram.com/oneyanc/" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Instagram">
-                    <img src={instagramIcon} alt="Instagram" className="social-icon-img" />
+                    <img src={instagramIcon} alt="Instagram" className="social-icon-img" loading="lazy" decoding="async" />
                   </a>
 
                   <a href="https://www.linkedin.com/company/oneyanc/posts/?feedView=all" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="LinkedIn">
-                    <img src={linkedinIcon} alt="LinkedIn" className="social-icon-img" />
+                    <img src={linkedinIcon} alt="LinkedIn" className="social-icon-img" loading="lazy" decoding="async" />
                   </a>
 
                   <a href="https://api.whatsapp.com/send/?phone=%2B917671819335&text&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="WhatsApp">
-                    <img src={whatsappIcon} alt="WhatsApp" className="social-icon-img" />
+                    <img src={whatsappIcon} alt="WhatsApp" className="social-icon-img" loading="lazy" decoding="async" />
                   </a>
                 </div>
               </div>

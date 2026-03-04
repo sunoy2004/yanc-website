@@ -75,7 +75,9 @@ const Lightbox: React.FC<LightboxProps> = ({
             <img
               src={currentMedia.src}
               alt={currentMedia.alt}
-              className="max-h-[80vh] max-w-full object-contain"
+              className="max-h-[80vh] max-w-full object-contain image-placeholder"
+              loading="lazy"
+              decoding="async"
             />
           ) : (
             <div className="relative w-full h-full flex items-center justify-center">
