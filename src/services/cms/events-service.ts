@@ -49,6 +49,8 @@ export interface WebsiteGalleryItem {
 }
 
 // Upcoming Events Service
+import { useMemo } from 'react';
+import { useContent } from '@/hooks/useContent';
 import { cmsService } from '@/lib/cms/service';
 
 /** Normalize speaker data from backend (array of objects, array of strings, or single speaker string). */
@@ -82,6 +84,58 @@ function normalizeEventSpeakers(event: Record<string, unknown>): Array<{ name: s
   return undefined;
 }
 
+/** Map a raw event (from content.json or CMS) to WebsiteEvent. */
+function eventToWebsiteEvent(event: Record<string, unknown>, kind: 'upcoming' | 'past'): WebsiteEvent {
+  const img =
+    (event.image ?? event.imageUrl ?? event.image_url) ||
+    (event.mediaItems && Array.isArray(event.mediaItems) && event.mediaItems.length > 0
+      ? (event.mediaItems[0] as any).url
+      : '/placeholder.jpg');
+  return {
+    id: (event.id as string) ?? '',
+    title: (event.title as string) ?? '',
+    description: (event.description as string) ?? undefined,
+    date: (event.date ?? event.event_date ?? '') as string,
+    location: (event.location as string) ?? '',
+    image: typeof img === 'string' ? img : '/placeholder.jpg',
+    type: kind,
+    isActive:
+      event.isActive !== undefined
+        ? (event.isActive as boolean)
+        : event.is_active !== undefined
+          ? (event.is_active as boolean)
+          : true,
+    mediaItems: (event.mediaItems as any[]) ?? [],
+    registrationUrl:
+      (event as any).registration_url ??
+      (event as any).registrationUrl ??
+      (event as any).register_link ??
+      (event as any).registration_link ??
+      (event as any).event_link ??
+      (event as any).link ??
+      (event as any).cta_url ??
+      (event as any).ctaUrl ??
+      undefined,
+    speakers: normalizeEventSpeakers(event),
+  };
+}
+
+/** Sync hook: upcoming events from content.json (no API). */
+export function useUpcomingEvents(): WebsiteEvent[] {
+  const content = useContent();
+  return useMemo(() => {
+    const raw = (content.events ?? []) as Record<string, unknown>[];
+    const upcoming = raw.filter(
+      (e) =>
+        (e.category === 'upcoming' || e.isUpcoming === true || (e as any).is_upcoming === true) &&
+        (e.is_active !== false && e.isActive !== false),
+    );
+    return upcoming
+      .map((e) => eventToWebsiteEvent(e, 'upcoming'))
+      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+  }, [content.events]);
+}
+
 // Simple in-module cache to avoid refetching upcoming events on every navigation
 let upcomingCache: { data: WebsiteEvent[]; timestamp: number } | null = null;
 const UPCOMING_TTL_MS = 5 * 60 * 1000; // 5 minutes
@@ -95,39 +149,9 @@ export async function getUpcomingEvents(): Promise<WebsiteEvent[]> {
   // Use cmsService, which now reads from static JSON via cmsClient
   const events = await cmsService.getUpcomingEvents();
 
-  const transformedData: WebsiteEvent[] = events.map((event: Record<string, unknown>) => ({
-    id: event.id,
-    title: event.title,
-    description: event.description,
-    date: event.date || event.event_date || '',
-    location: event.location,
-    image:
-      event.image ||
-      event.imageUrl ||
-      event.image_url ||
-      (event.mediaItems && Array.isArray(event.mediaItems) && event.mediaItems.length > 0
-        ? (event.mediaItems[0] as any).url
-        : '/placeholder.jpg'),
-    type: 'upcoming' as const,
-    isActive:
-      event.isActive !== undefined
-        ? (event.isActive as boolean)
-        : event.is_active !== undefined
-          ? (event.is_active as boolean)
-          : true,
-    mediaItems: (event.mediaItems as any[]) || [],
-    registrationUrl:
-      (event as any).registration_url ||
-      (event as any).registrationUrl ||
-      (event as any).register_link ||
-      (event as any).registration_link ||
-      (event as any).event_link ||
-      (event as any).link ||
-      (event as any).cta_url ||
-      (event as any).ctaUrl ||
-      undefined,
-    speakers: normalizeEventSpeakers(event),
-  }));
+  const transformedData: WebsiteEvent[] = events.map((event: Record<string, unknown>) =>
+    eventToWebsiteEvent(event, 'upcoming'),
+  );
 
   upcomingCache = { data: transformedData, timestamp: Date.now() };
   return transformedData;

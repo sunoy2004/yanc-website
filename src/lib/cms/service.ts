@@ -67,7 +67,6 @@ class CmsService {
     }
     
     try {
-      console.log('Fetching hero content from CMS...');
       const cmsHero = await cmsClient.getHeroContent();
       
       // Check if CMS returned valid published content
@@ -80,23 +79,17 @@ class CmsService {
         
         // Additional validation: ensure we have media items
         if (serializedHero && serializedHero.mediaItems && serializedHero.mediaItems.length > 0) {
-          console.log(`✅ Using CMS hero content: ${cmsHero.title} (${serializedHero.mediaItems.length} media items)`);
           cmsCache.set(cacheKey, serializedHero);
           return serializedHero;
-        } else {
-          console.warn('⚠️ CMS hero content found but has no media items, falling back to mock');
         }
-      } else {
-        console.log('ℹ️ No published CMS hero content found, falling back to mock data');
       }
       
-      // Fallback to mock data
+      // Fallback to mock data when content has no media
       const mockHero = serializeMockHeroContent(heroMedia);
       cmsCache.set(cacheKey, mockHero);
       return mockHero;
       
     } catch (error) {
-      console.warn('⚠️ CMS API error or unreachable, falling back to mock hero content:', error);
       const mockHero = serializeMockHeroContent(heroMedia);
       cmsCache.set(cacheKey, mockHero);
       return mockHero;
@@ -120,7 +113,6 @@ class CmsService {
       
       // Use mock data if CMS returns empty array
       if (!serializedPrograms || serializedPrograms.length === 0) {
-        console.log('Using mock programs');
         const mockProgramsData = serializeMockPrograms(mockPrograms);
         cmsCache.set(cacheKey, mockProgramsData);
         return mockProgramsData;
@@ -153,7 +145,6 @@ class CmsService {
       
       // Use mock data if CMS returns empty array
       if (!serializedEvents || serializedEvents.length === 0) {
-        console.log('Using mock events');
         const mockEventsData = serializeMockEvents(mockEvents);
         cmsCache.set(cacheKey, mockEventsData);
         return mockEventsData;
@@ -186,7 +177,6 @@ class CmsService {
       
       // Use mock data if CMS returns empty array
       if (!serializedTeamMembers || serializedTeamMembers.length === 0) {
-        console.log('Using mock team members');
         const mockTeamMembersData = serializeMockTeamMembers(mockTeamMembers);
         cmsCache.set(cacheKey, mockTeamMembersData);
         return mockTeamMembersData;
@@ -232,7 +222,6 @@ class CmsService {
       
       // Use mock data if CMS returns empty array for this type
       if (!serializedTeamMembers || serializedTeamMembers.length === 0) {
-        console.log(`Using mock ${type} team members`);
         const mockTeamMembersData = serializeMockTeamMembers(mockTeamMembers);
         cmsCache.set(cacheKey, mockTeamMembersData);
         return mockTeamMembersData;
@@ -265,7 +254,6 @@ class CmsService {
       
       // Use mock data if CMS returns empty array for this section
       if (!serializedTeamMembers || serializedTeamMembers.length === 0) {
-        console.log(`Using mock ${section} team members`);
         // Return appropriate mock data based on section
         let mockData: TeamMemberUI[] = [];
         switch (section) {
@@ -332,7 +320,6 @@ class CmsService {
       
       // Use mock data if CMS returns empty array
       if (!serializedMediaItems || serializedMediaItems.length === 0) {
-        console.log('Using mock gallery items');
         // Extract media items from event galleries for gallery view
         const allMediaItems: MediaItemUI[] = [];
         mockEventGalleryItems.forEach(gallery => {
@@ -389,7 +376,6 @@ class CmsService {
       
       // Use mock data if CMS returns empty array
       if (!serializedEventGalleries || serializedEventGalleries.length === 0) {
-        console.log('Using mock event galleries');
         const mockEventGalleriesData = serializeMockEventGalleries(mockEventGalleryItems);
         cmsCache.set(cacheKey, mockEventGalleriesData);
         return mockEventGalleriesData;
@@ -422,7 +408,6 @@ class CmsService {
       
       // Use mock data if CMS returns empty array
       if (!serializedMentorTalks || serializedMentorTalks.length === 0) {
-        console.log('Using mock mentor talks');
         const mockMentorTalksData = serializeMockMentorTalks(mockMentorTalks);
         cmsCache.set(cacheKey, mockMentorTalksData);
         return mockMentorTalksData;
@@ -462,7 +447,6 @@ class CmsService {
       
       // Use mock data if CMS returns empty array
       if (!filteredCmsTeamMembers || filteredCmsTeamMembers.length === 0) {
-        console.log('Using mock founders');
         const mockFoundersData = serializeMockFounders(mockFounders);
         cmsCache.set(cacheKey, mockFoundersData);
         return mockFoundersData;
@@ -499,7 +483,6 @@ class CmsService {
       
       // Use mock data if CMS returns empty array
       if (!serializedTestimonials || serializedTestimonials.length === 0) {
-        console.log('Using mock testimonials');
         const mockTestimonialsData = serializeMockTestimonials(mockTestimonials);
         cmsCache.set(cacheKey, mockTestimonialsData);
         return mockTestimonialsData;
@@ -531,7 +514,6 @@ class CmsService {
       const serializedAboutUs = serializeAboutUs(cmsAboutUs);
       
       if (!serializedAboutUs) {
-        console.log('Using mock about us content');
         const mockAboutUsData = serializeMockAboutUs(aboutUsContent);
         cmsCache.set(cacheKey, mockAboutUsData);
         return mockAboutUsData;
@@ -569,7 +551,6 @@ class CmsService {
       }
       
       // Fallback: get all events and filter by type
-      console.log('Using fallback: getting all events and filtering by type');
       const allEvents = await this.getEvents();
       const filteredEvents = allEvents.filter(event => event.type === 'upcoming');
       
@@ -579,7 +560,6 @@ class CmsService {
       }
       
       // Final fallback to mock data
-      console.log('Using mock upcoming events');
       const mockEventsData = serializeMockEvents(mockEvents.filter(e => new Date(e.date) >= new Date()));
       cmsCache.set(cacheKey, mockEventsData);
       return mockEventsData;
@@ -613,7 +593,6 @@ class CmsService {
       }
       
       // Fallback: get all events and filter by type
-      console.log('Using fallback: getting all events and filtering by type');
       const allEvents = await this.getEvents();
       const filteredEvents = allEvents.filter(event => event.type === 'past');
       
@@ -623,7 +602,6 @@ class CmsService {
       }
       
       // Final fallback to mock data
-      console.log('Using mock past events');
       const mockEventsData = serializeMockEvents(mockEvents.filter(e => new Date(e.date) < new Date()));
       cmsCache.set(cacheKey, mockEventsData);
       return mockEventsData;
@@ -664,7 +642,6 @@ class CmsService {
       }
       
       // Fallback: get all events and filter by type
-      console.log('Using fallback: getting all events and filtering by type');
       const allEvents = await this.getEvents();
       const filteredEvents = allEvents.filter(event => event.type === 'gallery');
       
@@ -674,7 +651,6 @@ class CmsService {
       }
       
       // Final fallback to mock data
-      console.log('Using mock event gallery items');
       const mockEventsData = serializeMockEvents(mockEvents.filter(e => e.title.toLowerCase().includes('gallery') || e.title.toLowerCase().includes('photo')));
       cmsCache.set(cacheKey, mockEventsData);
       return mockEventsData;
@@ -701,7 +677,6 @@ class CmsService {
       const cmsEvents = await cmsClient.getEventsByYear(year);
       
       if (!cmsEvents || cmsEvents.length === 0) {
-        console.log(`Using mock events for year ${year}`);
         const mockEventsData = serializeMockEvents(mockEvents.filter(e => new Date(e.date).getFullYear() === year));
         cmsCache.set(cacheKey, mockEventsData);
         return mockEventsData;

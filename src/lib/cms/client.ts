@@ -95,11 +95,25 @@ class CmsClient {
   }
 
   async getTeamMembersBySection(section: string): Promise<TeamMember[]> {
-    return ((cmsContent.teamMembers as TeamMember[]) ?? []).filter(
-      (member) =>
-        (member as any).section === section ||
-        (member as any).team_section === section,
-    );
+    const members = (cmsContent.teamMembers as TeamMember[]) ?? [];
+    // API may return section/team_section; if not, map section to type (content.json from /api/team/public has type only)
+    const bySection =
+      (m: Record<string, unknown>) =>
+        (m.section === section || m.team_section === section);
+    const byType =
+      (m: Record<string, unknown>) => {
+        const t = (m.type as string)?.toUpperCase();
+        switch (section) {
+          case 'cohort_founders': return t === 'FOUNDER';
+          case 'executive_management': return t === 'REGULAR';
+          case 'advisory_board': return t === 'ADVISOR';
+          case 'global_mentors': return t === 'MENTOR';
+          default: return false;
+        }
+      };
+    return members.filter(
+      (m) => bySection(m as Record<string, unknown>) || byType(m as Record<string, unknown>),
+    ) as TeamMember[];
   }
 
   async getFounders(): Promise<Founder[]> {

@@ -97,7 +97,7 @@ export const serializeTeamMembers = (cmsTeamMembers: TeamMember[]): TeamMemberUI
       role: member.role,
       title: member.title,
       bio: member.bio,
-      image: member.imageUrl || (member as any).image_url || '', // Handle both camelCase and snake_case
+      image: member.imageUrl || (member as any).image_url || (member as any).mediaItems?.[0]?.url || '', // Handle both camelCase and snake_case; fallback to first media item
       socialLinks: member.socialLinks && Array.isArray(member.socialLinks) ? 
         member.socialLinks.reduce((acc, link) => {
           if (link.platform && link.url) {

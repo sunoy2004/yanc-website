@@ -7,7 +7,6 @@ import { TeamMemberUI } from "@/lib/cms/types";
 const HorizontalTeamSection = () => {
   const navigate = useNavigate();
   const { teamData, loading, error } = useTeamData(undefined, 'cohort_founders');
-  console.log('HorizontalTeamSection received teamData:', teamData);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [topBeltHovered, setTopBeltHovered] = useState(false);
   const [bottomBeltHovered, setBottomBeltHovered] = useState(false);

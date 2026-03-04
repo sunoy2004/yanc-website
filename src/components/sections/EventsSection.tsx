@@ -1,66 +1,11 @@
-import { useState, useEffect } from 'react';
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import ScrollAnimateWrapper from "@/components/ScrollAnimateWrapper";
-import { getUpcomingEvents, WebsiteEvent } from "@/services/cms/events-service";
+import { useUpcomingEvents } from "@/services/cms/events-service";
 
 const EventsSection = () => {
   const navigate = useNavigate();
-  const [eventsData, setEventsData] = useState<WebsiteEvent[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const eventsData = useUpcomingEvents();
 
-  useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        console.log("🚀 Loading upcoming events for EventsSection...");
-        const data = await getUpcomingEvents();
-        console.log("✅ EventsSection got data:", data);
-        console.log("📊 Data length:", data.length);
-        console.log("📅 Event dates:", data.map(e => ({title: e.title, date: e.date, category: e.type})));
-        
-        // Sort events by date (soonest first)
-        const sortedEvents = [...data].sort((a, b) => {
-          const dateA = new Date(a.date).getTime();
-          const dateB = new Date(b.date).getTime();
-          return dateA - dateB;
-        });
-        
-        setEventsData(sortedEvents);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load events');
-        console.error('💥 EventsSection error:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchEvents();
-  }, []);
-
-  if (loading) {
-    return (
-      <section id="events" className="section section-alt">
-        <div className="container mx-auto px-4 py-20 text-center">
-          <h2 className="section-title">Events</h2>
-          <p className="section-subtitle">
-            Loading events...
-          </p>
-        </div>
-      </section>
-    );
-  }
-
-  if (error) {
-    console.error('Error loading events:', error);
-  }
-
-
-
-  console.log("🚀 EVENTS SECTION COMPONENT RENDERING");
-  console.log("📊 STATE: eventsData.length =", eventsData.length, "| loading =", loading, "| error =", error);
-  
   // Filter upcoming events - show active upcoming events that are not in the past
   const upcomingEvents = eventsData.filter(event => 
     event.isActive !== false &&
