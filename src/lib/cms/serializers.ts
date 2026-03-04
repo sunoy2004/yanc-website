@@ -201,7 +201,7 @@ export const serializeTestimonials = (cmsTestimonials: Testimonial[]): any[] => 
 export const serializeAboutUs = (cmsAboutUs: AboutUs | null): any | null => {
   if (!cmsAboutUs) return null;
   
-  if (import.meta.env.DEV) {
+  if (import.meta.env.DEV || import.meta.env.VITE_ENABLE_CONTENT_LOGS === 'true') {
     console.log('[content.json] serializeAboutUs received:', cmsAboutUs);
   }
   
@@ -223,7 +223,7 @@ export const serializeAboutUs = (cmsAboutUs: AboutUs | null): any | null => {
     }
   };
   
-  if (import.meta.env.DEV) {
+  if (import.meta.env.DEV || import.meta.env.VITE_ENABLE_CONTENT_LOGS === 'true') {
     console.log('[content.json] serializeAboutUs result:', result);
   }
   return result;

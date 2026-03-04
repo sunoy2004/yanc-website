@@ -637,7 +637,7 @@ class CmsService {
       const cmsItems = await cmsClient.getEventGalleryItems();
       
       if (cmsItems && cmsItems.length > 0) {
-        if (import.meta.env.DEV) {
+        if (import.meta.env.DEV || import.meta.env.VITE_ENABLE_CONTENT_LOGS === 'true') {
           console.log('[content.json] getEventGalleryItems resolved event-gallery-items from static content.json', {
             galleryCount: cmsItems.length,
           });

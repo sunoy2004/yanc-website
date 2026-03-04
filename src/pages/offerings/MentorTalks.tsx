@@ -49,7 +49,7 @@ const MentorTalks = () => {
     const raw = cms.mentorTalks || [];
     const cmsTalks: MentorTalkUI[] = serializeMentorTalks(raw as any);
 
-    if (import.meta.env.DEV) {
+    if (import.meta.env.DEV || import.meta.env.VITE_ENABLE_CONTENT_LOGS === 'true') {
       console.log('[content.json] MentorTalks page resolved mentor talks from static content.json', {
         rawCount: raw.length,
         activeCount: cmsTalks.length,

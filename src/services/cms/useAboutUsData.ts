@@ -14,7 +14,7 @@ export const useAboutUsData = (options?: { skipCache?: boolean; refreshInterval?
       
       // Clear in-memory cache if requested (still reads from static content.json)
       if (skipCache) {
-        if (import.meta.env.DEV) {
+        if (import.meta.env.DEV || import.meta.env.VITE_ENABLE_CONTENT_LOGS === 'true') {
           console.log('[content.json] Clearing in-memory cache and reloading about-us data...');
         }
         cmsService.clearCache();
@@ -24,18 +24,18 @@ export const useAboutUsData = (options?: { skipCache?: boolean; refreshInterval?
       const cmsAboutUs = await cmsService.getAboutUs();
       
       if (cmsAboutUs) {
-        if (import.meta.env.DEV) {
+        if (import.meta.env.DEV || import.meta.env.VITE_ENABLE_CONTENT_LOGS === 'true') {
           console.log('[content.json] About-us data loaded from static content.json:', cmsAboutUs);
         }
         setAboutUsData(cmsAboutUs);
       } else {
-        if (import.meta.env.DEV) {
+        if (import.meta.env.DEV || import.meta.env.VITE_ENABLE_CONTENT_LOGS === 'true') {
           console.log('[content.json] No about-us content in static content.json, falling back to mock data');
         }
         setAboutUsData(mockAboutUs);
       }
     } catch (err) {
-      if (import.meta.env.DEV) {
+      if (import.meta.env.DEV || import.meta.env.VITE_ENABLE_CONTENT_LOGS === 'true') {
         console.error('[content.json] Error loading about-us content, using mock data:', err);
       }
       setAboutUsData(mockAboutUs);
@@ -53,7 +53,7 @@ export const useAboutUsData = (options?: { skipCache?: boolean; refreshInterval?
   useEffect(() => {
     if (refreshInterval && refreshInterval > 0) {
       const intervalId = setInterval(() => {
-        if (import.meta.env.DEV) {
+        if (import.meta.env.DEV || import.meta.env.VITE_ENABLE_CONTENT_LOGS === 'true') {
           console.log(`[content.json] Auto-refreshing about-us data every ${refreshInterval}ms`);
         }
         fetchData();
