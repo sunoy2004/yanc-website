@@ -7,6 +7,21 @@ import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+function getISTISOString(date = new Date()) {
+  const offsetMinutes = 5 * 60 + 30; // UTC+05:30
+  const istTime = new Date(date.getTime() + offsetMinutes * 60 * 1000);
+
+  const year = istTime.getUTCFullYear();
+  const month = String(istTime.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(istTime.getUTCDate()).padStart(2, '0');
+  const hour = String(istTime.getUTCHours()).padStart(2, '0');
+  const minute = String(istTime.getUTCMinutes()).padStart(2, '0');
+  const second = String(istTime.getUTCSeconds()).padStart(2, '0');
+  const millisecond = String(istTime.getUTCMilliseconds()).padStart(3, '0');
+
+  return `${year}-${month}-${day}T${hour}:${minute}:${second}.${millisecond}+05:30`;
+}
+
 async function main() {
   const cmsBase =
     process.env.VITE_CMS_BASE_URL ||
@@ -128,7 +143,7 @@ async function main() {
       testimonials: testimonials ?? [],
       aboutUs: aboutUs ?? null,
       contactInfo: contactInfo ?? null,
-      lastUpdated: new Date().toISOString(),
+      lastUpdated: getISTISOString(),
     };
 
     const outDir = path.resolve(__dirname, '..', 'src', 'data');
