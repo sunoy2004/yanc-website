@@ -1,54 +1,45 @@
+# GCP Cloud Build: build Docker image, push to Artifact Registry, deploy to Cloud Run.
+# Trigger this from a Cloud Build trigger connected to your Git (e.g. GitHub) repo for continuous deploy.
+#
+# Required trigger substitutions (set in Cloud Build trigger or use defaults):
+#   _LOCATION    - GCP region (e.g. asia-south1). Default: asia-south1
+#   _SERVICE_NAME - Cloud Run service name. Default: yanc-website
+# GitHub-connected triggers auto-inject: PROJECT_ID, COMMIT_SHA, SHORT_SHA, REPO_NAME, BRANCH_NAME
+# One-time setup: create Artifact Registry repo in the same region, e.g.:
+#   gcloud artifacts repositories create cloud-run-source-deploy --repository-format=docker --location=asia-south1
+
 steps:
-
-    # Generate build metadata for Vite
-  - name: alpine
-    entrypoint: sh
+  # Ensure Artifact Registry repository exists (safe to run every time)
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
+    entrypoint: bash
     args:
-      - -c
+      - '-c'
       - |
-        _BUILD_DATE=$(date -u +"%Y.%m.%d")
-        echo "VITE_BUILD_DATE=$_BUILD_DATE" >> .env.production
-        echo "VITE_BUILD_SHA=$_SHORT_SHA" >> .env.production
-        
-  # Create Artifact Registry repository if it doesn't exist
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
-    entrypoint: gcloud
-    args:
-      - 'artifacts'
-      - 'repositories'
-      - 'describe'
-      - 'cloud-run-source-deploy'
-      - '--location=$_LOCATION'
-      - '--project=$PROJECT_ID'
-    env:
-      - 'CLOUDSDK_CORE_PROJECT=$PROJECT_ID'
-    # Continue even if repository doesn't exist yet
-    allowFailure: true
+        gcloud artifacts repositories describe ${_REPO_NAME} --location=${_LOCATION} --project=${PROJECT_ID} 2>/dev/null || \
+        gcloud artifacts repositories create ${_REPO_NAME} --repository-format=docker --location=${_LOCATION} --project=${PROJECT_ID}
+    id: ensure-repo
 
-  # Create repository if it didn't exist
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
-    entrypoint: gcloud
-    args:
-      - 'artifacts'
-      - 'repositories'
-      - 'create'
-      - 'cloud-run-source-deploy'
-      - '--repository-format=docker'
-      - '--location=$_LOCATION'
-      - '--project=$PROJECT_ID'
-    env:
-      - 'CLOUDSDK_CORE_PROJECT=$PROJECT_ID'
-    # Only run if the previous step failed (meaning repo doesn't exist)
-    waitFor: ['-']
-    allowFailure: true
-
-  # Build the Docker image
+  # Build the Docker image (uses Dockerfile in repo root)
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', '$_LOCATION-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/$REPO_NAME:$COMMIT_SHA', '.']
+    waitFor: ['ensure-repo']
+    args:
+      - 'build'
+      - '-t'
+      - '${_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/${_SERVICE_NAME}:${SHORT_SHA}'
+      - '-t'
+      - '${_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/${_SERVICE_NAME}:latest'
+      - '.'
 
-  # Push the Docker image to Artifact Registry
+  # Push to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', '$_LOCATION-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/$REPO_NAME:$COMMIT_SHA']
+    args:
+      - 'push'
+      - '${_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/${_SERVICE_NAME}:${SHORT_SHA}'
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - '${_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/${_SERVICE_NAME}:latest'
 
   # Deploy to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
@@ -56,27 +47,26 @@ steps:
     args:
       - 'run'
       - 'deploy'
-      - 'website'
-      - '--image=$_LOCATION-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/$REPO_NAME:$COMMIT_SHA'
-      - '--region=$_LOCATION'
+      - '${_SERVICE_NAME}'
+      - '--image=${_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/${_SERVICE_NAME}:${SHORT_SHA}'
+      - '--region=${_LOCATION}'
       - '--platform=managed'
       - '--allow-unauthenticated'
       - '--port=8080'
-      - '--memory=256Mi'
+      - '--memory=512Mi'
       - '--cpu=1'
-      - '--concurrency=80'
-      - '--max-instances=1'
-      #- '--set-env-vars=PORT=8080'
+      - '--min-instances=0'
+      - '--max-instances=3'
     env:
-      - 'CLOUDSDK_CORE_PROJECT=$PROJECT_ID'
+      - 'CLOUDSDK_CORE_PROJECT=${PROJECT_ID}'
 
-# Define substitution variables
+# Substitution variables (override in trigger or use defaults)
 substitutions:
   _LOCATION: asia-south1
+  _REPO_NAME: cloud-run-source-deploy
+  _SERVICE_NAME: yanc-website
 
-# Options for logging
 options:
   logging: CLOUD_LOGGING_ONLY
 
-# Timeout for the build
 timeout: 1200s

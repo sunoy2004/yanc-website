@@ -62,29 +62,29 @@ npm ci && npm run build
 
 # Deployment Guide
 
-This document explains how to deploy the YANC website to Google Cloud Platform using Cloud Build, Artifact Registry, and Cloud Run.
+This document explains how to deploy the YANC website to Google Cloud Platform using Cloud Build and Cloud Run.
 
-## Current Setup: Cloud Build + Artifact Registry + Cloud Run
+## Current Setup: Dockerfile-based continuous deploy
 
-### Architecture Overview
+On each push to your chosen branch, a GCP trigger finds the **Dockerfile** in the repo (at repo root: **`Dockerfile`**), builds it, and deploys the resulting image to Cloud Run. No `cloudbuild.yaml` is required for this flow.
 
-The deployment follows a modern CI/CD pipeline:
+### Architecture
 
 ```
-GitHub Repository → Cloud Build → Artifact Registry → Cloud Run
+Git push → GCP trigger → build /Dockerfile → Artifact Registry → Cloud Run
 ```
 
-This architecture enables automated deployments when code is pushed to the repository, with Docker images stored in a secure registry before deployment to serverless containers.
+Automated deployments run when code is pushed; the trigger is configured to use the **Dockerfile** as the build source.
 
-### Cloud Build Workflow
+### Build flow
 
-The project uses Google Cloud Build for CI/CD instead of GitHub Actions, eliminating the need for service account keys in GitHub secrets and providing tighter integration with GCP services.
+The trigger is set to **Build type: Dockerfile** and **Dockerfile path: `Dockerfile`**, so Cloud Build builds the repository’s Dockerfile and deploys to Cloud Run. You can also use the optional `cloudbuild.yaml` for a custom pipeline.
 ## Setting Up the Deployment
 
 ### 1. Project Preparation
 
 1. Ensure your code is pushed to a GitHub repository
-2. The project includes a `Dockerfile` and `cloudbuild.yaml` for GCP deployment
+2. The project includes a **`Dockerfile`** at the repo root. The GCP trigger is configured to build this Dockerfile on push. An optional **`cloudbuild.yaml`** is available for custom pipelines.
 
 ### 2. GCP Setup
 
@@ -92,141 +92,78 @@ The project uses Google Cloud Build for CI/CD instead of GitHub Actions, elimina
    - `cloudbuild.googleapis.com`
    - `run.googleapis.com`
    - `artifactregistry.googleapis.com`
-2. Set up IAM permissions for the Cloud Build service account
-3. Create a Cloud Build trigger in the GCP Console
+2. Grant the Cloud Build service account:
+   - `roles/run.developer` (deploy to Cloud Run)
+   - `roles/artifactregistry.writer` (push images)
+   - `roles/iam.serviceAccountUser` (act as runtime service account)
+3. Create a Cloud Build trigger for **Git continuous deploy** (see below).
 
-### 3. Cloud Build Configuration
+### 3. GCP–Git continuous deploy (trigger uses Dockerfile)
 
-1. The Cloud Build trigger should point to your GitHub repository
-2. Set the branch pattern to match your deployment branch (typically `main`)
-3. Specify the build configuration file as `/cloudbuild.yaml`
+Set up the trigger so that on each push, GCP finds the **Dockerfile** in the repo and builds it, then deploys to Cloud Run.
 
-### 4. Cloud Run Configuration
+**Option A – From Cloud Run (recommended)**
 
-1. Cloud Run service will be automatically created/updated by the Cloud Build process
-2. Service will be configured for public access (unauthenticated requests)
-3. The service will run in the `asia-south1` region
+1. In **Cloud Console** go to **Cloud Run** → **Create service** (or **Connect to repo** on an existing service).
+2. Choose **Cloud Build** and connect your GitHub repo (GitHub Cloud Build app). Select your repo and click **Next**.
+3. **Build configuration**:
+   - **Branch**: e.g. `^main$` (regex for the branch to deploy on push).
+   - **Build type**: **Dockerfile**.
+   - **Source location**: `Dockerfile` (path to the Dockerfile; use `Dockerfile` for repo root so GCP uses `/Dockerfile`). This path is also the Docker build context (repo root).
+4. Click **Save**, then finish **Configure** (region, service name, allow unauthenticated, etc.) and **Create**.  
+   On every push to the selected branch, the trigger will find the Dockerfile, build it, and deploy to Cloud Run.
+
+**Option B – From Cloud Build (trigger only)**
+
+1. Go to **Cloud Build** → **Triggers** → **Create trigger**.
+2. Connect the repo, set **Event** to “Push to a branch”, **Branch** e.g. `^main$`.
+3. **Configuration**: choose **Dockerfile** (not “Cloud Build configuration file”).
+   - **Dockerfile path**: `Dockerfile` (repo root).
+   - **Build context**: leave default or set to repo root so the trigger builds from the Dockerfile.
+4. Enable **Deploy to Cloud Run** and select region and service name. Save.  
+   Pushes to the branch will build the Dockerfile and deploy.
+
+**Result**
+
+- When you push changes to the configured branch, the GCP trigger runs, locates **`/Dockerfile`** (or `Dockerfile` at repo root), builds that image, and deploys it to Cloud Run. No `cloudbuild.yaml` is required for this flow.
+
+### 4. Alternative: Cloud Build config file
+
+- If you prefer a custom pipeline (e.g. ensure Artifact Registry repo, custom tags, substitutions), use a trigger with **Configuration** = **Cloud Build configuration file (YAML)** and path **`cloudbuild.yaml`**. The repo includes a **`cloudbuild.yaml`** that builds the same **Dockerfile**, pushes to Artifact Registry, and deploys to Cloud Run.
+
+### 5. Cloud Run configuration
+
+1. Cloud Run service is created/updated by each successful build.
+2. Service allows unauthenticated access (public site).
+3. Default region is `asia-south1` (override with `_LOCATION`).
+4. **Environment variables** (e.g. `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `VITE_API_BASE_URL`): set in **Cloud Run** → your service → **Edit & deploy new revision** → **Variables & secrets** so the container’s `docker-entrypoint.sh` can inject them into `runtime-config.js`.
 
 ## Project Files Added for GCP Deployment
 
 ### 1. Dockerfile
 
-Created a multi-stage Dockerfile optimized for React applications:
+The repo’s **Dockerfile** is a multi-stage build:
 
-```dockerfile
-# ---------- Build stage ----------
-FROM node:18-alpine AS builder
-
-WORKDIR /app
-
-COPY package*.json ./
-RUN npm install
-
-COPY . .
-RUN npm run build
-
-# ---------- Production stage ----------
-FROM node:18-alpine
-
-WORKDIR /app
-
-# Install a lightweight static server
-RUN npm install -g serve
-
-# Copy built assets
-COPY --from=builder /app/dist ./dist
-
-# Cloud Run uses port 8080
-EXPOSE 8080
-
-# Health check endpoint
-HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:8080/ || exit 1
-
-# Serve static files
-CMD ["serve", "-s", "dist", "-l", "8080"]
-```
-
-This multi-stage build optimizes the Docker image by separating build dependencies from production runtime, resulting in a smaller, more secure final image.
+- **Build stage**: Node 18 Alpine; `npm install --legacy-peer-deps` and `npm run build` (runs `prebuild`/`fetchCMS.js` when env vars are set).
+- **Production stage**: Nginx Alpine; serves the built files from `dist`, with a custom **nginx.conf** for SPA fallback and port 8080.
+- **docker-entrypoint.sh** runs at container start: writes `runtime-config.js` from env vars (`VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `VITE_API_BASE_URL`) and starts nginx on `$PORT` (default 8080), so the same image works locally and on Cloud Run.
 
 ### 2. cloudbuild.yaml
 
-Created a Cloud Build configuration file:
+The repo root contains **`cloudbuild.yaml`**, which:
 
-```yaml
-steps:
-  # Create Artifact Registry repository if it doesn't exist
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
-    entrypoint: gcloud
-    args:
-      - 'artifacts'
-      - 'repositories'
-      - 'describe'
-      - 'cloud-run-source-deploy'
-      - '--location=$_LOCATION'
-      - '--project=$PROJECT_ID'
-    env:
-      - 'CLOUDSDK_CORE_PROJECT=$PROJECT_ID'
-    # Continue even if repository doesn't exist yet
-    allowFailure: true
+1. Ensures the Artifact Registry repository exists (creates it if missing)
+2. Builds the Docker image with the repo’s **Dockerfile**
+3. Pushes the image to Artifact Registry (tagged with `SHORT_SHA` and `latest`)
+4. Deploys to Cloud Run in the configured region
 
-  # Create repository if it didn't exist
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
-    entrypoint: gcloud
-    args:
-      - 'artifacts'
-      - 'repositories'
-      - 'create'
-      - 'cloud-run-source-deploy'
-      - '--repository-format=docker'
-      - '--location=$_LOCATION'
-      - '--project=$PROJECT_ID'
-    env:
-      - 'CLOUDSDK_CORE_PROJECT=$PROJECT_ID'
-    # Only run if the previous step failed (meaning repo doesn't exist)
-    waitFor: ['-']
-    allowFailure: true
+Substitution variables (defaults in the file; override in the trigger):
 
-  # Build the Docker image
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', '$_LOCATION-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/$REPO_NAME:$COMMIT_SHA', '.']
+- `_LOCATION`: GCP region (default `asia-south1`)
+- `_REPO_NAME`: Artifact Registry repo (default `cloud-run-source-deploy`)
+- `_SERVICE_NAME`: Cloud Run service name (default `yanc-website`)
 
-  # Push the Docker image to Artifact Registry
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', '$_LOCATION-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/$REPO_NAME:$COMMIT_SHA']
-
-  # Deploy to Cloud Run
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
-    entrypoint: gcloud
-    args:
-      - 'run'
-      - 'deploy'
-      - 'website'
-      - '--image=$_LOCATION-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/$REPO_NAME:$COMMIT_SHA'
-      - '--region=$_LOCATION'
-      - '--platform=managed'
-      - '--allow-unauthenticated'
-      - '--port=8080'
-      - '--memory=256Mi'
-      - '--cpu=1'
-      - '--concurrency=80'
-      - '--max-instances=1'
-    env:
-      - 'CLOUDSDK_CORE_PROJECT=$PROJECT_ID'
-
-# Define substitution variables
-substitutions:
-  _LOCATION: asia-south1
-
-# Options for logging
-options:
-  logging: CLOUD_LOGGING_ONLY
-
-# Timeout for the build
-timeout: 1200s
-```
-
-Automates the build, packaging, and deployment process from source code to running service.
+GitHub-connected triggers automatically provide `PROJECT_ID`, `SHORT_SHA`, `COMMIT_SHA`, `REPO_NAME`, `BRANCH_NAME`.
 
 ## Conflicting Files Removed
 
