@@ -107,6 +107,41 @@
   ],
   "events": [
     {
+      "id": "b5079b46-b654-48cb-b0a1-ecaf6b2aaad9",
+      "title": "1234",
+      "description": "sa",
+      "speaker": "2",
+      "location": "feqf",
+      "event_date": "2026-03-13T00:00:00+00:00",
+      "category": "upcoming",
+      "is_active": true,
+      "display_order": 2,
+      "created_at": "2026-03-05T07:59:08.343413+00:00",
+      "updated_at": "2026-03-05T07:59:08.343413+00:00",
+      "type": "upcoming",
+      "registration_url": "https://yanc-website-1095720168864.asia-south1.run.app/",
+      "highlights": [],
+      "galleryMediaIds": [
+        "3fe95d37-9440-425a-8e6e-fdbc80d382c5"
+      ],
+      "mediaItems": [
+        {
+          "id": "3fe95d37-9440-425a-8e6e-fdbc80d382c5",
+          "name": "7.jpg",
+          "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/uploads/1772697524978_7.webp",
+          "type": "image",
+          "alt": "7.jpg",
+          "order": 0,
+          "createdAt": "2026-03-05T07:58:47.082417+00:00"
+        }
+      ],
+      "isPublished": true,
+      "isPast": false,
+      "isUpcoming": true,
+      "year": 2026,
+      "month": "March"
+    },
+    {
       "id": "d4a4cba7-944a-4d44-88fa-2dc6ffc2f5a2",
       "title": "YANC Discover Meet",
       "description": "This will be on next weekend.",
@@ -803,5 +838,5 @@
     "mediaItems": []
   },
   "contactInfo": null,
-  "lastUpdated": "2026-03-04T07:04:31.763Z"
+  "lastUpdated": "2026-03-05T08:29:18.366Z"
 }
