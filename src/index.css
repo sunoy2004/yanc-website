@@ -157,6 +157,12 @@
   .image-placeholder {
     @apply bg-muted;
   }
+
+  /* Ensure brand logos never show the grey placeholder background, even if the class is present */
+  .header-logo img,
+  .footer-logo-img {
+    background-color: transparent !important;
+  }
 }
 
 @layer base {
