@@ -98,6 +98,8 @@ export interface Event {
   month: string;
   mediaItems?: MediaItem[];
   isActive: boolean;
+  /** Optional registration / CTA URL stored in CMS */
+  registrationUrl?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -236,6 +238,8 @@ export interface EventUI {
   type?: 'general' | 'upcoming' | 'past' | 'highlight' | 'gallery';
   description?: string;
   isActive?: boolean;
+   /** Normalized registration / CTA URL for frontend components */
+  registrationUrl?: string;
   mediaItems?: Array<{
     id: string;
     type: 'image' | 'video';

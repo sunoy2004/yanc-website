@@ -77,6 +77,17 @@ export const serializeEvents = (cmsEvents: Event[]): EventUI[] => {
       isActive: event.isActive || (event as any).is_active,
       isUpcoming: (event as any).isUpcoming || event.type === 'upcoming' || (event as any).category === 'upcoming',
       isPast: (event as any).isPast || event.type === 'past' || (event as any).category === 'past',
+      // Preserve any registration / CTA URL coming from the backend
+      registrationUrl:
+        (event as any).registration_url ??
+        (event as any).registrationUrl ??
+        (event as any).register_link ??
+        (event as any).registration_link ??
+        (event as any).event_link ??
+        (event as any).link ??
+        (event as any).cta_url ??
+        (event as any).ctaUrl ??
+        undefined,
       mediaItems: event.mediaItems?.map(item => ({
         id: item.id,
         type: item.type.toLowerCase() as 'image' | 'video',
