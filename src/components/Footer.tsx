@@ -29,7 +29,7 @@ const Footer = () => {
           <div className="footer-brand-col">
             <div className="footer-brand flex flex-col justify-between h-full">
               <div className="flex items-center gap-3">
-                <div className="flex flex-col items-start image-placeholder">
+                <div className="flex flex-col items-start">
                   <img src="/favicon.svg" alt="YANC" className="footer-logo-img" loading="lazy" decoding="async" />
                   <p className="footer-tagline mt-1">Yet Another Networking Club</p>
                 </div>

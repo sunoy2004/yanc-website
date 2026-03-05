@@ -1118,7 +1118,7 @@
   }
 
   .footer-tagline {
-    @apply text-xs sm:text-sm text-muted-foreground mt-2;
+    @apply text-xs sm:text-sm text-foreground mt-2;
   }
 
   .footer-heading {

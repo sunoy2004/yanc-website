@@ -176,7 +176,7 @@ const Header = ({ isDarkMode, toggleTheme }: HeaderProps) => {
           <img 
             src="/favicon.svg" 
             alt="YANC Logo" 
-            className="w-12 h-12 object-contain image-placeholder"
+            className="w-12 h-12 object-contain"
             loading="lazy"
             decoding="async"
           />
