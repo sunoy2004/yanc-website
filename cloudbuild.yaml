@@ -2,7 +2,7 @@
 # Trigger this from a Cloud Build trigger connected to your Git (e.g. GitHub) repo for continuous deploy.
 #
 # Required trigger substitutions (set in Cloud Build trigger or use defaults):
-#   _LOCATION    - GCP region (e.g. asia-south1). Default: asia-south1
+#   _LOCATION    - GCP region (e.g asia-south1). Default: asia-south1
 #   _SERVICE_NAME - Cloud Run service name. Default: yanc-website
 # GitHub-connected triggers auto-inject: PROJECT_ID, COMMIT_SHA, SHORT_SHA, REPO_NAME, BRANCH_NAME
 # One-time setup: create Artifact Registry repo in the same region, e.g.:
