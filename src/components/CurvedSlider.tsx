@@ -293,6 +293,7 @@ const CurvedSlider = ({
 }: CurvedSliderProps) => {
   const [isPaused, setIsPaused] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [isTabHidden, setIsTabHidden] = useState(false);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -303,16 +304,23 @@ const CurvedSlider = ({
     return () => mediaQuery.removeEventListener("change", handler);
   }, []);
 
-  // Extract all media items (images and videos for the 3D slider)
-  const mediaItems = useMemo(() => {
-    return items
-      .map((item) => ({
-        src: item.src,
-        type: item.type
-      }));
-  }, [items]);
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      setIsTabHidden(document.hidden);
+    };
 
-  const effectivelyPaused = isPaused || prefersReducedMotion;
+    handleVisibilityChange();
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
+  }, []);
+
+  // Extract all media items (images and videos for the 3D slider)
+  const mediaItems = useMemo(
+    () => items.map((item) => ({ src: item.src, type: item.type })),
+    [items],
+  );
+
+  const effectivelyPaused = isPaused || prefersReducedMotion || isTabHidden;
 
   return (
     <div
@@ -323,7 +331,7 @@ const CurvedSlider = ({
       <Canvas
         camera={{ position: [0, 0, 2], fov: 75 }}
         gl={{ alpha: true, antialias: true }}
-        dpr={Math.min(window.devicePixelRatio, 2)}
+        dpr={Math.min(window.devicePixelRatio, 1.5)}
       >
         <SliderScene
           mediaItems={mediaItems}
