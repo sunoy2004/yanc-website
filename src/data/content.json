@@ -107,6 +107,41 @@
   ],
   "events": [
     {
+      "id": "cb19ce8f-3b16-49cd-afd8-1c2cc4a7e7f6",
+      "title": "New Event",
+      "description": "Let's connect globally !!",
+      "speaker": "Speaker 2",
+      "location": "Hyederabad",
+      "event_date": "2026-03-14T00:00:00+00:00",
+      "category": "upcoming",
+      "is_active": true,
+      "display_order": 2,
+      "created_at": "2026-03-06T11:25:20.002421+00:00",
+      "updated_at": "2026-03-06T11:25:20.002421+00:00",
+      "type": "upcoming",
+      "registration_url": "https://web.yanc.in/discover-meet-registration",
+      "highlights": [],
+      "galleryMediaIds": [
+        "109e1711-18d3-48d0-881c-a95ab0de5f0f"
+      ],
+      "mediaItems": [
+        {
+          "id": "109e1711-18d3-48d0-881c-a95ab0de5f0f",
+          "name": "vid2.mp4",
+          "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/uploads/1772796314274_vid2.mp4",
+          "type": "video",
+          "alt": "vid2.mp4",
+          "order": 0,
+          "createdAt": "2026-03-06T11:25:16.68152+00:00"
+        }
+      ],
+      "isPublished": true,
+      "isPast": false,
+      "isUpcoming": true,
+      "year": 2026,
+      "month": "March"
+    },
+    {
       "id": "d4a4cba7-944a-4d44-88fa-2dc6ffc2f5a2",
       "title": "YANC Discover Meet",
       "description": "This will be on next weekend.",
@@ -803,5 +838,5 @@
     "mediaItems": []
   },
   "contactInfo": null,
-  "lastUpdated": "2026-03-06T16:30:56.659+05:30"
+  "lastUpdated": "2026-03-06T17:24:43.647+05:30"
 }
