@@ -2,10 +2,6 @@
 FROM node:18-alpine AS build
 WORKDIR /app
 
-# Pass CMS base URL into the build so scripts/fetchCMS.js can fetch live content
-ARG VITE_CMS_BASE_URL
-ENV VITE_CMS_BASE_URL=$VITE_CMS_BASE_URL
-
 # Install dependencies (use legacy-peer-deps to avoid peer conflicts in CI)
 COPY package.json package-lock.json* ./
 RUN npm install --legacy-peer-deps
