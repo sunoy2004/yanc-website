@@ -175,7 +175,7 @@ const EventsSection = () => {
         </div>
 
         {/* No Events Message */}
-        {upcomingEvents.length === 0 && !loading && (
+        {upcomingEvents.length === 0 && (
           <div className="bg-card border border-border rounded-lg p-12 text-center mt-8">
             <div className="text-5xl mb-4">📅</div>
             <h3 className="text-xl font-semibold mb-2">No Upcoming Events</h3>
