@@ -8,6 +8,9 @@
 # One-time setup: create Artifact Registry repo in the same region, e.g.:
 #   gcloud artifacts repositories create cloud-run-source-deploy --repository-format=docker --location=asia-south1
 
+options:
+  logging: CLOUD_LOGGING_ONLY # Only log to Cloud Logging
+
 steps:
   # Ensure Artifact Registry repository exists (safe to run every time)
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
