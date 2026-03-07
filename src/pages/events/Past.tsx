@@ -67,11 +67,17 @@ const PastEvents = () => {
     }));
   };
 
-  // Filter past events
-  // Filter past events by strict category (only events with category='past')
-  const pastEvents = events.filter(event => 
-    event.isActive !== false
-  );
+  // Filter past events: only show events that are actually in the past by date,
+  // and exclude any event still labeled as upcoming (so old "upcoming" events don't appear here)
+  const todayStart = new Date();
+  todayStart.setHours(0, 0, 0, 0);
+  const pastEvents = events.filter((event) => {
+    if (event.isActive === false) return false;
+    if (event.type === 'upcoming' || event.category === 'upcoming') return false;
+    const eventDate = new Date(event.date);
+    eventDate.setHours(0, 0, 0, 0);
+    return eventDate.getTime() < todayStart.getTime();
+  });
 
   // Group events by year
   const eventsByYear = pastEvents.reduce((acc, event) => {
