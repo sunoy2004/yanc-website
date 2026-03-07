@@ -9,7 +9,8 @@
 #   gcloud artifacts repositories create cloud-run-source-deploy --repository-format=docker --location=asia-south1
 
 options:
-  logging: CLOUD_LOGGING_ONLY # Only log to Cloud Logging
+  logging: CLOUD_LOGGING_ONLY
+  default_logs_bucket_behavior: REGIONAL_USER_OWNED_BUCKET
 
 steps:
   # Ensure Artifact Registry repository exists (safe to run every time)
