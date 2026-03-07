@@ -330,8 +330,12 @@ const CurvedSlider = ({
     >
       <Canvas
         camera={{ position: [0, 0, 2], fov: 75 }}
-        gl={{ alpha: true, antialias: true }}
-        dpr={Math.min(window.devicePixelRatio, 1)}
+        gl={{
+          alpha: true,
+          antialias: true,
+          powerPreference: "high-performance",
+        }}
+        dpr={1}
       >
         <SliderScene
           mediaItems={mediaItems}

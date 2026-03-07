@@ -378,14 +378,13 @@
 
   .hero-top-content {
     /* On small screens keep top content in the document flow so it doesn't overlap the carousel */
-    @apply relative pt-6 sm:pt-8 px-4 sm:px-6 text-center z-20;
+    @apply relative pt-4 sm:pt-6 px-4 sm:px-6 text-center z-20;
   }
 
   @media (min-width: 768px) {
     .hero-top-content {
-      /* On medium and larger screens position absolutely for layered hero.
-         Move it down to visually align with the carousel. */
-      @apply absolute left-0 right-0 z-20 pt-6 sm:pt-20 px-4 sm:px-6 text-center;
+      /* On medium and larger screens position absolutely for layered hero. */
+      @apply absolute left-0 right-0 z-20 pt-4 sm:pt-12 px-4 sm:px-6 text-center;
       top: 4rem;
     }
   }
@@ -435,18 +434,24 @@
 
   @media (min-width: 1024px) {
     .hero-carousel-container {
-      top: 7rem;
+      top: 5rem;
       bottom: 0;
     }
   }
 
-  /* Three.js Curved Slider Container */
+  /* Three.js Curved Slider Container - reduce corner flicker */
   .curved-slider-container {
-    @apply absolute inset-0 w-full h-full;
+    @apply absolute inset-0 w-full h-full overflow-hidden;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    isolation: isolate;
   }
 
   .curved-slider-container canvas {
     @apply w-full h-full;
+    display: block;
+    transform: translateZ(0);
   }
 
   .hero-overlay {
@@ -1344,7 +1349,7 @@
 
   /* Tablet adjustments for top content */
   .hero-top-content {
-    @apply pt-20 px-4;
+    @apply pt-16 px-4;
   }
 
   .hero-title-top {
