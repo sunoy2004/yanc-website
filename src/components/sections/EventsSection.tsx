@@ -30,7 +30,7 @@ const EventsSection = () => {
 
   return (
     <section id="events" className="section section-alt">
-      <div className="container">
+      <div className="container pt-12">
         {/* Section Title */}
         <ScrollAnimateWrapper>
           <div>

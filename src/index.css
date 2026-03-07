@@ -408,17 +408,34 @@
     @apply absolute inset-0;
   }
 
-  /* Nudge the carousel lower so it's visually centered relative to navbar and section edges */
-  @media (min-width: 768px) {
+  /* --- Non-mobile only: prevent top content and carousel from ever overlapping --- */
+  /* 642px–767px: top content still in flow; start carousel below it with safe offset */
+  @media (min-width: 642px) and (max-width: 767px) {
+    .hero-subtitle-top {
+      @apply mb-4;
+    }
     .hero-carousel-container {
-      top: 6rem; /* push down on tablet */
+      top: 4rem;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+  }
+
+  /* 768px+: reserve space for title+subtitle so carousel can start below with no overlap */
+  @media (min-width: 768px) {
+    .hero-top-content {
+      min-height: 8rem; /* title + subtitle slot */
+    }
+    .hero-carousel-container {
+      top: 6rem;
       bottom: 0;
     }
   }
 
   @media (min-width: 1024px) {
     .hero-carousel-container {
-      top: 4rem; /* push down on desktop */
+      top: 7rem;
       bottom: 0;
     }
   }

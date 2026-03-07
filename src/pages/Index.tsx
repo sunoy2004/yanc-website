@@ -58,7 +58,7 @@ const Index = () => {
           {/* <TestimonialsSection /> */} {/* Disabled per request */}
           
           {/* CTA Section */}
-          <div className="section text-center">
+          <div className="section text-center pt-14">
             <div className="max-w-2xl mx-auto px-4">
               <h2 className="text-2xl md:text-3xl font-bold mb-4">
                 Ready to embark on your journey of growth and empowerment?

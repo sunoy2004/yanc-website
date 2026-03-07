@@ -24,7 +24,7 @@ const HorizontalTeamSection = () => {
 
   if (loading) {
     return (
-      <section id="team-horizontal" className="section horizontal-team-section bg-background">
+      <section id="team-horizontal" className="section horizontal-team-section bg-background pt-14">
         <div className="container text-center">
           <h2 className="section-title text-3xl md:text-4xl font-bold">Cohort Founders</h2>
           <p className="section-subtitle">
@@ -48,7 +48,7 @@ const HorizontalTeamSection = () => {
   const tripledMembers = [...teamData, ...teamData, ...teamData];
 
   return (
-    <section id="team-horizontal" className="section horizontal-team-section bg-background">
+    <section id="team-horizontal" className="section horizontal-team-section bg-background pt-14">
       <div className="container">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-10">
           <div className="w-full sm:w-auto">

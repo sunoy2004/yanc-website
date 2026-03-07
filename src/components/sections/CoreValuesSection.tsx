@@ -87,10 +87,10 @@ const CoreValuesSection = () => {
 
           {/* Right Column - 3D Carousel (50%) */}
           <ScrollAnimateWrapper delay={150}>
-            <div className="lg:col-span-1 flex items-start justify-center relative myGalleryParent pt-0 sm:pt-20 pl-0 lg:pl-48">
+            <div className="lg:col-span-1 flex items-start justify-center relative myGalleryParent pt-0 sm:pt-10 pb-0 pl-0 lg:pl-48">
               <div 
                 ref={carouselRef}
-                className="relative w-56 h-72 sm:w-64 sm:h-80 md:w-80 md:h-96"
+                className="relative w-56 h-64 sm:w-64 sm:h-72 md:w-80 md:h-85 mt-4 sm:mt-20"
                 style={{ perspective: '1000px' }}
               >
                 <div 
