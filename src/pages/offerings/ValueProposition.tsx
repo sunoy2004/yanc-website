@@ -1,15 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Users, MessageCircle, Wrench, Briefcase, Wallet, Heart } from "lucide-react";
 
 const ValueProposition = () => {
-  const [isDarkMode, setIsDarkMode] = useState(true);
-
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-    document.documentElement.classList.toggle("dark");
-  };
+  const isDarkMode = true;
+  const toggleTheme = () => {};
+  useEffect(() => { document.documentElement.classList.add("dark"); }, []);
 
   // Content data - structured for CMS integration
   const valueCards = [

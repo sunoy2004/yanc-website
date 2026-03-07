@@ -36,14 +36,13 @@ type CmsGalleryItem = {
 };
 
 const MentorTalks = () => {
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    // Check system preference for initial state
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
-  });
+  const isDarkMode = true;
+  const toggleTheme = () => {};
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxMedia, setLightboxMedia] = useState<MediaItem[]>([]);
   const [lightboxInitialIndex, setLightboxInitialIndex] = useState(0);
   const cms = useContent();
+  useEffect(() => { document.documentElement.classList.add("dark"); }, []);
 
   const mentorTalks: MentorTalk[] = useMemo(() => {
     const raw = cms.mentorTalks || [];
@@ -78,41 +77,6 @@ const MentorTalks = () => {
       updatedAt: undefined,
     }));
   }, [cms.mentorTalks]);
-
-  useEffect(() => {
-    // Check for saved theme preference first, then system preference
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-      document.documentElement.classList.add("dark");
-      setIsDarkMode(true);
-    } else if (savedTheme === 'light') {
-      document.documentElement.classList.remove("dark");
-      setIsDarkMode(false);
-    } else {
-      // If no saved preference, use system preference
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (prefersDark) {
-        document.documentElement.classList.add("dark");
-        setIsDarkMode(true);
-      } else {
-        document.documentElement.classList.remove("dark");
-        setIsDarkMode(false);
-      }
-    }
-  }, []);
-
-  const toggleTheme = () => {
-    const newDarkMode = !isDarkMode;
-    setIsDarkMode(newDarkMode);
-    
-    if (newDarkMode) {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem('theme', 'light');
-    }
-  };
 
   const [expandedTalks, setExpandedTalks] = useState<{[key: string]: boolean}>({});
 

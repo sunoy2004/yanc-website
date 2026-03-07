@@ -3,9 +3,8 @@ import { ThemeProvider } from "next-themes";
 import App from "./App.tsx";
 import "./index.css";
 
-// Ensure the app uses dark theme by default and does not follow the system theme.
+// Dark theme only: reinforce so light is never visible (e.g. after navigation).
 if (typeof window !== "undefined") {
-  // Add the class immediately to avoid a flash of light theme.
   document.documentElement.classList.add("dark");
 }
 

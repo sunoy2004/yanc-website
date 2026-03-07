@@ -4,10 +4,13 @@ import Footer from "@/components/Footer";
 import { getUpcomingEvents, WebsiteEvent } from "@/services/cms/events-service";
 
 const UpcomingEvents = () => {
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const isDarkMode = true;
+  const toggleTheme = () => {};
   const [events, setEvents] = useState<WebsiteEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => { document.documentElement.classList.add("dark"); }, []);
 
   // Load upcoming events on component mount
   useEffect(() => {
@@ -28,11 +31,6 @@ const UpcomingEvents = () => {
     }
   };
   
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-    document.documentElement.classList.toggle("dark");
-  };
-
   // Filter and sort upcoming events - show active upcoming events, sorted by date (closest first)
   const upcomingEvents = events
     .filter(event => {

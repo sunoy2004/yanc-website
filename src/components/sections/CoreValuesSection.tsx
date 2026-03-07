@@ -79,9 +79,8 @@ const CoreValuesSection = () => {
               <div className="w-16 h-1 bg-primary rounded-full mb-6"></div>
               
               <p className="text-muted-foreground leading-relaxed">
-                Our foundational principles guide everything we do. These seven core values 
-                shape our community, drive our decisions, and define who we are as 
-                individuals and as a collective force for positive change.
+              Our foundational principles guide everything we do and serve as the backbone of our mission and vision. These seven core values are more than just words—they represent the ideals that shape our community, influence our decisions, and inspire the way we interact with one another and with the world around us. They help us maintain a shared sense of purpose and direction, ensuring that every action we take aligns with our values.<br></br>
+              Together, these principles define the character of our organization. They encourage integrity, collaboration, responsibility, and a commitment to growth and positive impact. By embracing these values, we strive to create an environment where individuals feel empowered to contribute, innovate, and support one another.
               </p>
             </div>
           </ScrollAnimateWrapper>

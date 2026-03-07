@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Check, MapPin, Clock, Calendar } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -23,10 +23,12 @@ interface Errors {
 }
 
 const DiscoverMeetRegistration = () => {
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const isDarkMode = true;
+  const toggleTheme = () => {};
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
-  
+  useEffect(() => { document.documentElement.classList.add("dark"); }, []);
+
   // Form data state
   const [formData, setFormData] = useState<FormData>({
     fullName: '',
@@ -43,12 +45,6 @@ const DiscoverMeetRegistration = () => {
   });
   
   const [errors, setErrors] = useState<Errors>({});
-
-  // Toggle theme
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-    document.documentElement.classList.toggle("dark");
-  };
 
   // Handle input changes
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {

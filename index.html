@@ -3,6 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Dark theme only: apply before first paint so light theme is never visible -->
+    <script>
+      (function() {
+        try { document.documentElement.classList.add('dark'); } catch (e) {}
+      })();
+    </script>
     <!-- TODO: Set the document title to the name of your application -->
     <title>YANC</title>
     <meta name="description" content="Yet Another Networking Club - Professional networking and life skills platform" />

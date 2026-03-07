@@ -8,13 +8,16 @@ import { MediaItem } from "@/data/mockData";
 import { getPastEvents, WebsiteEvent } from "@/services/cms/events-service";
 
 const PastEvents = () => {
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const isDarkMode = true;
+  const toggleTheme = () => {};
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxMedia, setLightboxMedia] = useState<MediaItem[]>([]);
   const [lightboxInitialIndex, setLightboxInitialIndex] = useState(0);
   const [events, setEvents] = useState<WebsiteEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => { document.documentElement.classList.add("dark"); }, []);
 
   const loadPastEvents = async () => {
     try {
@@ -34,11 +37,6 @@ const PastEvents = () => {
   useEffect(() => {
     loadPastEvents();
   }, []);
-
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-    document.documentElement.classList.toggle("dark");
-  };
 
   const handleMediaClick = (media: MediaItem[], initialIndex: number) => {
     setLightboxMedia(media);

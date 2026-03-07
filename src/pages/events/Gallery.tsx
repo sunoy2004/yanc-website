@@ -4,7 +4,8 @@ import Footer from "@/components/Footer";
 import { getEventGallery, WebsiteGalleryItem } from "@/services/cms/events-service";
 
 const EventGallery = () => {
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const isDarkMode = true;
+  const toggleTheme = () => {};
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxMedia, setLightboxMedia] = useState<any[]>([]);
   const [lightboxInitialIndex, setLightboxInitialIndex] = useState(0);
@@ -13,10 +14,7 @@ const EventGallery = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-    document.documentElement.classList.toggle("dark");
-  };
+  useEffect(() => { document.documentElement.classList.add("dark"); }, []);
 
   const handleMediaClick = (media: any[], initialIndex: number) => {
     setLightboxMedia(media);

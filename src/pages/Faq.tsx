@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ChevronDown, ChevronUp } from "lucide-react";
@@ -14,14 +14,11 @@ interface AccordionSection {
 }
 
 const Faq = () => {
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const isDarkMode = true;
+  const toggleTheme = () => {};
   // Track multiple open sections (allow more than one open at a time)
   const [openSections, setOpenSections] = useState<number[]>([]);
-
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-    document.documentElement.classList.toggle("dark");
-  };
+  useEffect(() => { document.documentElement.classList.add("dark"); }, []);
 
   const toggleSection = (index: number) => {
     setOpenSections((prev) =>

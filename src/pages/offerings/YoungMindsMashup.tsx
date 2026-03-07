@@ -1,15 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Users, TrendingUp, Handshake, Lightbulb } from "lucide-react";
 
 const YoungMindsMashup = () => {
-  const [isDarkMode, setIsDarkMode] = useState(true);
-
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-    document.documentElement.classList.toggle("dark");
-  };
+  const isDarkMode = true;
+  const toggleTheme = () => {};
+  useEffect(() => { document.documentElement.classList.add("dark"); }, []);
 
   // Data for feature cards
   const featureCards = [

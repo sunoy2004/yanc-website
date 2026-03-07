@@ -12,45 +12,20 @@ import Preloader from "@/components/Preloader";
 import Layout from "@/components/Layout";
 
 const Index = () => {
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    // Check system preference for initial state
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
-  });
   const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
+  const isDarkMode = true; // Dark theme only
+  const toggleTheme = () => {}; // No-op: light theme disabled
 
   useEffect(() => {
-    // Check for saved theme preference first, then system preference
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-      document.documentElement.classList.add("dark");
-      setIsDarkMode(true);
-    } else if (savedTheme === 'light') {
-      document.documentElement.classList.remove("dark");
-      setIsDarkMode(false);
-    } else {
-      // If no saved preference, use system preference
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (prefersDark) {
-        document.documentElement.classList.add("dark");
-        setIsDarkMode(true);
-      } else {
-        document.documentElement.classList.remove("dark");
-        setIsDarkMode(false);
-      }
-    }
-    
-    // Check if we're navigating from another page (not a fresh load)
+    document.documentElement.classList.add("dark");
     const fromNavigation = sessionStorage.getItem('fromNavigation');
     if (fromNavigation === 'true') {
-      // Skip preloader when coming from navigation
       setIsLoading(false);
-      // Clear the flag
       sessionStorage.removeItem('fromNavigation');
     }
   }, []);
 
-  // Handle navigation to home page - skip preloader when coming from other pages
   useEffect(() => {
     if (location.pathname === '/') {
       const fromNavigation = sessionStorage.getItem('fromNavigation');
@@ -64,19 +39,6 @@ const Index = () => {
   const handlePreloaderComplete = useCallback(() => {
     setIsLoading(false);
   }, []);
-
-  const toggleTheme = () => {
-    const newDarkMode = !isDarkMode;
-    setIsDarkMode(newDarkMode);
-    
-    if (newDarkMode) {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem('theme', 'light');
-    }
-  };
 
   return (
     <>

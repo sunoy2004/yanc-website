@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
@@ -116,12 +116,9 @@ const Contact = () => {
     }
   };
 
-  const [isDarkMode, setIsDarkMode] = useState(true);
-
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-    document.documentElement.classList.toggle('dark');
-  };
+  const isDarkMode = true;
+  const toggleTheme = () => {};
+  useEffect(() => { document.documentElement.classList.add('dark'); }, []);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
