@@ -12,7 +12,22 @@ options:
   logging: CLOUD_LOGGING_ONLY
   default_logs_bucket_behavior: REGIONAL_USER_OWNED_BUCKET
 
+
 steps:
+
+ # Install dependencies
+  - name: 'node:18'
+    entrypoint: npm
+    args: ['install']
+    id: install-deps
+
+  # Fetch CMS data and generate content.json
+  - name: 'node:18'
+    entrypoint: node
+    args: ['scripts/fetchCMS.js']
+    waitFor: ['install-deps']
+    id: fetch-cms
+
   # Ensure Artifact Registry repository exists (safe to run every time)
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
     entrypoint: bash
