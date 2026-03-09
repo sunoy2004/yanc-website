@@ -142,41 +142,6 @@
       "month": "March"
     },
     {
-      "id": "d4a4cba7-944a-4d44-88fa-2dc6ffc2f5a2",
-      "title": "YANC Discover Meet",
-      "description": "This will be on next weekend.",
-      "speaker": "Speaker 4",
-      "location": "Hyederabad",
-      "event_date": "2026-03-07T00:00:00+00:00",
-      "category": "upcoming",
-      "is_active": true,
-      "display_order": 2,
-      "created_at": "2026-03-01T14:56:09.121908+00:00",
-      "updated_at": "2026-03-03T15:29:24.132412+00:00",
-      "type": "upcoming",
-      "registration_url": "https://web.yanc.in/discover-meet-registration",
-      "highlights": [],
-      "galleryMediaIds": [
-        "7a75c1e0-cde8-43d2-bf9e-f1b9cd6f7cb6"
-      ],
-      "mediaItems": [
-        {
-          "id": "7a75c1e0-cde8-43d2-bf9e-f1b9cd6f7cb6",
-          "name": "3.jpeg",
-          "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/uploads/1772376963854_3.jpeg",
-          "type": "image",
-          "alt": "3.jpeg",
-          "order": 0,
-          "createdAt": "2026-03-01T14:56:06.357412+00:00"
-        }
-      ],
-      "isPublished": true,
-      "isPast": true,
-      "isUpcoming": false,
-      "year": 2026,
-      "month": "March"
-    },
-    {
       "id": "568f02df-9cb4-4914-bd41-6440f7001145",
       "title": "Discover Meet YANC",
       "description": "This was on meeting",
@@ -838,5 +803,5 @@
     "mediaItems": []
   },
   "contactInfo": null,
-  "lastUpdated": "2026-03-07T19:15:30.452+05:30"
+  "lastUpdated": "2026-03-09T18:08:27.006+05:30"
 }
