@@ -383,15 +383,18 @@
 
   @media (min-width: 768px) {
     .hero-top-content {
-      /* On medium and larger screens position absolutely for layered hero. */
-      @apply absolute left-0 right-0 z-20 pt-4 sm:pt-12 px-4 sm:px-6 text-center;
-      top: 4rem;
+      /* On tablet: center between navbar and carousel, visually biased slightly downward */
+      @apply absolute left-0 right-0 z-20 px-4 sm:px-6 text-center flex flex-col items-center;
+      /* Midpoint between 4rem and 6rem, nudged down by 0.5rem */
+      top: calc((4rem + 6rem) / 2 + 4.5rem);
+      transform: translateY(-50%);
     }
   }
 
   @media (min-width: 1024px) {
     .hero-top-content {
-      top: 2rem;
+      /* On desktop: midpoint between 4rem and 5rem, nudged down by 0.5rem */
+      top: calc((4rem + 5rem) / 2 + 5rem);
     }
   }
 
@@ -1349,7 +1352,8 @@
 
   /* Tablet adjustments for top content */
   .hero-top-content {
-    @apply pt-16 px-4;
+    @apply px-4;
+    padding-top: 5.5rem; /* push title/subtitle lower for 641–768px widths */
   }
 
   .hero-title-top {
