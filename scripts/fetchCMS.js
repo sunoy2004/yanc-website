@@ -24,13 +24,12 @@ function getISTISOString(date = new Date()) {
 
 async function main() {
   const cmsBase =
-    process.env.VITE_CMS_BASE_URL ||
     process.env.CMS_BASE_URL ||
-    process.env.API_BASE_URL;
+    process.env.VITE_CMS_BASE_URL;
 
   if (!cmsBase) {
     console.warn(
-      '⚠️  VITE_CMS_BASE_URL / CMS_BASE_URL is not set. Skipping CMS fetch and keeping existing src/data/content.json.',
+      '⚠️  CMS_BASE_URL / VITE_CMS_BASE_URL is not set. Skipping CMS fetch and keeping existing src/data/content.json.',
     );
     return;
   }
@@ -41,9 +40,16 @@ async function main() {
     const url = `${cmsBase}${endpoint}`;
     console.log(`🔍 Fetching ${url} ...`);
     const res = await fetch(url);
+
+    if (res.status === 404) {
+      console.warn(`⚠️  Endpoint returned 404 (not found): ${url}`);
+      return null;
+    }
+
     if (!res.ok) {
       throw new Error(`HTTP ${res.status} ${res.statusText} for ${url}`);
     }
+
     return res.json();
   }
 

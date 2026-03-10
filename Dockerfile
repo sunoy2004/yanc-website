@@ -1,13 +1,26 @@
 # Multi-stage Dockerfile for building and serving the Vite React app with Nginx
 FROM node:18-alpine AS build
+
 WORKDIR /app
 
-# Install dependencies (use legacy-peer-deps to avoid peer conflicts in CI)
+# Install dependencies with better Docker layer caching:
+# 1) copy package manifests
 COPY package.json package-lock.json* ./
-RUN npm install --legacy-peer-deps
 
-# Copy source and build
+# 2) install using npm ci for reproducible installs
+RUN npm ci
+
+# 3) copy the rest of the project
 COPY . .
+
+# Inject CMS base URL for build-time content fetch
+ARG CMS_BASE_URL
+ENV CMS_BASE_URL=${CMS_BASE_URL}
+
+# Fetch CMS content and generate src/data/content.json at build time
+RUN node scripts/fetchCMS.js
+
+# Build the Vite app
 RUN npm run build
 
 ### Production image
@@ -30,4 +43,3 @@ HEALTHCHECK --interval=30s --timeout=3s CMD wget -qO- --timeout=3 http://localho
 # Run the entrypoint which writes runtime-config.js then execs nginx
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]
-

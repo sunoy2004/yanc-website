@@ -8,26 +8,7 @@
 # One-time setup: create Artifact Registry repo in the same region, e.g.:
 #   gcloud artifacts repositories create cloud-run-source-deploy --repository-format=docker --location=asia-south1
 
-options:
-  logging: CLOUD_LOGGING_ONLY
-  default_logs_bucket_behavior: REGIONAL_USER_OWNED_BUCKET
-
-
 steps:
-
- # Install dependencies
-  - name: 'node:18'
-    entrypoint: npm
-    args: ['install']
-    id: install-deps
-
-  # Fetch CMS data and generate content.json
-  - name: 'node:18'
-    entrypoint: node
-    args: ['scripts/fetchCMS.js']
-    waitFor: ['install-deps']
-    env:
-      - 'VITE_CMS_BASE_URL=${_CMS_URL}'
 
   # Ensure Artifact Registry repository exists (safe to run every time)
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
@@ -39,7 +20,7 @@ steps:
         gcloud artifacts repositories create ${_REPO_NAME} --repository-format=docker --location=${_LOCATION} --project=${PROJECT_ID}
     id: ensure-repo
 
-  # Build the Docker image (uses Dockerfile in repo root)
+  # Build the Docker image (uses Dockerfile in repo root) with layer caching and CMS URL build arg
   - name: 'gcr.io/cloud-builders/docker'
     waitFor: ['ensure-repo']
     args:
@@ -47,6 +28,10 @@ steps:
       - '-t'
       - '${_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/${_SERVICE_NAME}:${SHORT_SHA}'
       - '-t'
+      - '${_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/${_SERVICE_NAME}:latest'
+      - '--build-arg'
+      - 'CMS_BASE_URL=${_CMS_URL}'
+      - '--cache-from'
       - '${_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/${_SERVICE_NAME}:latest'
       - '.'
 
@@ -80,13 +65,15 @@ steps:
     env:
       - 'CLOUDSDK_CORE_PROJECT=${PROJECT_ID}'
 
+options:
+  logging: CLOUD_LOGGING_ONLY
+  default_logs_bucket_behavior: REGIONAL_USER_OWNED_BUCKET
+
 # Substitution variables (override in trigger or use defaults)
 substitutions:
   _LOCATION: asia-south1
   _REPO_NAME: cloud-run-source-deploy
   _SERVICE_NAME: yanc-website
-
-options:
-  logging: CLOUD_LOGGING_ONLY
+  _CMS_URL: https://yanc-cms-bk-1095720168864.asia-south1.run.app
 
 timeout: 1200s
