@@ -30,16 +30,7 @@ export default defineConfig(({ mode }) => ({
     // Allow requests from any host in preview mode
     // This is used when previewing the built application
   },
-  plugins: [
-    react(),
-    visualizer({
-      filename: "dist/stats.html",
-      open: true,
-      gzipSize: true,
-      brotliSize: true,
-      apply: "build",
-    }),
-  ],
+  plugins: [react()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
@@ -50,6 +41,15 @@ export default defineConfig(({ mode }) => ({
   // Build optimizations
   build: {
     rollupOptions: {
+      plugins: [
+        visualizer({
+          filename: "dist/stats.html",
+          template: "treemap",
+          open: true,
+          gzipSize: true,
+          brotliSize: true,
+        }),
+      ],
       output: {
         manualChunks: (id) => {
           if (id.includes('node_modules')) {
