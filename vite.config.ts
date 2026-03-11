@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
+import { visualizer } from "rollup-plugin-visualizer";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -29,7 +30,16 @@ export default defineConfig(({ mode }) => ({
     // Allow requests from any host in preview mode
     // This is used when previewing the built application
   },
-  plugins: [react()],
+  plugins: [
+    react(),
+    visualizer({
+      filename: "dist/stats.html",
+      open: true,
+      gzipSize: true,
+      brotliSize: true,
+      apply: "build",
+    }),
+  ],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
