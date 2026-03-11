@@ -1,62 +1,92 @@
-# YANC
+# YANC Website
 
-**Project Link:**
+Modern, fast, and content-driven frontend for **Yet Another Networking Club (YANC)** — built with **React + Vite + TypeScript + Tailwind** and deployed to **Google Cloud Run** via **Cloud Build**.
 
-production(main):https://yanc-website.onrender.com
+## Live links
+- **Cloud Run (GCP)**: `https://yanc-website-1095720168864.asia-south1.run.app`
 
-development(dev):https://yanc-website-test.onrender.com
+## What’s inside
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-Gcp(feature):https://website-1095720168864.asia-south1.run.app
-=======
-Gcp(feature):https://website-1095720168864.asia-south1.run.app/
->>>>>>> 389477883dec4808b4f327c66f8b595082ecb519
-=======
-Gcp(feature):https://website-1095720168864.asia-south1.run.app/
-Gcp(feature):https://website-1095720168864.asia-south1.run.app
->>>>>>> 3814cda214a3b56c3c22224bf4a02ed665460ff6
+- **Vite + React (SWC)** for fast dev/build
+- **Tailwind CSS + shadcn/ui** for a clean, consistent UI system
+- **Rich hero + animations** (incl. 3D carousel)
+- **Build-time CMS injection**: CMS content is fetched during the Docker build and written to `src/data/content.json` so the app can import it statically
 
-## Project Overview
+## Quick start (local development)
 
-This is a demo framework for the Yet Another Networking Club (YANC) website, featuring:
-- Modern React and TypeScript implementation
-- Responsive design with Tailwind CSS
-- Interactive components and animations
-- Professional UI/UX design
+### Prerequisites
 
-## How to Develop
+- Node.js 18+
+- npm
 
-**Prerequisites**
+### Install & run
 
-- Node.js and npm installed
+```sh
+npm install
+npm run dev
+```
 
-**Getting Started**
+Dev server runs at `http://localhost:8080`.
 
-1. Clone the repository
-2. Install dependencies:
-   ```sh
-   npm install
-   ```
-3. Start the development server:
-   ```sh
-   npm run dev
-   ```
+> API proxy: Vite proxies `/api/*` to `http://localhost:3001` (see `vite.config.ts`).
 
-The development server will be available at http://localhost:8080
+## Build-time CMS injection (how content.json is generated)
 
-## Technologies Used
+This project fetches CMS content at build time using `scripts/fetchCMS.js` and writes it to:
 
-This project is built with:
+- `src/data/content.json`
+
+The script reads the CMS base URL from:
+
+- `CMS_BASE_URL` (preferred)
+- `VITE_CMS_BASE_URL` (fallback)
+
+If the CMS URL is missing, the script logs a warning and keeps the existing `src/data/content.json`.
+
+## Production build
+
+```sh
+npm run build
+```
+
+Outputs the static site to `dist/`.
+
+## Deployment (Google Cloud Run + Cloud Build)
+
+Cloud Build builds and deploys a Docker image. The important flow is:
+
+CMS update  
+↓  
+Cloud Build trigger  
+↓  
+`docker build` (installs deps, runs `fetchCMS.js`, runs Vite build)  
+↓  
+push image to Artifact Registry  
+↓  
+deploy to Cloud Run
+
+### Cloud Build variables
+
+`cloudbuild.yaml` defines a substitution used during the Docker build:
+
+- `_CMS_URL` → passed as `--build-arg CMS_BASE_URL=${_CMS_URL}`
+
+Default CMS URL:
+
+- `https://yanc-cms-bk-1095720168864.asia-south1.run.app`
+
+## Tech stack
 
 - Vite
-- TypeScript
-- React
-- shadcn/ui
+- React + TypeScript
 - Tailwind CSS
+- shadcn/ui
+- Nginx (serving the built SPA in production)
 
-## Deployment
+## Repo scripts (common)
 
-The project can be deployed to any static hosting platform such as Netlify, Vercel, or GitHub Pages.
-
-Run `npm run build` to create a production build in the `dist` folder.
+```sh
+npm run dev
+npm run build
+npm run preview
+```
