@@ -9,9 +9,7 @@ const iconMap: Record<string, React.ElementType> = {
 };
 
 const AboutUsSection = () => {
-  const { aboutUsData, loading, error, refreshData } = useAboutUsData({ 
-    refreshInterval: import.meta.env.DEV ? 30000 : 0 // Auto-refresh every 30s in dev mode
-  });
+  const { aboutUsData, loading, error, refreshData } = useAboutUsData();
 
   // Add keyboard shortcut for development
   React.useEffect(() => {

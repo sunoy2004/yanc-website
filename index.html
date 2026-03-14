@@ -26,6 +26,8 @@
 
   <body>
     <div id="root"></div>
+    <!-- Runtime config (Supabase, API URL) – filled by Docker entrypoint in production; empty in dev when using .env -->
+    <script src="/runtime-config.js"></script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

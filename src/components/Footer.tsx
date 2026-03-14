@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { IssueModal } from './IssueModal.tsx';
+import content from '@/data/content';
 import facebookIcon from './icons/facebook.png';
 import xIcon from './icons/twitter.png';
 import instagramIcon from './icons/instagram.png';
@@ -202,8 +203,9 @@ const Footer = () => {
               © 2026 YANC. All rights reserved.
             </p>
             <p className="footer-build text-xs text-muted-foreground mt-1">
-             {/* v{import.meta.env.VITE_BUILD_DATE} */}
-             v{"2026.03.05"}
+              {content?.lastUpdated
+                ? `v${content.lastUpdated.slice(0, 10).replace(/-/g, '.')}`
+                : `v${new Date().toISOString().slice(0, 10).replace(/-/g, '.')}`}
             </p>
           </div>
         </div>
