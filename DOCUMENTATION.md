@@ -106,7 +106,7 @@ The YANC (Yet Another Networking Club) website is a modern, responsive web appli
 - Mentor talk galleries with rich media support
 
 ### Application Type
-This is a client-side React Single Page Application (SPA) built with Vite, featuring serverless deployment capabilities with integrated CMS support for content management and Google Drive storage for media assets.
+This is a client-side React Single Page Application (SPA) built with React + Vite. Content is sourced from an external headless CMS **at build time** into a static `content.json` snapshot, and user issues are persisted to a Supabase PostgreSQL database. A Dockerized Nginx image serves the built SPA (often from Google Cloud Run via Cloud Build).
 
 ### Target Users
 - Prospective members interested in joining the networking club
@@ -433,31 +433,31 @@ Modifiable content: About Us content, mission/vision statements
 
 | Page Name | Route URL | File Path | Responsibility | Data Source | API Used | Components Used |
 |-----------|-----------|-----------|----------------|-------------|----------|-----------------|
-| Home | `/` | src/pages/Index.tsx | Main landing page with all sections plus bottom CTA | mockData.ts | None | Header, Hero, AboutUsSection, CoreValuesSection, EventsSection, FoundersSection, HorizontalTeamSection, Footer, Preloader, Layout, CTA Section |
+| Home | `/` | src/pages/Index.tsx | Main landing page with all sections plus bottom CTA | `content.json` (via hooks/lib/cms) | None | Header, Hero, AboutUsSection, CoreValuesSection, EventsSection, FoundersSection, HorizontalTeamSection, Footer, Preloader, Layout, CTA Section |
 | Sign Up | `/signup` | src/pages/SignUp.tsx | User registration form | None | None | AuthCard, FormInput, Button, SocialLoginButtons |
 | Sign In | `/signin` | src/pages/SignIn.tsx | User login form | None | None | AuthCard, FormInput, Button, SocialLoginButtons |
 | FAQ | `/faq` | src/pages/Faq.tsx | Frequently asked questions | None | None | Various UI components |
 | Contact | `/contact` | src/pages/Contact.tsx | Contact form and information | None | None | Form components, UI elements |
-| Value Proposition | `/offerings/value-proposition` | src/pages/offerings/ValueProposition.tsx | Value proposition information | mockData.ts | None | Various UI components |
-| Who Can Join | `/offerings/who-can-join` | src/pages/offerings/WhoCanJoin.tsx | Membership eligibility | mockData.ts | None | Various UI components |
-| Young Minds Mashup | `/offerings/young-minds-mashup` | src/pages/offerings/YoungMindsMashup.tsx | Young Minds Mashup information | mockData.ts | None | Various UI components |
-| Mentor Talks | `/offerings/mentor-talks` | src/pages/offerings/MentorTalks.tsx | Mentor Talks information with gallery | mockData.ts | None | Gallery components, various UI components |
-| Why Us | `/offerings/why-us` | src/pages/offerings/WhyUs.tsx | Reasons to join YANC | mockData.ts | None | Various UI components |
-| Executive Management | `/team/executive-management` | src/pages/team/ExecutiveManagement.tsx | Executive team information | mockData.ts | None | Team-related components |
-| Cohort Founders | `/team/cohort-founders` | src/pages/team/CohortFounders.tsx | Cohort founder information | mockData.ts | None | Team-related components |
-| Advisory Board | `/team/advisory-board` | src/pages/team/AdvisoryBoard.tsx | Advisory board information | mockData.ts | None | Team-related components |
-| Global Mentors | `/team/global-mentors` | src/pages/team/GlobalMentors.tsx | Global mentor information | mockData.ts | None | Team-related components |
-| Careers | `/careers` | src/pages/Careers.tsx | Career opportunities | mockData.ts | None | Career-related components |
-| Membership | `/apply/membership` | src/pages/apply/Membership.tsx | Membership application | mockData.ts | None | Application components |
-| Discover Meet Registration | `/apply/discover-meet-registration` | src/pages/apply/DiscoverMeetRegistration.tsx | Event registration | mockData.ts | None | Application components |
-| Discover Meet Feedback | `/apply/discover-meet-feedback` | src/pages/apply/DiscoverMeetFeedback.tsx | Event feedback form | mockData.ts | None | Application components |
-| Mentor Registration | `/apply/mentor-registration` | src/pages/apply/MentorRegistration.tsx | Mentor application | mockData.ts | None | Application components |
-| Startup Pitch | `/apply/startup-pitch` | src/pages/apply/StartupPitch.tsx | Startup pitch application | mockData.ts | None | Application components |
-| Membership Application | `/apply/membership-application` | src/pages/apply/MembershipApplication.tsx | Detailed membership application | mockData.ts | None | Application components |
-| Upcoming Events | `/events/upcoming` | src/pages/events/Upcoming.tsx | Upcoming events list | mockData.ts | None | Event-related components |
-| Past Events | `/events/past` | src/pages/events/Past.tsx | Past events archive with galleries | mockData.ts | None | Event and gallery components |
-| Event Gallery | `/events/gallery` | src/pages/events/Gallery.tsx | Event photo gallery with timeline | mockData.ts | None | Gallery components |
-| Event Highlights | `/events/highlights` | src/pages/events/Highlights.tsx | Event highlights with galleries | mockData.ts | None | Gallery components |
+| Value Proposition | `/offerings/value-proposition` | src/pages/offerings/ValueProposition.tsx | Value proposition information | `content.json` | None | Various UI components |
+| Who Can Join | `/offerings/who-can-join` | src/pages/offerings/WhoCanJoin.tsx | Membership eligibility | `content.json` | None | Various UI components |
+| Young Minds Mashup | `/offerings/young-minds-mashup` | src/pages/offerings/YoungMindsMashup.tsx | Young Minds Mashup information | `content.json` | None | Various UI components |
+| Mentor Talks | `/offerings/mentor-talks` | src/pages/offerings/MentorTalks.tsx | Mentor Talks information with gallery | `content.json` | None | Gallery components, various UI components |
+| Why Us | `/offerings/why-us` | src/pages/offerings/WhyUs.tsx | Reasons to join YANC | `content.json` | None | Various UI components |
+| Executive Management | `/team/executive-management` | src/pages/team/ExecutiveManagement.tsx | Executive team information | `content.json` | None | Team-related components |
+| Cohort Founders | `/team/cohort-founders` | src/pages/team/CohortFounders.tsx | Cohort founder information | `content.json` | None | Team-related components |
+| Advisory Board | `/team/advisory-board` | src/pages/team/AdvisoryBoard.tsx | Advisory board information | `content.json` | None | Team-related components |
+| Global Mentors | `/team/global-mentors` | src/pages/team/GlobalMentors.tsx | Global mentor information | `content.json` | None | Team-related components |
+| Careers | `/careers` | src/pages/Careers.tsx | Career opportunities | `content.json` | None | Career-related components |
+| Membership | `/apply/membership` | src/pages/apply/Membership.tsx | Membership application | `content.json` | None | Application components |
+| Discover Meet Registration | `/apply/discover-meet-registration` | src/pages/apply/DiscoverMeetRegistration.tsx | Event registration | `content.json` | None | Application components |
+| Discover Meet Feedback | `/apply/discover-meet-feedback` | src/pages/apply/DiscoverMeetFeedback.tsx | Event feedback form | `content.json` | None | Application components |
+| Mentor Registration | `/apply/mentor-registration` | src/pages/apply/MentorRegistration.tsx | Mentor application | `content.json` | None | Application components |
+| Startup Pitch | `/apply/startup-pitch` | src/pages/apply/StartupPitch.tsx | Startup pitch application | `content.json` | None | Application components |
+| Membership Application | `/apply/membership-application` | src/pages/apply/MembershipApplication.tsx | Detailed membership application | `content.json` | None | Application components |
+| Upcoming Events | `/events/upcoming` | src/pages/events/Upcoming.tsx | Upcoming events list | `content.json` via CMS utilities | None | Event-related components |
+| Past Events | `/events/past` | src/pages/events/Past.tsx | Past events archive with galleries | `content.json` via CMS utilities | None | Event and gallery components |
+| Event Gallery | `/events/gallery` | src/pages/events/Gallery.tsx | Event photo gallery with timeline | `content.json` via CMS utilities | None | Gallery components |
+| Event Highlights | `/events/highlights` | src/pages/events/Highlights.tsx | Event highlights with galleries | `content.json` via CMS utilities | None | Gallery components |
 
 ---
 
@@ -629,7 +629,11 @@ Request-Response Lifecycle: Initial content loaded → View more button shown �
 
 ### Homepage Data Flow
 ```
-Frontend → Index.tsx → Import mockData → Pass to section components → Render UI
+Build time:
+  CMS API → scripts/fetchCMS.js → src/data/content.json
+
+Runtime:
+  Index.tsx → useContent()/CMS hooks → read content.json snapshot → pass props to section components → render UI
 ```
 
 ### Chatbot Data Flow
@@ -639,12 +643,20 @@ Frontend → Chatbot.tsx → User inputs message → sendMessageToAI → apiServ
 
 ### Team Data Flow
 ```
-Frontend → HorizontalTeamSection.tsx → Import teamMembers from mockData.ts → Render team belt animation → Click triggers TeamMemberModal → Display detailed info
+Build time:
+  CMS API → content.json.teamMembers[]
+
+Runtime:
+  HorizontalTeamSection.tsx → useTeamData/useTeamDataByType → map content.json.teamMembers → render team belt → click opens TeamMemberModal with details
 ```
 
 ### Gallery Data Flow
 ```
-Frontend → Gallery components → Import media data from mockData.ts → Render masonry layout → User interaction triggers Lightbox → Full-screen media viewing
+Build time:
+  CMS API → content.json.eventGalleries / galleryItems
+
+Runtime:
+  Events pages → CMS helpers (events-service, useEventsData) → map gallery data into ImageVideoGallery → masonry layout → click opens Lightbox
 ```
 
 ### Form Submission Flow
@@ -696,102 +708,46 @@ Currently, the application uses mock data for all content display, with plans fo
 
 ---
 
-## 10. DATABASE SCHEMA
+## 10. DATA MODEL OVERVIEW
 
-### Current Implementation (Mock Data)
-The application currently uses TypeScript interfaces and arrays in `src/data/mockData.ts` with plans to integrate with a PostgreSQL database via Prisma ORM and Google Drive for media storage:
+### 10.1 CMS Content Snapshot (`ContentSchema`)
 
-**MediaItem Interface**
-- id: string - Unique identifier
-- type: "image" | "video" - Media type
-- src: string - Google Drive shareable link
-- alt: string - Alt text
+At build time the CMS returns a structured JSON payload that is written to `src/data/content.json`. It is typed in `src/types/content.ts` as `ContentSchema` and includes (at a high level):
 
-**EventGalleryItem Interface**
-- id: string - Unique identifier
-- title: string - Gallery title
-- date: string - Gallery date
-- description: string - Gallery description
-- media: MediaItem[] - Array of media items
+- `hero`: hero configuration (title, subtitle, description, CTA, media items with Supabase Storage URLs).
+- `sections`: reusable section blocks powering multiple pages.
+- `programs`: list of YANC programs.
+- `mentorTalks`: mentor talk cards and media.
+- `events`: upcoming and past events with metadata.
+- `eventGalleries`: grouped event galleries.
+- `galleryItems`: flat list of gallery `MediaItem`s (image/video).
+- `teamMembers`: team member records including role, image URL, and optional social links.
+- `founders`: founder cards and bios.
+- `testimonials`: testimonial quotes.
+- `aboutUs`: About Us block (headline, description, vision, mission).
+- `contactInfo`: email/phone/socials for Contact page.
+- `lastUpdated`: ISO timestamp used for versioning (`vYYYY.MM.DD`).
 
-**MentorTalk Interface**
-- id: string - Unique identifier
-- title: string - Talk title
-- speaker: string - Speaker name
-- date: string - Talk date
-- description: string - Talk description
-- media: MediaItem[] - Array of media items for the talk
+Runtime hooks like `useAboutUsData`, `useEventsData`, `useTeamData`, and `useTestimonialsData` project this schema into view models for specific pages.
 
-**TeamMember Interface**
-- id: string - Unique identifier
-- name: string - Team member's name
-- role: string - Role/title
-- image: string - Google Drive shareable link for image
-- description: string - Bio/description (optional)
-- socialLinks: SocialLinks object - Social media links (optional)
+### 10.2 Issue Reporting (`Issue` and Supabase table)
 
-**SocialLinks Interface**
-- twitter: string - Twitter URL (optional)
-- linkedin: string - LinkedIn URL (optional)
-- github: string - GitHub URL (optional)
+Issue reporting uses a typed model in `src/services/issueService.ts`:
 
-**Event Interface**
-- id: string - Unique identifier
-- title: string - Event title
-- date: string - Event date
-- location: string - Event location
-- imageUrl: string - Google Drive shareable link for event image
+- `IssueType = 'Bug' | 'Enhancement' | 'Working as Expected'`
+- `DeviceType = 'Desktop' | 'Tablet' | 'Mobile'`
+- `OSType = 'iOS' | 'Windows' | 'Android'`
+- `BrowserType = 'Chrome' | 'Safari' | 'Firefox' | 'Other'`
+- `SeverityType = 'High' | 'Medium' | 'Low'`
 
-**Founder Interface**
-- id: string - Unique identifier
-- name: string - Founder's name
-- title: string - Title
-- image: string - Google Drive shareable link for image
-- bio: string - Biography
-- socialLinks: SocialLinks object - Social media links (optional)
+The `Issue` interface includes:
 
-**Testimonial Interface**
-- id: string - Unique identifier
-- quote: string - Testimonial text
-- author: string - Author name
-- company: string - Company name
-- image: string - Google Drive shareable link for author image
+- `id`, `title`, `version`, `reporter`, `createdAt`, `updatedAt`
+- `assignedTo`, `severity`, `status`
+- `issueType`, `issueDescription`, `expectedResult`, `stepsToReproduce`
+- `device`, `os`, `browser`, `otherBrowser`, `date` (client-only convenience; DB uses `created_at`)
 
-**HeroMediaItem Interface**
-- id: string - Unique identifier
-- type: "image" | "video" - Media type
-- src: string - Google Drive shareable link for media
-- alt: string - Alt text
-
-**Program Interface**
-- id: string - Unique identifier
-- title: string - Program title
-- description: string - Program description
-- icon: string - Icon identifier
-
-**AboutUsContent Interface**
-- headline: string - About Us headline
-- description: string - Main description
-- vision: object - Vision statement with title, description, icon
-- mission: object - Mission statement with title, description, icon
-
-### Feature Usage
-- MediaItem: Used for all gallery and media display components
-- EventGalleryItem: Used in event gallery pages
-- MentorTalk: Used in mentor talk pages
-- TeamMember: Used for displaying team members across various team pages
-- Event: Used in EventsSection and event pages
-- Founder: Used in FoundersSection
-- Testimonial: Used in TestimonialsSection (currently commented out)
-- HeroMediaItem: Used in Hero component for carousel
-- Program: Used in ProgramsSection (currently commented out)
-- AboutUsContent: Used in AboutUsSection
-
-### Planned CMS Integration
-- **Database**: PostgreSQL with Prisma ORM
-- **Media Storage**: Google Drive with shareable links stored in database
-- **Content Types**: Sections, galleries, events, mentor talks, team members
-- **API Layer**: RESTful endpoints for content management
+The Supabase `issues` table mirrors these fields in snake_case (see Quick Start section for example SQL).
 
 ---
 
