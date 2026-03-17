@@ -15,14 +15,14 @@ const WhyUs = () => {
       title: "Meaningful Connections",
       description: "Building relationships and social skills.",
       footerText: "Networking made easy",
-      image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769272882/6_xlueja.jpg"
+      image: "meaningful-connections.jpg"
     },
     {
       id: 2,
       title: "Life Skills & Experience",
       description: "Crucial tools for success.",
       footerText: "Empowering your journey",
-      image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769272876/7_xdv4gd.jpg"
+      image: "life-skills-experience.jpg"
     }
   ];
 

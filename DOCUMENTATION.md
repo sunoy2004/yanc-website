@@ -62,53 +62,62 @@ This is a client-side React Single Page Application (SPA) built with Vite, featu
 - **Three.js + @react-three/fiber**: 3D graphics library for the hero carousel animation
 - **Lucide React**: Icon library for consistent UI elements
 
-### Backend Technologies
-- **Headless CMS**: API-driven content management system with Google Drive integration
-- **Database**: PostgreSQL for structured content data
-- **API Integration**: Integration with OpenAI API for chatbot functionality (with fallback to mock service)
+### Backend / Content Technologies
+- **Headless CMS (external)**: A separate CMS backend (not in this repo) exposes public HTTP endpoints used at **build time** to generate a static `content.json` file.
+- **Static content snapshot**: `scripts/fetchCMS.js` runs before `vite build` and writes `src/data/content.json` from the CMS responses.
+- **Supabase PostgreSQL**: Used as the primary database for **issue reporting** (table `issues`) and for media storage (via Supabase Storage public URLs embedded in `content.json`).
+- **API Integration**: Optional integration with OpenAI API for chatbot functionality (with fallback to a mock service to avoid CORS / quota issues in development).
 
-### Database
-- **Structured Content**: Uses PostgreSQL database managed by Prisma ORM
-- **Media Storage**: Google Drive for image and video assets with shareable links stored in database
+### Data & Storage
+- **CMS Content**: Structured content is delivered as a static JSON snapshot (`src/data/content.json`) typed by `ContentSchema` in `src/types/content.ts`. At runtime the app treats this as the single source of truth for hero, sections, events, team, testimonials, etc.
+- **Issue Reporting**: Uses a Supabase PostgreSQL database table `issues` (accessed via Supabase REST) for user-reported issues.
+- **Media Storage**: Supabase Storage for images and other assets; `content.json` and `mockData.ts` contain fully-qualified public URLs.
 
 ### APIs
-- **OpenAI API**: For chatbot responses (with fallback to mock service to avoid CORS issues)
-- **CMS API**: Headless content management system with RESTful endpoints
-- **Google Drive API**: For media upload and management
+- **CMS HTTP API (build-time only)**: `scripts/fetchCMS.js` calls CMS endpoints (see `src/lib/cms/endpoints.ts`) to produce `content.json`. The SPA does **not** call the CMS directly at runtime.
+- **Supabase REST API**: Used by `src/services/issueService.ts` to create rows in the `issues` table through the `rest/v1/issues` endpoint.
+- **OpenAI / mock API**: Used by `src/services/apiService.ts` to power the chatbot (`Chatbot.tsx`), falling back to a local mock implementation when keys are not configured.
 
 ### Authentication Method
 - **CMS Admin Authentication**: Secure admin panel with JWT-based authentication
 - **Client-side only**: Main website has no user authentication system yet
 
 ### Hosting / Deployment Tools
-- **Netlify**: Static hosting with client-side routing support
-- **Render**: Platform for deploying static sites
-- **GitHub Actions**: CI/CD pipeline for automated deployments
+- **Docker / Nginx**: Multi-stage Dockerfile builds the Vite bundle and serves it with Nginx.
+- **Google Cloud Build + Cloud Run**: Primary deployment path (see `DEPLOYMENT.md` and `cloudbuild.yaml`). Cloud Build builds the Docker image, pushes to Artifact Registry, and deploys to Cloud Run.
+- **Local dev**: `npm run dev` runs Vite’s dev server with hot module replacement.
 
 ### Environment Configuration
-- **Vite Environment Variables**: Managed through `.env` files with VITE_ prefix
-- **Configuration files**: `vite.config.ts`, `tailwind.config.ts`, `eslint.config.js`
+- **Vite Environment Variables**: Managed through `.env` files with `VITE_` prefix (e.g. `VITE_CMS_BASE_URL`, `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `VITE_API_BASE_URL`).
+- **Runtime Config File**: `runtime-config.js` written at container start by `docker-entrypoint.sh` so Supabase/API URLs can be injected at runtime.
+- **Configuration files**: `vite.config.ts`, `tailwind.config.ts`, `eslint.config.js`, `cloudbuild.yaml`, `Dockerfile`.
 
 ### External Link Behavior
 Following user preference, all external navigation links throughout the application open in a new tab/window using `target="_blank"` and `rel="noopener noreferrer"` attributes for security.
 
 ### Why Each Technology is Used
-- **Vite**: Fast bundling and hot module replacement for better developer experience
-- **Tailwind CSS**: Rapid UI development with consistent design system
-- **shadcn/ui**: Pre-built accessible components that integrate well with Tailwind
-- **Three.js**: Advanced 3D animations for engaging user experience
-- **React Router**: Client-side routing for SPA navigation
-- **React Query**: Efficient data fetching and caching
-- **Google Drive**: Cost-effective media storage solution for headless CMS
+- **Vite**: Fast bundling and hot module replacement for better developer experience.
+- **Tailwind CSS + shadcn/ui**: Rapid UI development with a consistent, accessible design system.
+- **Three.js / @react-three/fiber**: Advanced 3D animations for the hero carousel to differentiate the landing page visually.
+- **React Router**: Client-side routing for SPA navigation and deep-linkable pages.
+- **React Query**: Efficient and normalized async state management for CMS/Events flows and future APIs.
+- **Supabase**: Simple managed Postgres + Storage with REST and JS SDK, used for user issue reporting and media hosting without managing custom backend code for these concerns.
 
 ---
 
 ## 3. COMPLETE PROJECT STRUCTURE
 
+Below is a high-level view of the most important directories and files. Non-essential test/debug helpers are omitted for brevity.
+
 ```
 src/
+├── App.tsx               # Route definitions and global providers
+├── main.tsx              # React/Vite entrypoint
+├── index.css             # Tailwind base styles + custom utilities
+├── App.css               # Global app-level styles (legacy)
+│
 ├── components/
-│   ├── sections/
+│   ├── sections/         # Home page sections (About, Events, Team, etc.)
 │   │   ├── AboutUsSection.tsx
 │   │   ├── ContactSection.tsx
 │   │   ├── CoreValuesSection.tsx
@@ -116,153 +125,100 @@ src/
 │   │   ├── FoundersSection.tsx
 │   │   ├── HorizontalTeamSection.tsx
 │   │   ├── ProgramsSection.tsx
-│   │   ├── TeamSection.tsx
 │   │   └── TestimonialsSection.tsx
-│   ├── ui/
-│   │   ├── accordion.tsx
-│   │   ├── alert-dialog.tsx
-│   │   ├── alert.tsx
-│   │   ├── aspect-ratio.tsx
-│   │   ├── avatar.tsx
-│   │   ├── badge.tsx
-│   │   ├── breadcrumb.tsx
-│   │   ├── button.tsx
-│   │   ├── calendar.tsx
-│   │   ├── card.tsx
-│   │   ├── carousel.tsx
-│   │   ├── chart.tsx
-│   │   ├── checkbox.tsx
-│   │   ├── collapsible.tsx
-│   │   ├── command.tsx
-│   │   ├── context-menu.tsx
-│   │   ├── dialog.tsx
-│   │   ├── drawer.tsx
-│   │   ├── dropdown-menu.tsx
-│   │   ├── form.tsx
-│   │   ├── hover-card.tsx
-│   │   ├── input-otp.tsx
-│   │   ├── input.tsx
-│   │   ├── label.tsx
-│   │   ├── menubar.tsx
-│   │   ├── navigation-menu.tsx
-│   │   ├── pagination.tsx
-│   │   ├── popover.tsx
-│   │   ├── progress.tsx
-│   │   ├── radio-group.tsx
-│   │   ├── resizable.tsx
-│   │   ├── scroll-area.tsx
-│   │   ├── select.tsx
-│   │   ├── separator.tsx
-│   │   ├── sheet.tsx
-│   │   ├── sidebar.tsx
-│   │   ├── skeleton.tsx
-│   │   ├── slider.tsx
-│   │   ├── sonner.tsx
-│   │   ├── switch.tsx
-│   │   ├── table.tsx
-│   │   ├── tabs.tsx
-│   │   ├── textarea.tsx
-│   │   ├── toast.tsx
-│   │   ├── toaster.tsx
-│   │   ├── toggle-group.tsx
-│   │   ├── toggle.tsx
-│   │   ├── tooltip.tsx
-│   │   └── use-toast.ts
-│   ├── gallery/
+│   ├── gallery/          # Reusable gallery + lightbox
 │   │   ├── ImageVideoGallery.tsx
 │   │   └── Lightbox.tsx
-│   ├── AuthCard.tsx
-│   ├── Chatbot.tsx
-│   ├── CurvedSlider.tsx
-│   ├── Dropdown.tsx
-│   ├── Footer.tsx
-│   ├── FormInput.tsx
-│   ├── Header.tsx
-│   ├── Hero.tsx
-│   ├── HeroCarousel.tsx
-│   ├── Layout.tsx
-│   ├── NavLink.tsx
-│   ├── PageTemplate.tsx
-│   ├── Preloader.tsx
+│   ├── ui/               # shadcn/ui primitives (buttons, inputs, dialog, etc.)
+│   ├── icons/            # Static social/media icons
+│   ├── Layout.tsx        # Page chrome (Header + Footer + Chatbot)
+│   ├── Header.tsx        # Main navigation and theme toggle
+│   ├── Footer.tsx        # Footer links, social, issue-report trigger
+│   ├── Hero.tsx          # Hero section with 3D carousel
+│   ├── CurvedSlider.tsx  # Three.js-based carousel implementation
+│   ├── Chatbot.tsx       # Floating chatbot
+│   ├── IssueModal.tsx    # Supabase-backed issue reporting modal
+│   ├── FormInput.tsx     # Shared form input component
+│   ├── Preloader.tsx     # Initial loading animation
 │   ├── ScrollAnimateWrapper.tsx
-│   ├── SocialLoginButtons.tsx
 │   ├── TeamGrid.tsx
 │   └── TeamMemberModal.tsx
+│
 ├── data/
-│   └── mockData.ts
-├── hooks/
-│   ├── use-mobile.tsx
-│   ├── use-toast.ts
-│   └── useScrollAnimation.ts
+│   ├── content.json      # Generated CMS snapshot (build-time)
+│   ├── content.ts        # Typed wrapper around content.json
+│   └── mockData.ts       # Legacy/mock content fallback
+│
 ├── lib/
-│   └── utils.ts
+│   ├── cms/              # CMS helpers used by build-time and runtime utilities
+│   │   ├── client.ts
+│   │   ├── endpoints.ts
+│   │   ├── serializers.ts
+│   │   └── utils.ts
+│   ├── getCmsBaseUrl.ts  # CMS base URL resolution
+│   └── utils.ts          # Generic helper utilities
+│
 ├── pages/
-│   ├── apply/
-│   │   ├── DiscoverMeetFeedback.tsx
-│   │   ├── DiscoverMeetRegistration.tsx
-│   │   ├── Membership.tsx
-│   │   ├── MembershipApplication.tsx
-│   │   ├── MentorRegistration.tsx
-│   │   └── StartupPitch.tsx
-│   ├── careers/
-│   │   ├── Internships.tsx
-│   │   └── Jobs.tsx
-│   ├── events/
-│   │   ├── DiscoverMeetRegistration.tsx
-│   │   ├── Gallery.tsx
-│   │   ├── Highlights.tsx
-│   │   ├── Past.tsx
-│   │   └── Upcoming.tsx
-│   ├── offerings/
-│   │   ├── MentorTalks.tsx
-│   │   ├── ValueProposition.tsx
-│   │   ├── WhoCanJoin.tsx
-│   │   ├── WhyUs.tsx
-│   │   └── YoungMindsMashup.tsx
-│   ├── team/
-│   │   ├── AdvisoryBoard.tsx
-│   │   ├── CohortFounders.tsx
-│   │   ├── ExecutiveManagement.tsx
-│   │   └── GlobalMentors.tsx
-│   ├── Careers.tsx
-│   ├── Contact.tsx
-│   ├── Events.tsx
+│   ├── Index.tsx         # Home (landing) page
 │   ├── Faq.tsx
-│   ├── Index.tsx
-│   ├── NotFound.tsx
+│   ├── Contact.tsx
 │   ├── SignIn.tsx
-│   └── SignUp.tsx
+│   ├── SignUp.tsx
+│   ├── Events.tsx
+│   ├── Careers.tsx
+│   ├── NotFound.tsx
+│   ├── legal/            # Legal pages (Terms, Privacy, Cookies, Refund)
+│   ├── offerings/        # “Our Offerings” pages (Value Proposition, Why Us, etc.)
+│   ├── team/             # Team listing pages (Executive, Cohort Founders, etc.)
+│   ├── events/           # Events: Upcoming, Past, Gallery, Highlights
+│   └── apply/            # Application flows (Membership, Discover Meet, Mentor, Startup Pitch)
+│
 ├── services/
-│   └── apiService.ts
+│   ├── apiService.ts     # Chatbot API + mocks
+│   ├── issueService.ts   # Supabase `issues` table integration
+│   └── cms/              # Hooks and helpers for CMS-backed content
+│       ├── events-service.ts
+│       ├── index.ts
+│       ├── useAboutUsData.ts
+│       ├── useEventsData.ts
+│       ├── useFoundersData.ts
+│       ├── useProgramsData.ts
+│       ├── useTeamData.ts
+│       ├── useTeamDataByType.ts
+│       └── useTestimonialsData.ts
+│
+├── hooks/
+│   ├── useContent.ts     # Access to typed CMS content snapshot
+│   ├── useScrollAnimation.ts
+│   ├── use-mobile.tsx
+│   └── use-toast.ts
+│
+├── types/
+│   └── content.ts        # `ContentSchema` types for content.json
+│
+├── utils/
+│   ├── productVersion.ts # Centralized version resolution (from content.json/footer)
+│   ├── prefetchImages.ts # Preload hero + CMS images at app start
+│   └── extractImageUrls.ts
+│
 ├── test/
 │   ├── HeroMedia.test.tsx
 │   ├── example.test.ts
 │   └── setup.ts
-├── App.css
-├── App.tsx
-├── index.css
-├── main.tsx
-└── vite-env.d.ts
+│
+└── vite-env.d.ts         # Vite/TS environment typings
 ```
 
 ### File Descriptions
 
 **src/**: Root source directory containing all application code
-- **components/**: Reusable UI components organized by type
-  - **sections/**: Components representing specific page sections
-  - **ui/**: Shadcn/ui components built with Radix UI primitives
-  - **gallery/**: Components for image/video galleries and lightbox functionality
-- **data/**: Static data and mock data structures
-- **hooks/**: Custom React hooks for reusable logic
-- **lib/**: Utility functions and helper modules
-- **pages/**: Route components for different application views
-  - **apply/**: Application forms and registration pages
-  - **careers/**: Job and internship listings
-  - **events/**: Event-related pages with gallery functionality
-  - **offerings/**: Service offering pages with mentor talk galleries
-  - **team/**: Team member listing pages
-- **services/**: API and service integration modules
-- **test/**: Unit tests and test utilities
+- **components/**: Reusable UI components organized by domain (layout, sections, galleries, core UI primitives).
+- **data/**: CMS-derived `content.json` snapshot (generated) plus legacy `mockData.ts` for fallback/testing.
+- **hooks/**: Custom React hooks for content access, scroll effects, mobile detection, toast handling, etc.
+- **lib/**: CMS client/serializer utilities and generic helpers.
+- **pages/**: Route components for each major view; see `App.tsx` for the full routing table.
+- **services/**: API and service integration modules for chatbot, CMS helpers, events, and Supabase issue reporting.
+- **test/**: Unit tests and setup for Vitest/Testing Library.
 
 ---
 
@@ -957,7 +913,181 @@ These changes improve the user experience by:
  
 ---
 
-## 16. APPENDIX — RECENT MAINTENANCE & CLEANUP
+## 16. SUPABASE-POWERED ISSUE REPORTING
+
+This project includes a production-ready user-facing issue reporting flow that writes directly to a Supabase-hosted PostgreSQL database.
+
+### 16.1 Overview
+
+- **Frontend entry point**: `src/components/Footer.tsx` ("Log Issues" link).
+- **Form UI**: `src/components/IssueModal.tsx` (modal with responsive layout).
+- **Service layer**: `src/services/issueService.ts`.
+- **Backend**: Supabase REST endpoint over the `issues` table.
+
+The modal is rendered at the root level inside `Footer` so it is available on every page without additional routing.
+
+### 16.2 Form Fields & Types
+
+The issue form collects the following fields (all required unless otherwise noted):
+
+- **Issue Type** (`issue_type`): one of  
+  - `'Bug'`  
+  - `'Enhancement'`  
+  - `'Working as Expected'`
+- **Issue Description** (`issue_description`): free‑text textarea describing the problem.
+- **Expected Result** (`expected_result`): what the user expected to happen.
+- **Steps to Reproduce** (`steps_to_reproduce`): ordered steps to reproduce the issue.
+- **Version** (`version`): read‑only, auto‑populated from build metadata (see section 17).
+- **Device** (`device`): one of `'Desktop' | 'Tablet' | 'Mobile'`.
+- **OS** (`os`): one of `'iOS' | 'Windows' | 'Android'`.
+- **Browser** (`browser`): one of `'Chrome' | 'Safari' | 'Firefox' | 'Other'`.
+- **Other Browser** (`other_browser`): free‑text, required only when Browser = `Other`.
+- **Reporter** (`reporter`): name of the person filing the report.
+- **Date (UI only)**: read‑only, current date/time at modal open; **not** sent to Supabase (the DB uses `created_at`).
+- **Severity** (`severity`): one of `'High' | 'Medium' | 'Low'` (default: `Low`).
+- **Assigned To** (`assigned_to`): currently set to `'Unassigned'` in the client.
+- **Status** (`status`): defaults to `'Open'`.
+
+These are represented in TypeScript as:
+
+- `IssueType = 'Bug' | 'Enhancement' | 'Working as Expected'`
+- `DeviceType = 'Desktop' | 'Tablet' | 'Mobile'`
+- `OSType = 'iOS' | 'Windows' | 'Android'`
+- `BrowserType = 'Chrome' | 'Safari' | 'Firefox' | 'Other'`
+- `SeverityType = 'High' | 'Medium' | 'Low'`
+- `Issue` / `IssueCreateInput` in `src/services/issueService.ts`.
+
+### 16.3 Validation & UX
+
+- All core fields (Issue Type, Issue Description, Expected Result, Steps, Version, Device, OS, Browser, Reporter, Date display, Severity) are validated on the client.
+- **Conditional validation**: `Other Browser` is required only when Browser = `Other`.
+- Inline errors are shown beneath each field using Tailwind utility classes and the `AlertCircle` icon.
+- The form is fully responsive:
+  - On small screens it behaves like a bottom sheet.
+  - On larger screens it is centered, with the body scrollable and header/footer fixed.
+- Focus rings are preserved on all sides by slightly insetting the scroll container to avoid clipping.
+
+### 16.4 Supabase Integration
+
+The service `createIssue` in `src/services/issueService.ts`:
+
+1. Resolves the Supabase URL and key from:
+   - `import.meta.env.VITE_SUPABASE_URL`
+   - `import.meta.env.VITE_SUPABASE_KEY` or `VITE_SUPABASE_ANON_KEY`
+   - Fallback `window.__RUNTIME_SUPABASE_URL` / `window.__RUNTIME_SUPABASE_ANON_KEY`
+   - Fallback `window.__RUNTIME_CONFIG__` (see section 17 for runtime config).
+2. Assembles a payload with one‑to‑one mapping from form fields to Supabase columns (snake_case).
+3. Sends a `POST` request to:
+
+   - `POST {SUPABASE_URL}/rest/v1/issues`
+
+   with headers:
+
+   - `apikey: <SUPABASE_KEY>`
+   - `Authorization: Bearer <SUPABASE_KEY>`
+   - `Prefer: return=representation`
+
+4. Maps the returned row back into the strongly‑typed `Issue` object.
+
+#### 16.4.1 Expected `issues` Table Schema
+
+The client assumes the `issues` table has **at least** the following columns:
+
+- `id uuid` (primary key, default `uuid_generate_v4()` or Supabase default)
+- `title text`
+- `issue_type text`
+- `issue_description text`
+- `expected_result text`
+- `steps_to_reproduce text`
+- `version text`
+- `device text`
+- `os text`
+- `browser text`
+- `other_browser text`
+- `reporter text`
+- `severity text`
+- `assigned_to text`
+- `status text`
+- `created_at timestamptz` (default `now()`)
+- `updated_at timestamptz` (optional, can be updated via trigger)
+
+The client **does not** send a `date` column; `created_at` is used as the authoritative timestamp.
+
+### 16.5 Environment Variables for Supabase
+
+Configure the following in `.env` (for Vite dev) and in your hosting environment (for production, via runtime config):
+
+- `VITE_SUPABASE_URL` — e.g. `https://<project>.supabase.co`
+- `VITE_SUPABASE_ANON_KEY` — anon key with RLS‑safe permissions
+- Optionally `VITE_SUPABASE_KEY` — service role (not recommended in browser; prefer anon + RLS)
+
+When running with an anon key, the client logs a console warning:
+
+> "Using anon Supabase key for direct DB writes. Ensure RLS policies allow this in development only."
+
+For production, configure RLS policies so that inserts to `issues` are allowed under your chosen security rules.
+
+---
+
+## 17. CONTENT PIPELINE, VERSIONING & RUNTIME CONFIG
+
+### 17.1 Static Content Pipeline
+
+The website consumes structured content from a generated `content.json` file:
+
+- **Source**: `scripts/fetchCMS.js` (run at build time) fetches from the upstream CMS and writes `src/data/content.json`.
+- **Typed wrapper**: `src/data/content.ts` casts the raw JSON to `ContentSchema` defined in `src/types/content.ts`.
+- **CMS utilities**: `src/lib/cms/*` provide helpers and serializers to work with the CMS‑backed content.
+- **Feature hooks**: e.g. `src/services/cms/useAboutUsData.ts` load sections like "About Us" from the static content.
+
+The `ContentSchema` includes a `lastUpdated` ISO timestamp, which is used for version display.
+
+### 17.2 Footer Build Version
+
+`src/components/Footer.tsx` renders a build/version string in the footer:
+
+- Class: `.footer-build`
+- Format: `vYYYY.MM.DD`
+- Logic:
+  - If `content.lastUpdated` is present → use the date portion of that field.
+  - Otherwise → fall back to the current date (`new Date().toISOString()`).
+
+This value is used both for human visibility and as a convenient way for other components to discover the product version (see below).
+
+### 17.3 Product Version Utility
+
+`src/utils/productVersion.ts` centralizes version resolution via:
+
+1. `content.lastUpdated` (preferred, build‑time CMS date).
+2. `.footer-build` DOM text, if available.
+3. Current date as a final fallback.
+
+It always returns a string in the form `vYYYY.MM.DD`.
+
+`IssueModal` uses this utility to prefill the **Version** field so all issue reports are tagged with a consistent product version derived from the CMS snapshot used at build time.
+
+### 17.4 Runtime Config for Production
+
+For containerized/hosted deployments, the app can read runtime configuration from a small JS file in the web root:
+
+- **File**: `runtime-config.js` (served from the app root).
+- **Local default**: `public/runtime-config.js` provides a no‑op/default implementation for dev so the script tag never 404s.
+- **Docker entrypoint**: `docker-entrypoint.sh` in the root image writes a new `runtime-config.js` at container start, using environment variables:
+  - `VITE_SUPABASE_URL`
+  - `VITE_SUPABASE_ANON_KEY`
+  - `VITE_API_BASE_URL`
+
+`index.html` includes:
+
+- `<script src="/runtime-config.js"></script>`
+
+before the main Vite bundle, so `window.__RUNTIME_CONFIG__` (and related globals) are available when the React app boots.
+
+`issueService` consumes these runtime globals as a fallback when `import.meta.env` values are not present (e.g. in static builds deployed to Cloud Run or similar platforms).
+
+---
+
+## 18. APPENDIX — RECENT MAINTENANCE & CLEANUP
 
 These notes summarize small housekeeping and responsive fixes applied to the codebase during the recent update:
 

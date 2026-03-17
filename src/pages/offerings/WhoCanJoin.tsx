@@ -13,7 +13,7 @@ const WhoCanJoin = () => {
       id: 1,
       title: "Youth (15–28)",
       description: "Access a world of opportunities to grow, learn, and connect.",
-      image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769271736/5_kyixex.jpg",
+      image: "youth.jpg",
       link: "https://web.yanc.in/contact-us",
       external: true
     },
@@ -21,7 +21,7 @@ const WhoCanJoin = () => {
       id: 2,
       title: "Mentors",
       description: "Share your expertise and make a difference in young lives.",
-      image: "https://res.cloudinary.com/dzjot5f7d/image/upload/v1769272876/7_xdv4gd.jpg",
+      image: "mentor.jpg",
       link: "https://web.yanc.in/mentor-registration",
       external: true
     },
@@ -29,7 +29,7 @@ const WhoCanJoin = () => {
       id: 3,
       title: "Partners",
       description: "Academia, Corporate and Entrepreneurs can empower the next generation.",
-      image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=250&fit=crop",
+      image: "partner.jpg",
       link: "https://web.yanc.in/contact-us",
       external: true
     }
