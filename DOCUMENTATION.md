@@ -1,5 +1,82 @@
 # YANC Website - Comprehensive Technical Documentation
 
+## 0. QUICK START FOR NEW DEVELOPERS
+
+### 0.1 Running the app locally
+
+1. **Install Node**  
+   Use Node **18+** (LTS is recommended).
+
+2. **Install dependencies**
+
+```bash
+npm ci
+```
+
+3. **Copy environment example**
+
+```bash
+cp .env.example .env
+```
+
+Then update at least:
+
+- `VITE_CMS_BASE_URL` / `VITE_CMS_API_URL` (if you want fresh CMS content at build time; optional if you keep the committed `content.json`)
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_ANON_KEY`
+
+4. **Run the dev server**
+
+```bash
+npm run dev
+```
+
+The app runs on Vite’s default dev port (usually `http://localhost:5173`).
+
+### 0.2 Building with CMS content
+
+At build time, CMS content is fetched and written into `src/data/content.json`:
+
+```bash
+npm run build
+```
+
+This command:
+
+- Runs `node scripts/fetchCMS.js` (via `prebuild`) to fetch CMS content.
+- Generates/updates `src/data/content.json`.
+- Builds the production bundle into `dist/`.
+
+### 0.3 Supabase issues table (minimal)
+
+To enable the **Log Issues** modal, your Supabase project needs an `issues` table. A minimal schema looks like:
+
+```sql
+create table if not exists issues (
+  id uuid primary key default uuid_generate_v4(),
+  title text not null,
+  issue_type text not null,
+  issue_description text not null,
+  expected_result text not null,
+  steps_to_reproduce text not null,
+  version text not null,
+  device text not null,
+  os text not null,
+  browser text not null,
+  other_browser text,
+  reporter text not null,
+  severity text not null,
+  assigned_to text not null default 'Unassigned',
+  status text not null default 'Open',
+  created_at timestamptz not null default now(),
+  updated_at timestamptz
+);
+```
+
+You can then add **RLS policies** that allow unauthenticated inserts for issue creation (or restrict as needed).
+
+---
+
 ## 1. PROJECT OVERVIEW
 
 The YANC (Yet Another Networking Club) website is a modern, responsive web application built with React and TypeScript. It serves as the official online presence for the YANC community, providing information about the club, its services, events, team members, and facilitating user engagement through interactive features.
