@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import youthImg from "./youth.jpeg";
+import mentorImg from "./mentor.jpg";
+import partnerImg from "./partner.jpg";
 
 const WhoCanJoin = () => {
   const isDarkMode = true;
@@ -13,7 +16,7 @@ const WhoCanJoin = () => {
       id: 1,
       title: "Youth (15–28)",
       description: "Access a world of opportunities to grow, learn, and connect.",
-      image: "youth.jpg",
+      image: youthImg,
       link: "https://web.yanc.in/contact-us",
       external: true
     },
@@ -21,7 +24,7 @@ const WhoCanJoin = () => {
       id: 2,
       title: "Mentors",
       description: "Share your expertise and make a difference in young lives.",
-      image: "mentor.jpg",
+      image: mentorImg,
       link: "https://web.yanc.in/mentor-registration",
       external: true
     },
@@ -29,7 +32,7 @@ const WhoCanJoin = () => {
       id: 3,
       title: "Partners",
       description: "Academia, Corporate and Entrepreneurs can empower the next generation.",
-      image: "partner.jpg",
+      image: partnerImg,
       link: "https://web.yanc.in/contact-us",
       external: true
     }

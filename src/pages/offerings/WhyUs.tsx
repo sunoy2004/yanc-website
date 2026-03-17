@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Heart, Users, Zap } from "lucide-react";
+import meaningfulConnectionsImg from "./meaningful-connections.jpg";
+import lifeSkillsImg from "./life-skills-experience.jpg";
 
 const WhyUs = () => {
   const isDarkMode = true;
@@ -15,14 +17,14 @@ const WhyUs = () => {
       title: "Meaningful Connections",
       description: "Building relationships and social skills.",
       footerText: "Networking made easy",
-      image: "meaningful-connections.jpg"
+      image: meaningfulConnectionsImg
     },
     {
       id: 2,
       title: "Life Skills & Experience",
       description: "Crucial tools for success.",
       footerText: "Empowering your journey",
-      image: "life-skills-experience.jpg"
+      image: lifeSkillsImg
     }
   ];
 

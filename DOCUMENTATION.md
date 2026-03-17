@@ -392,10 +392,10 @@ Modifiable content: Registration form fields, validation rules
 ### Data Management
 
 **File: src/data/mockData.ts**
-Purpose: Contains all static data structures used throughout the application including media items for galleries
-Used by: All components that display content
+Purpose: Legacy mock dataset kept for reference and ad‑hoc local testing
+Used by: Only dev/test flows; production UI uses `content.json` via CMS hooks
 Uses: TypeScript interfaces for type safety
-Modifiable content: All content displayed on the website (team members, events, gallery items, etc.)
+Modifiable content: Can be used for local experiments but should not be treated as the source of truth
 
 ### Service Layer
 
@@ -511,7 +511,7 @@ Request-Response Lifecycle: User opens chat → Chatbot component mounts → Use
 Files involved:
 - Hero.tsx → Carousel container
 - CurvedSlider.tsx → Three.js implementation
-- mockData.ts → Media content
+- content.json → Media content for hero carousel (via CMS helpers)
 - index.css → Carousel styles
 
 Request-Response Lifecycle: Page loads → Canvas initializes → Three.js scene renders → Animation begins → Continuous rendering
@@ -519,11 +519,11 @@ Request-Response Lifecycle: Page loads → Canvas initializes → Three.js scene
 ### Feature: Team Display
 Files involved:
 - HorizontalTeamSection.tsx → Team belt component
-- mockData.ts → Team member data
+- Team data from content.json via `useTeamData` / `useTeamDataByType`
 - TeamMemberModal.tsx → Modal for detailed view
 - TeamGrid.tsx → Grid layout component
 
-Request-Response Lifecycle: Page loads → Team data fetched → Team belt animates → User can view details in modal
+Request-Response Lifecycle: Page loads → Team data from content.json is mapped into view models → Team belt animates → User can view details in modal
 
 ### Feature: Form Handling
 Files involved:
@@ -540,10 +540,10 @@ Files involved:
 - EventsSection.tsx → Events showcase
 - events/Upcoming.tsx → Upcoming events page
 - events/Past.tsx → Past events page
-- mockData.ts → Event data
 - Events.tsx → Events overview page
+- CMS helpers (`events-service.ts`, `useEventsData.ts`) → Event data from content.json
 
-Request-Response Lifecycle: Events data loaded → Events rendered → User can navigate to specific event pages
+Request-Response Lifecycle: Events data read from content.json via CMS helpers → Events rendered → User can navigate to specific event pages
 
 ### Feature: Media Galleries
 Files involved:
@@ -553,9 +553,9 @@ Files involved:
 - events/Gallery.tsx → Event gallery page
 - events/Highlights.tsx → Event highlights with galleries
 - offerings/MentorTalks.tsx → Mentor talks with galleries
-- mockData.ts → Gallery media data
+- CMS helpers / content.json → Gallery media data
 
-Request-Response Lifecycle: Gallery data loaded → Masonry layout rendered → User can click media → Lightbox opens → User navigates through media
+Request-Response Lifecycle: Gallery data read from content.json → Masonry layout rendered → User can click media → Lightbox opens → User navigates through media
 
 ### Feature: Progressive Loading
 Files involved:
@@ -700,7 +700,7 @@ Frontend → Index.tsx → Preloader mounts → Animation sequence → onComplet
 - **Authentication**: POST /api/auth/login
 
 ### Mock API Endpoints
-Currently, the application uses mock data for all content display, with plans for CMS integration to replace static data with API-driven content. Google Drive will serve as the media storage backend with shareable links stored in the database.
+At runtime, content is read from the generated `content.json` snapshot rather than from live CMS endpoints. For development and when external APIs are not configured, some behaviors are mocked (notably the chatbot service in `apiService.ts`). Media URLs already point to public Supabase Storage objects; there is no Google Drive or Prisma usage in the current implementation.
 
 ### Environment-Based Configuration
 - **VITE_API_BASE_URL**: Base URL for API calls
@@ -773,20 +773,8 @@ Tailwind CSS configuration:
 - Component variants and extensions
 - Dark mode configuration
 
-### netlify.toml
-Netlify deployment configuration:
-- Build command: npm run build
-- Publish directory: dist
-- Client-side routing redirects
-- Security headers
-- Asset caching configuration
-
-### render.yaml
-Render deployment configuration:
-- Static site deployment settings
-- Build command: npm install && npm run build
-- Publish directory: ./dist
-- SPA routing configuration
+### Historical configs (netlify.toml, render.yaml)
+Older versions of this project used Netlify or Render for static hosting, configured via `netlify.toml` and `render.yaml`. The **current** deployment path uses Docker + Cloud Build + Cloud Run (see `DEPLOYMENT.md`). If you need to revive Netlify/Render deployment, treat those files as starting points, but they are not actively maintained.
 
 ### package.json
 Project metadata and dependencies:
@@ -878,12 +866,10 @@ The application implements error handling primarily in the Chatbot component and
 6. Consider caching with React Query if needed
 7. For CMS integration, follow the planned API structure
 
-### How to Add a New Database Table
-1. Define the interface in `src/data/mockData.ts` for development
-2. When implementing CMS, update the Prisma schema with the new model
-3. Create migration for the new table structure
-4. Implement API endpoints for CRUD operations
-5. Connect to Google Drive for media storage if needed
+### How to Add a New Database Table (outside this repo)
+Most database work (CMS and Supabase) happens outside this frontend repository:
+1. For CMS-driven content, extend the external CMS models and update `scripts/fetchCMS.js` + `ContentSchema` to include the new fields in `content.json`.
+2. For Supabase-backed features (like issues), create/alter tables in Supabase (via SQL or the UI) and update the corresponding service file in `src/services/`.
 
 ### How to Add a New Feature Safely
 1. Identify the components that need modification
@@ -896,13 +882,13 @@ The application implements error handling primarily in the Chatbot component and
 8. Consider accessibility and responsive design
 9. Update documentation if the feature is significant
 
-### How to Implement CMS Integration
-1. Set up a separate CMS API server with PostgreSQL and Prisma
-2. Implement Google Drive integration for media uploads
-3. Create API endpoints following the documented structure
-4. Update service layer to fetch data from CMS API instead of mock data
-5. Implement caching strategies for performance
-6. Add real-time update capabilities if needed
+### How to Implement / Adjust CMS Integration
+1. Ensure the external CMS exposes the necessary content via HTTP endpoints (typically backed by PostgreSQL or another relational store).
+2. Update `scripts/fetchCMS.js` and `src/lib/cms/*` to call the new/updated endpoints and serialize responses into `content.json`.
+3. Update `ContentSchema` in `src/types/content.ts` so the TypeScript model matches the new JSON shape.
+4. Update the relevant hooks in `src/services/cms/` (e.g., `useEventsData`, `useTeamData`, `useAboutUsData`) to project the new fields into view models.
+5. Implement caching strategies (React Query, HTTP caching, CDN) as needed.
+6. Add real-time updates only if required (e.g., via re-build triggers or a live API in addition to `content.json`).
 
 ## 15. RECENT CHANGES SUMMARY
 
@@ -923,11 +909,9 @@ The following updates have been made to the project to enhance gallery functiona
    - Added gallery functionality for mentor talk media
    - Implemented rich media display for talks and presentations
 
-4. **Data Structures Extended** (src/data/mockData.ts):
-   - Added `MediaItem` interface for gallery media
-   - Created `EventGalleryItem` interface for event galleries
-   - Added `MentorTalk` interface for mentor talk content
-   - Extended mock data with rich media content
+4. **Data Structures Extended** (CMS content model):
+   - Added `MediaItem`-like structures for gallery media in the CMS/content.json.
+   - Created gallery/event/mentor talk shapes that map cleanly into `ImageVideoGallery` and related components.
 
 5. **CSS Styling Updates** (index.css):
    - Enhanced gallery layouts with responsive grid systems
