@@ -92,7 +92,6 @@ The YANC (Yet Another Networking Club) website is a modern, responsive web appli
 ### Main Features
 - Responsive design with mobile-first approach
 - Interactive 3D carousel in hero section using Three.js
-- Dark/light theme toggle
 - Preloader animation with "Yet Another Networking Club" to "YANC" morphing effect
 - Integrated chatbot for user assistance
 - Comprehensive navigation with dropdown menus
@@ -101,7 +100,6 @@ The YANC (Yet Another Networking Club) website is a modern, responsive web appli
 - External link integration for membership applications
 - Proper external link handling with security attributes
 - Professional image/video galleries with lightbox viewers
-- Progressive loading with "View More"/"View Less" functionality
 - Timeline-based event galleries
 - Mentor talk galleries with rich media support
 
@@ -209,7 +207,7 @@ src/
 │   ├── ui/               # shadcn/ui primitives (buttons, inputs, dialog, etc.)
 │   ├── icons/            # Static social/media icons
 │   ├── Layout.tsx        # Page chrome (Header + Footer + Chatbot)
-│   ├── Header.tsx        # Main navigation and theme toggle
+│   ├── Header.tsx        # Main navigation
 │   ├── Footer.tsx        # Footer links, social, issue-report trigger
 │   ├── Hero.tsx          # Hero section with 3D carousel
 │   ├── CurvedSlider.tsx  # Three.js-based carousel implementation
@@ -330,10 +328,10 @@ Uses: Header, Footer, Chatbot components
 Modifiable content: Overall page structure, layout arrangement
 
 **File: src/components/Header.tsx**
-Purpose: Navigation header with responsive design, dropdown menus, theme toggle, and member login link
+Purpose: Navigation header with responsive design, dropdown menus, and links to key site areas
 Used by: Layout.tsx
 Uses: React Router Link, Lucide icons, Dropdown component
-Modifiable content: Navigation items, logo, mobile menu behavior, member login link URL
+Modifiable content: Navigation items, logo, mobile menu behavior, external link URLs
 
 **File: src/components/Footer.tsx**
 Purpose: Page footer with navigation links and social media connections
@@ -434,8 +432,8 @@ Modifiable content: About Us content, mission/vision statements
 | Page Name | Route URL | File Path | Responsibility | Data Source | API Used | Components Used |
 |-----------|-----------|-----------|----------------|-------------|----------|-----------------|
 | Home | `/` | src/pages/Index.tsx | Main landing page with all sections plus bottom CTA | `content.json` (via hooks/lib/cms) | None | Header, Hero, AboutUsSection, CoreValuesSection, EventsSection, FoundersSection, HorizontalTeamSection, Footer, Preloader, Layout, CTA Section |
-| Sign Up | `/signup` | src/pages/SignUp.tsx | User registration form | None | None | AuthCard, FormInput, Button, SocialLoginButtons |
-| Sign In | `/signin` | src/pages/SignIn.tsx | User login form | None | None | AuthCard, FormInput, Button, SocialLoginButtons |
+| Sign Up | `/signup` | src/pages/SignUp.tsx | (Legacy) User registration form (currently not in use) | None | None | AuthCard, FormInput, Button, SocialLoginButtons |
+| Sign In | `/signin` | src/pages/SignIn.tsx | (Legacy) User login form (currently not in use) | None | None | AuthCard, FormInput, Button, SocialLoginButtons |
 | FAQ | `/faq` | src/pages/Faq.tsx | Frequently asked questions | None | None | Various UI components |
 | Contact | `/contact` | src/pages/Contact.tsx | Contact form and information | None | None | Form components, UI elements |
 | Value Proposition | `/offerings/value-proposition` | src/pages/offerings/ValueProposition.tsx | Value proposition information | `content.json` | None | Various UI components |
@@ -488,15 +486,6 @@ Files involved:
 - Dropdown.tsx → Dropdown menu functionality
 
 Request-Response Lifecycle: User clicks navigation item → React Router updates URL → Corresponding page component renders
-
-### Feature: Theme Toggle
-Files involved:
-- Header.tsx → Theme toggle button
-- Index.tsx → Theme state management
-- Layout.tsx → Theme prop passing
-- index.css → Theme CSS variables
-
-Request-Response Lifecycle: User clicks theme toggle → State updates → CSS variables change → Theme applies globally
 
 ### Feature: Interactive Chatbot
 Files involved:
@@ -557,17 +546,6 @@ Files involved:
 
 Request-Response Lifecycle: Gallery data read from content.json → Masonry layout rendered → User can click media → Lightbox opens → User navigates through media
 
-### Feature: Progressive Loading
-Files involved:
-- components/gallery/ImageVideoGallery.tsx → View more/view less functionality
-- events/Past.tsx → Per-event gallery expansion
-- events/Gallery.tsx → Gallery expansion controls
-- events/Highlights.tsx → Highlights expansion controls
-
-Request-Response Lifecycle: Initial content loaded → View more button shown → User clicks → Additional content displayed → View less button appears
-
----
-
 ## 7. WHERE TO CHANGE WHAT (VERY IMPORTANT)
 
 ### UI Text Changes
@@ -576,7 +554,7 @@ Request-Response Lifecycle: Initial content loaded → View more button shown �
 - **Hero section text**: src/components/Hero.tsx (hero-title-top, hero-subtitle-top, hero-description)
 - **CTA buttons/links**: All page components where CTAs are used
 - **Footer content**: src/components/Footer.tsx
-- **About Us content**: src/data/mockData.ts (aboutUsContent object)
+- **About Us content**: `content.json` (`aboutUs` field) surfaced via `useAboutUsData`
 
 ### Page Layout Changes
 - **Overall page structure**: src/components/Layout.tsx
@@ -589,7 +567,6 @@ Request-Response Lifecycle: Initial content loaded → View more button shown �
 - **Primary buttons**: src/components/ui/button.tsx (variant definitions)
 - **Navigation buttons**: src/components/Header.tsx (click handlers)
 - **External links**: Header.tsx and Hero.tsx (href attributes with target="_blank" and rel="noopener noreferrer")
-- **Theme toggle**: Header.tsx (toggleTheme function)
 - **Chatbot interactions**: src/components/Chatbot.tsx (handleSendMessage function)
 
 ### API URL Changes
@@ -662,11 +639,6 @@ Runtime:
 ### Form Submission Flow
 ```
 Frontend → Form components (SignIn/SignUp) → User fills form → Validation → Submit → Process (mock implementation) → Response handling
-```
-
-### Theme Toggle Flow
-```
-Frontend → Header.tsx → User clicks theme toggle → toggleTheme function → Updates state in Index.tsx → Applies CSS class to document → Theme updates globally
 ```
 
 ### Navigation Flow
