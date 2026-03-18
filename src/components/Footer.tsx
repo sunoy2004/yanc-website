@@ -209,7 +209,7 @@ const Footer = () => {
             </p> */}
             <p className="footer-build text-xs text-muted-foreground mt-1">
              {/* v{import.meta.env.VITE_BUILD_DATE} */}
-             v{"2026.03.13"}
+             v{"2026.03.15"}
             </p>
           </div>
         </div>
