@@ -6,9 +6,9 @@ import type { IssueCreateInput, IssueType, DeviceType, OSType, BrowserType, Seve
 import { getProductVersion } from '@/utils/productVersion';
 
 const ISSUE_TYPES: IssueType[] = ['Bug', 'Enhancement', 'Working as Expected'];
-const DEVICES: DeviceType[] = ['Desktop', 'Tablet', 'Mobile'];
-const OS_OPTIONS: OSType[] = ['iOS', 'Windows', 'Android'];
-const BROWSERS: BrowserType[] = ['Chrome', 'Safari', 'Firefox', 'Other'];
+const DEVICES: DeviceType[] = ['Desktop', 'Laptop', 'Tablet', 'Mobile', 'iPads'];
+const OS_OPTIONS: OSType[] = ['Windows', 'macOS', 'Linux', 'Android', 'iOS', 'Chrome OS'];
+const BROWSERS: BrowserType[] = ['Chrome', 'Safari', 'Firefox', 'Edge', 'Opera', 'Brave', 'Samsung Internet', 'Other'];
 const SEVERITIES: SeverityType[] = ['High', 'Medium', 'Low'];
 
 function formatDateTimeForInput(iso: string): string {
