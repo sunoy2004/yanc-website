@@ -1,7 +1,30 @@
 export type IssueType = 'Bug' | 'Enhancement' | 'Working as Expected';
-export type DeviceType = 'Desktop' | 'Tablet' | 'Mobile';
-export type OSType = 'iOS' | 'Windows' | 'Android';
-export type BrowserType = 'Chrome' | 'Safari' | 'Firefox' | 'Other';
+export type DeviceType =
+  | 'Desktop'
+  | 'Laptop'
+  | 'Tablet'
+  | 'Mobile'
+  | 'Smart TV'
+  | 'Wearable'
+  | 'iPads'
+
+export type OSType =
+  | 'Windows'
+  | 'macOS'
+  | 'Linux'
+  | 'Android'
+  | 'iOS'
+  | 'Chrome OS'
+
+export type BrowserType =
+  | 'Chrome'
+  | 'Safari'
+  | 'Firefox'
+  | 'Edge'
+  | 'Opera'
+  | 'Brave'
+  | 'Samsung Internet'
+  | 'Other'
 export type SeverityType = 'High' | 'Medium' | 'Low';
 
 export type Issue = {
