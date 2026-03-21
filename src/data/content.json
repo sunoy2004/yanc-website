@@ -111,13 +111,13 @@
       "title": "Next Event !!",
       "description": "Event on next weekend !!",
       "speaker": "Speaker 1",
-      "location": "Hyederabad",
+      "location": "Hyderabad",
       "event_date": "2026-03-21T00:00:00+00:00",
       "category": "upcoming",
-      "is_active": true,
-      "display_order": 2,
+      "is_active": false,
+      "display_order": 3,
       "created_at": "2026-03-10T15:17:10.522903+00:00",
-      "updated_at": "2026-03-10T15:17:10.522903+00:00",
+      "updated_at": "2026-03-21T06:40:55.79741+00:00",
       "type": "upcoming",
       "registration_url": "https://web.yanc.in/discover-meet-registration",
       "highlights": [],
@@ -135,9 +135,9 @@
           "createdAt": "2026-03-10T15:17:05.044448+00:00"
         }
       ],
-      "isPublished": true,
-      "isPast": false,
-      "isUpcoming": true,
+      "isPublished": false,
+      "isPast": true,
+      "isUpcoming": false,
       "year": 2026,
       "month": "March"
     },
@@ -149,10 +149,10 @@
       "location": "Hyederabad",
       "event_date": "2026-03-14T00:00:00+00:00",
       "category": "upcoming",
-      "is_active": true,
+      "is_active": false,
       "display_order": 2,
       "created_at": "2026-03-07T13:42:44.729779+00:00",
-      "updated_at": "2026-03-07T13:42:44.729779+00:00",
+      "updated_at": "2026-03-15T07:39:57.671094+00:00",
       "type": "upcoming",
       "registration_url": "https://web.yanc.in/discover-meet-registration",
       "highlights": [],
@@ -170,9 +170,9 @@
           "createdAt": "2026-03-07T13:42:42.660462+00:00"
         }
       ],
-      "isPublished": true,
-      "isPast": false,
-      "isUpcoming": true,
+      "isPublished": false,
+      "isPast": true,
+      "isUpcoming": false,
       "year": 2026,
       "month": "March"
     },
@@ -838,5 +838,5 @@
     "mediaItems": []
   },
   "contactInfo": null,
-  "lastUpdated": "2026-03-12T17:34:40.543+05:30"
+  "lastUpdated": "2026-03-21T12:14:48.521+05:30"
 }
