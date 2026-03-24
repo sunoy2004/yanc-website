@@ -101,6 +101,7 @@ const AnalyticsTracker = () => {
 
   useEffect(() => {
     const routeTitle = getRouteTitle(location.pathname);
+    document.title = routeTitle === "YANC" ? "YANC" : `${routeTitle} | YANC`;
     trackPageView(location.pathname, routeTitle);
   }, [location.pathname]);
 
