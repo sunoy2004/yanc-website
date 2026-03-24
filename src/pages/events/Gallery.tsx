@@ -72,6 +72,7 @@ const EventGallery = () => {
                     eventId: string;
                     eventTitle: string;
                     eventDescription?: string;
+                    eventDate?: string;
                   }> = [];
                   
                   galleryItems.forEach(item => {
@@ -86,7 +87,8 @@ const EventGallery = () => {
                           type: media.type,
                           eventId: item.id,
                           eventTitle,
-                          eventDescription: item.description
+                          eventDescription: item.description,
+                          eventDate: item.eventDate
                         });
                       });
                     } else {
@@ -98,7 +100,8 @@ const EventGallery = () => {
                         type: item.media.type,
                         eventId: item.id,
                         eventTitle,
-                        eventDescription: item.description
+                        eventDescription: item.description,
+                        eventDate: item.eventDate
                       });
                     }
                   });
@@ -121,6 +124,15 @@ const EventGallery = () => {
                             <p className="text-sm text-muted-foreground">
                               Event Gallery
                             </p>
+                            {mediaItems[0]?.eventDate && (
+                              <p className="text-xs text-muted-foreground mt-1">
+                                Date: {new Date(mediaItems[0].eventDate).toLocaleDateString("en-US", {
+                                  year: "numeric",
+                                  month: "short",
+                                  day: "numeric",
+                                })}
+                              </p>
+                            )}
                             {mediaItems[0]?.eventDescription && (
                               <p className="text-xs text-muted-foreground mt-1">
                                 {mediaItems[0].eventDescription}

@@ -36,6 +36,7 @@ export interface WebsiteGalleryItem {
   id: string;
   title?: string;
   description?: string;
+  eventDate?: string;
   // One event can have many media items (images/videos)
   media: {
     id: string;
@@ -229,6 +230,7 @@ export async function getEventGallery(): Promise<WebsiteGalleryItem[]> {
       id: item.id,
       title: item.title,
       description: item.description,
+      eventDate: item.eventDate ?? item.event_date ?? item.date ?? undefined,
       media,
       isActive:
         item.isActive !== undefined

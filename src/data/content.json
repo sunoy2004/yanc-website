@@ -112,12 +112,12 @@
       "description": "Event on next weekend !!",
       "speaker": "Speaker 1",
       "location": "Hyderabad",
-      "event_date": "2026-03-21T00:00:00+00:00",
+      "event_date": "2026-03-28T00:00:00+00:00",
       "category": "upcoming",
-      "is_active": false,
+      "is_active": true,
       "display_order": 3,
       "created_at": "2026-03-10T15:17:10.522903+00:00",
-      "updated_at": "2026-03-21T06:40:55.79741+00:00",
+      "updated_at": "2026-03-21T07:08:18.102658+00:00",
       "type": "upcoming",
       "registration_url": "https://web.yanc.in/discover-meet-registration",
       "highlights": [],
@@ -135,9 +135,9 @@
           "createdAt": "2026-03-10T15:17:05.044448+00:00"
         }
       ],
-      "isPublished": false,
-      "isPast": true,
-      "isUpcoming": false,
+      "isPublished": true,
+      "isPast": false,
+      "isUpcoming": true,
       "year": 2026,
       "month": "March"
     },
@@ -249,6 +249,7 @@
       "id": "b1bd7a5d-bc9e-4c20-8544-d8814f70b34c",
       "title": "Discover Meet YANC",
       "description": "YANC Insights",
+      "eventDate": "2026-01-07",
       "media": [
         {
           "id": "5075dfff-9d45-404b-89ba-60407e826e70",
@@ -278,12 +279,13 @@
       "isActive": true,
       "displayOrder": 1,
       "createdAt": "2026-02-16T08:00:56.869461+00:00",
-      "updatedAt": "2026-03-02T06:47:05.267572+00:00"
+      "updatedAt": "2026-03-24T06:12:08.714164+00:00"
     },
     {
       "id": "36ff423a-7d31-4c05-b47d-4706eafdd811",
       "title": "Event test",
       "description": "Test event",
+      "eventDate": "2026-03-12",
       "media": [
         {
           "id": "10c494f0-3ae4-47b6-a73e-4db1d3cb8bd3",
@@ -313,7 +315,7 @@
       "isActive": true,
       "displayOrder": 2,
       "createdAt": "2026-02-16T08:01:40.725889+00:00",
-      "updatedAt": "2026-03-03T15:47:25.19185+00:00"
+      "updatedAt": "2026-03-24T06:12:29.492308+00:00"
     }
   ],
   "teamMembers": [
@@ -838,5 +840,5 @@
     "mediaItems": []
   },
   "contactInfo": null,
-  "lastUpdated": "2026-03-21T12:14:48.521+05:30"
+  "lastUpdated": "2026-03-24T11:48:48.037+05:30"
 }
