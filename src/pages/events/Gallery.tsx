@@ -115,7 +115,13 @@ const EventGallery = () => {
                     groupedByEvent[media.eventTitle].push(media);
                   });
 
-                  return Object.entries(groupedByEvent).map(([eventTitle, mediaItems]) => (
+                  const sortedGroupedEntries = Object.entries(groupedByEvent).sort(([, aItems], [, bItems]) => {
+                    const aDate = aItems[0]?.eventDate ? new Date(aItems[0].eventDate).getTime() : Number.NEGATIVE_INFINITY;
+                    const bDate = bItems[0]?.eventDate ? new Date(bItems[0].eventDate).getTime() : Number.NEGATIVE_INFINITY;
+                    return bDate - aDate; // Most recent event first
+                  });
+
+                  return sortedGroupedEntries.map(([eventTitle, mediaItems]) => (
                     <div key={eventTitle} className="bg-card border border-border rounded-lg p-6">
                       <div className="mb-6 pb-4 border-b border-border">
                         <div className="flex items-start justify-between">
