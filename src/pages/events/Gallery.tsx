@@ -217,20 +217,6 @@ const EventGallery = () => {
                   ));
                 })()}
                 
-                {/* Gallery Summary */}
-                <div className="bg-card border border-border rounded-lg p-6">
-                  <div className="text-center">
-                    <h3 className="text-lg font-semibold mb-2">Gallery Summary</h3>
-                    <p className="text-muted-foreground">
-                      Displaying gallery items grouped by event title
-                    </p>
-                    <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                      <p className="text-sm text-blue-800 dark:text-blue-200">
-                        <span className="font-medium">Maximum 10 images per event:</span> Only the most recent 10 images are displayed for each event to ensure optimal loading performance and user experience.
-                      </p>
-                    </div>
-                  </div>
-                </div>
               </div>
             ) : (
               <div className="bg-card border border-border rounded-lg p-12 text-center">
