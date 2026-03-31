@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useContent } from "@/hooks/useContent";
-import { serializeMentorTalks } from "@/lib/cms/serializers";
-import type { MentorTalkUI } from "@/lib/cms/types";
+import type { OurMentor } from "@/types/content";
 
 /**
  * NOTE: This is intentionally a copy of `HorizontalTeamSection`.
@@ -14,30 +13,17 @@ const HorizontalMentorTalksSection = () => {
   const cms = useContent();
 
   const mentors = useMemo(() => {
-    const raw = (cms.mentorTalks ?? []) as any[];
-    const talks: MentorTalkUI[] = serializeMentorTalks(raw).sort(
-      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
-    );
-
-    // Dedupe by speaker (most recent talk wins)
-    const seen = new Set<string>();
-    const items: Array<{ id: string; name: string; image: string }> = [];
-    for (const t of talks) {
-      const name = (t.speaker ?? "").trim();
-      if (!name) continue;
-      const key = name.toLowerCase();
-      if (seen.has(key)) continue;
-      seen.add(key);
-
-      const image =
-        (t.thumbnail && t.thumbnail.trim()) ||
-        (t.media?.[0]?.src && t.media[0].src.trim()) ||
-        "/placeholder.jpg";
-
-      items.push({ id: t.id, name, image });
-    }
-    return items;
-  }, [cms.mentorTalks]);
+    const raw = ((cms as any).ourMentors ?? []) as OurMentor[];
+    return raw
+      .filter((m) => m && m.isActive !== false)
+      .sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0))
+      .map((m) => ({
+        id: m.id,
+        name: (m.name ?? "").trim(),
+        image: (m.image?.url ?? "").trim() || "/placeholder.jpg",
+      }))
+      .filter((m) => m.name.length > 0);
+  }, [cms]);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");

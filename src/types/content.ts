@@ -13,12 +13,26 @@ import type {
   MediaItem,
 } from '@/lib/cms/types';
 
+export interface OurMentor {
+  id: string;
+  name: string;
+  isActive?: boolean;
+  displayOrder?: number;
+  createdAt?: string;
+  updatedAt?: string;
+  image?: {
+    mediaId?: string;
+    url?: string;
+  };
+}
+
 // Shape of the JSON generated at build time by scripts/fetchCMS.js
 export interface ContentSchema {
   hero: HeroContent | null;
   sections: SectionContent[];
   programs: Program[];
   mentorTalks: MentorTalk[];
+  ourMentors?: OurMentor[];
   events: Event[];
   eventGalleries: EventGallery[];
   galleryItems: MediaItem[];

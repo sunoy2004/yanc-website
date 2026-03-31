@@ -38,6 +38,15 @@ export function extractImageUrls(content: AnyContent): string[] {
     });
   }
 
+  // Our mentors (image.url)
+  const ourMentors: any[] = (content as any).ourMentors ?? [];
+  if (Array.isArray(ourMentors)) {
+    ourMentors.forEach((m: any) => {
+      pushUrl(urls, m.image?.url);
+      pushUrl(urls, m.imageUrl || m.image_url);
+    });
+  }
+
   // Events (hero image + media items)
   if (Array.isArray(content.events)) {
     content.events.forEach((event: any) => {

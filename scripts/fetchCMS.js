@@ -58,6 +58,7 @@ async function main() {
       hero,
       programs,
       mentorTalks,
+      ourMentors,
       events,
       eventGalleries,
       galleryItems,
@@ -79,6 +80,10 @@ async function main() {
       }),
       fetchJson('/api/mentor-talks/public').catch((err) => {
         console.warn('⚠️  Failed to fetch mentor talks:', err.message);
+        return [];
+      }),
+      fetchJson('/api/our-mentors').catch((err) => {
+        console.warn('⚠️  Failed to fetch our mentors:', err.message);
         return [];
       }),
       fetchJson('/api/events/public').catch((err) => {
@@ -140,6 +145,7 @@ async function main() {
       sections: [], // Not exposed via HTTP API currently
       programs: programs ?? [],
       mentorTalks: mentorTalks ?? [],
+      ourMentors: ourMentors ?? [],
       events: events ?? [],
       eventGalleries: eventGalleries ?? [],
       galleryItems: galleryItems ?? [],
