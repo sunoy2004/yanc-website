@@ -7,6 +7,7 @@ import CoreValuesSection from "@/components/sections/CoreValuesSection";
 import ProgramsSection from "@/components/sections/ProgramsSection";
 import EventsSection from "@/components/sections/EventsSection";
 import HorizontalTeamSection from "@/components/sections/HorizontalTeamSection";
+import HorizontalMentorTalksSection from "@/components/sections/HorizontalMentorTalksSection";
 import TestimonialsSection from "@/components/sections/TestimonialsSection"; // Enabled 
 import Preloader from "@/components/Preloader";
 import Layout from "@/components/Layout";
@@ -50,6 +51,7 @@ const Index = () => {
       >
         <Layout isDarkMode={isDarkMode} toggleTheme={toggleTheme}>
           <Hero />
+          <HorizontalMentorTalksSection />
           <AboutUsSection />
           <CoreValuesSection />
           {/* <ProgramsSection /> */}

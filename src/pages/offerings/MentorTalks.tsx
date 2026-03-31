@@ -141,8 +141,8 @@ const MentorTalks = () => {
                     media={talk.media}
                     onMediaClick={(mediaItem, mediaIndex) => handleMediaClick(talk.media, mediaIndex)}
                     columns={4}
-                    maxVisible={isExpanded ? undefined : 8}
-                    showViewMore={talk.media.length > 8}
+                    maxVisible={isExpanded ? undefined : 4}
+                    showViewMore={talk.media.length > 4}
                     onViewMoreClick={() => viewMoreTalk(talk.id)}
                     onViewLessClick={() => viewLessTalk(talk.id)}
                   />

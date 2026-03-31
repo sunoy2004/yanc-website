@@ -72,7 +72,7 @@
           "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/uploads/1772461407475_1.jpeg",
           "alt": "Gallery item 1",
           "order": 0,
-          "createdAt": "2026-03-02T14:29:42.109743+00:00"
+          "createdAt": "2026-03-31T13:57:18.632952+00:00"
         },
         {
           "id": "f005593f-40c0-4586-ad95-792452b70142",
@@ -80,7 +80,7 @@
           "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/uploads/1772461407544_2.jpeg",
           "alt": "Gallery item 2",
           "order": 1,
-          "createdAt": "2026-03-02T14:29:42.109743+00:00"
+          "createdAt": "2026-03-31T13:57:18.632952+00:00"
         },
         {
           "id": "c917fe2e-9cc0-42c8-a460-9ff71b1d0a2d",
@@ -88,7 +88,7 @@
           "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/uploads/1772461407497_3.jpeg",
           "alt": "Gallery item 3",
           "order": 2,
-          "createdAt": "2026-03-02T14:29:42.109743+00:00"
+          "createdAt": "2026-03-31T13:57:18.632952+00:00"
         },
         {
           "id": "cb24e6c2-8156-4966-bb9a-d84a3ece4a51",
@@ -96,63 +96,60 @@
           "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/uploads/1772461407464_4.jpeg",
           "alt": "Gallery item 4",
           "order": 3,
-          "createdAt": "2026-03-02T14:29:42.109743+00:00"
+          "createdAt": "2026-03-31T13:57:18.632952+00:00"
+        },
+        {
+          "id": "d8a4445c-d781-4773-9c77-98c5f1d5ac08",
+          "type": "image",
+          "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/uploads/1774965431657_2.jpeg",
+          "alt": "Gallery item 5",
+          "order": 4,
+          "createdAt": "2026-03-31T13:57:18.632952+00:00"
+        },
+        {
+          "id": "6a3b9e2b-e6ea-4624-84a5-e77c798fcc92",
+          "type": "image",
+          "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/uploads/1774965431871_3.jpeg",
+          "alt": "Gallery item 6",
+          "order": 5,
+          "createdAt": "2026-03-31T13:57:18.632952+00:00"
+        },
+        {
+          "id": "f044793e-57aa-443c-898f-e161fb30a266",
+          "type": "image",
+          "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/uploads/1774965432135_4.jpeg",
+          "alt": "Gallery item 7",
+          "order": 6,
+          "createdAt": "2026-03-31T13:57:18.632952+00:00"
+        },
+        {
+          "id": "a99b9d06-4129-4020-927b-81324ce52c40",
+          "type": "image",
+          "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/uploads/1774965432164_5.jpeg",
+          "alt": "Gallery item 8",
+          "order": 7,
+          "createdAt": "2026-03-31T13:57:18.632952+00:00"
         }
       ],
       "isPublished": true,
       "order": 2,
       "createdAt": "2026-02-16T08:04:07.308117+00:00",
-      "updatedAt": "2026-03-02T14:29:39.367345+00:00"
+      "updatedAt": "2026-03-31T13:57:16.857891+00:00"
     }
   ],
   "events": [
-    {
-      "id": "c496cdee-d437-4eb7-89cb-c096f8b35eb9",
-      "title": "Next Event !!",
-      "description": "Event on next weekend !!",
-      "speaker": "Speaker 1",
-      "location": "Hyderabad",
-      "event_date": "2026-03-28T00:00:00+00:00",
-      "category": "upcoming",
-      "is_active": true,
-      "display_order": 3,
-      "created_at": "2026-03-10T15:17:10.522903+00:00",
-      "updated_at": "2026-03-21T07:08:18.102658+00:00",
-      "type": "upcoming",
-      "registration_url": "https://web.yanc.in/discover-meet-registration",
-      "highlights": [],
-      "galleryMediaIds": [
-        "4fa5ae26-7542-43ea-8e23-f558318adad2"
-      ],
-      "mediaItems": [
-        {
-          "id": "4fa5ae26-7542-43ea-8e23-f558318adad2",
-          "name": "5.jpeg",
-          "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/uploads/1773155823627_5.jpeg",
-          "type": "image",
-          "alt": "5.jpeg",
-          "order": 0,
-          "createdAt": "2026-03-10T15:17:05.044448+00:00"
-        }
-      ],
-      "isPublished": true,
-      "isPast": false,
-      "isUpcoming": true,
-      "year": 2026,
-      "month": "March"
-    },
     {
       "id": "3cd69b6a-079c-45ab-a44b-86b40be408a7",
       "title": "YANC Discover Meet",
       "description": "This will be on next weekend !!",
       "speaker": "Speaker 1",
       "location": "Hyederabad",
-      "event_date": "2026-03-14T00:00:00+00:00",
+      "event_date": "2026-04-03T00:00:00+00:00",
       "category": "upcoming",
-      "is_active": false,
-      "display_order": 2,
+      "is_active": true,
+      "display_order": 3,
       "created_at": "2026-03-07T13:42:44.729779+00:00",
-      "updated_at": "2026-03-15T07:39:57.671094+00:00",
+      "updated_at": "2026-03-31T14:13:17.497733+00:00",
       "type": "upcoming",
       "registration_url": "https://web.yanc.in/discover-meet-registration",
       "highlights": [],
@@ -168,6 +165,41 @@
           "alt": "2.jpeg",
           "order": 0,
           "createdAt": "2026-03-07T13:42:42.660462+00:00"
+        }
+      ],
+      "isPublished": true,
+      "isPast": false,
+      "isUpcoming": true,
+      "year": 2026,
+      "month": "April"
+    },
+    {
+      "id": "c496cdee-d437-4eb7-89cb-c096f8b35eb9",
+      "title": "Next Event !!",
+      "description": "Event on next weekend !!",
+      "speaker": "Speaker 1",
+      "location": "Hyderabad",
+      "event_date": "2026-03-28T00:00:00+00:00",
+      "category": "upcoming",
+      "is_active": false,
+      "display_order": 3,
+      "created_at": "2026-03-10T15:17:10.522903+00:00",
+      "updated_at": "2026-03-31T13:59:19.389168+00:00",
+      "type": "upcoming",
+      "registration_url": "https://web.yanc.in/discover-meet-registration",
+      "highlights": [],
+      "galleryMediaIds": [
+        "4fa5ae26-7542-43ea-8e23-f558318adad2"
+      ],
+      "mediaItems": [
+        {
+          "id": "4fa5ae26-7542-43ea-8e23-f558318adad2",
+          "name": "5.jpeg",
+          "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/uploads/1773155823627_5.jpeg",
+          "type": "image",
+          "alt": "5.jpeg",
+          "order": 0,
+          "createdAt": "2026-03-10T15:17:05.044448+00:00"
         }
       ],
       "isPublished": false,
@@ -320,78 +352,6 @@
   ],
   "teamMembers": [
     {
-      "id": "f5980fa7-ba14-4140-9b7c-7ce91a9dbc3f",
-      "name": "Mr.Lalith Adla",
-      "role": "Cohort Creative Ambassador",
-      "title": "Cohort Creative Ambassador",
-      "bio": "A Creative Brain. Visual Storyteller. Tech Savvy Dreamer. Meet Lalith, a B. Tech CSE student who’s got one foot in code and the other in creativity. He doesn’t just design visuals,he builds stories that vibe, connect, and stay. Lalith blends innovation, teamwork, and design magic to make every project pop. Curious by nature and fearless with ideas, Lalith believes that visuals aren’t just about aesthetics, they are about energy, emotion, and impact. And that’s exactly what he brings to every frame he creates in YANC.",
-      "type": "FOUNDER",
-      "is_active": true,
-      "order": 0,
-      "created_at": "2026-02-16T07:17:59.113943+00:00",
-      "updated_at": "2026-03-02T15:33:52.273455+00:00",
-      "mediaItems": [
-        {
-          "id": "dbcb299c-7979-4b2c-b1dc-177a1495eb2c",
-          "type": "image",
-          "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/cohort_founders/1771226261948_tm (7).png",
-          "alt": "Team member media item 1",
-          "order": 0,
-          "createdAt": "2026-02-16T07:18:00.198253+00:00"
-        }
-      ],
-      "imageUrl": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/cohort_founders/1771226261948_tm (7).png",
-      "isPublished": true
-    },
-    {
-      "id": "5fa1b076-32d1-4568-b909-66e2516f68d0",
-      "name": "Ms.Aarti Khandeker",
-      "role": "Co-Founder, Storyteller",
-      "title": "Co-Founder, Storyteller",
-      "bio": "Aarti Khandeker is founder of BentDesign Studio, an Entrepreneur and an architect with over a decade of experience in Design and Creativity. Worked on diverse projects - residential, commercial and institutional buildings.\n",
-      "type": "REGULAR",
-      "is_active": true,
-      "order": 0,
-      "created_at": "2026-02-16T07:22:48.96037+00:00",
-      "updated_at": "2026-03-02T18:43:40.154565+00:00",
-      "mediaItems": [
-        {
-          "id": "171756e0-d7a7-46e2-94f8-d6a3da022612",
-          "type": "image",
-          "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/executive_management/1772477013894_em (2).png",
-          "alt": "Team member media item 1",
-          "order": 0,
-          "createdAt": "2026-03-02T18:43:41.384871+00:00"
-        }
-      ],
-      "imageUrl": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/executive_management/1772477013894_em (2).png",
-      "isPublished": true
-    },
-    {
-      "id": "0c9b57b2-9e9b-4101-b566-82eab9bb173f",
-      "name": "Mr.Mohana Karingula",
-      "role": "Cohort Chief Financial Officer",
-      "title": "Cohort Chief Financial Officer",
-      "bio": "Mohana is a Cohort CFO at YANC, he is an aspiring commerce student from Hyderabad. Having interned in both digital marketing and real estate documentation, he brings a unique blend of creativity and analytical thinking. A two-time state medalist in swimming and a district-level gymnastics achiever, Mohana exemplifies discipline, focus, and versatility. With strong commitment level and a flair for quick learning, he is eager to learn and make his mark in the world of finance and beyond.",
-      "type": "FOUNDER",
-      "is_active": true,
-      "order": 0,
-      "created_at": "2026-02-16T07:10:10.8945+00:00",
-      "updated_at": "2026-03-02T19:00:28.238638+00:00",
-      "mediaItems": [
-        {
-          "id": "29bcea89-f894-4b7b-928b-1b76c531afb1",
-          "type": "image",
-          "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/cohort_founders/1771225773899_tm (3).png",
-          "alt": "Team member media item 1",
-          "order": 0,
-          "createdAt": "2026-02-16T07:10:12.073961+00:00"
-        }
-      ],
-      "imageUrl": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/cohort_founders/1771225773899_tm (3).png",
-      "isPublished": true
-    },
-    {
       "id": "3a097d10-0183-4732-b7da-ee83d252c228",
       "name": "Mr.Daisuke Tanji",
       "role": "Indobox",
@@ -399,9 +359,9 @@
       "bio": "Mr. Daisuke Tanji has over 20 years experience with one of the biggest Japanese trading company as sales and marketing field, trading, investment etc. 5 years working experience in India (Delhi and Mumbai) as General Manager for development new business. Establishing Indo-Japan ecosystem to help young minds of both countries to learn and grow. His vision is The fusion of Japan and India creates new value. YANC and Indobox are collaborating in the space of cross-border education, cultural exchange, internships, workshops, industry exposure, and youth focused learning programs between India and Japan, with the shared vision of empowering young minds to learn, explore, and grow beyond borders",
       "type": "MENTOR",
       "is_active": true,
-      "order": 0,
+      "order": 1,
       "created_at": "2026-02-16T07:27:27.76843+00:00",
-      "updated_at": "2026-03-02T19:01:02.250921+00:00",
+      "updated_at": "2026-03-24T06:36:48.61494+00:00",
       "mediaItems": [
         {
           "id": "e4384de0-c349-498a-aa5f-d26e2cb16107",
@@ -423,9 +383,9 @@
       "bio": "Lieven Cornelis is a seasoned psychologist and human capital strategist specializing in leadership development and behavioral assessment. He is the creator of the Koan-PM platform, a sophisticated tool designed to analyze personality traits and provide actionable insights for personal and professional growth. With extensive experience in 360-degree feedback and psychological safety, Lieven empowers individuals and organizations to enhance performance through self-awareness and targeted development.",
       "type": "ADVISOR",
       "is_active": true,
-      "order": 0,
+      "order": 1,
       "created_at": "2026-02-16T07:29:50.769495+00:00",
-      "updated_at": "2026-02-16T07:29:50.769495+00:00",
+      "updated_at": "2026-03-24T06:36:37.767683+00:00",
       "mediaItems": [
         {
           "id": "cf390cf0-2e18-45e5-b0da-727d30427916",
@@ -440,27 +400,51 @@
       "isPublished": true
     },
     {
-      "id": "948170c2-44b5-4ec3-b65b-d3a0238217b9",
-      "name": "Mr.Ajay Thota",
-      "role": "Co-Founder & SVP, Technology",
-      "title": "Co-Founder & SVP, Technology",
-      "bio": "Ajay Thota is an IT leader with 20+ years of US experience in leading multiple product development and digital transformation initiatives at MNCs across the globe. He is passionate about building teams by driving cultural change in individuals to become more conscientious and successful at a young age. Ajay holds an MS degree from NIU, USA, and a B.E from Osmania University.",
+      "id": "5fa1b076-32d1-4568-b909-66e2516f68d0",
+      "name": "Ms.Aarti Khandeker",
+      "role": "Co-Founder, Storyteller",
+      "title": "Co-Founder, Storyteller",
+      "bio": "Aarti Khandeker is founder of BentDesign Studio, an Entrepreneur and an architect with over a decade of experience in Design and Creativity. Worked on diverse projects - residential, commercial and institutional buildings.\n",
       "type": "REGULAR",
       "is_active": true,
-      "order": 2,
-      "created_at": "2026-02-16T07:23:36.897673+00:00",
-      "updated_at": "2026-02-18T14:55:01.872053+00:00",
+      "order": 1,
+      "created_at": "2026-02-16T07:22:48.96037+00:00",
+      "updated_at": "2026-03-24T06:36:15.99705+00:00",
       "mediaItems": [
         {
-          "id": "f1ced144-5f09-4058-af89-61c766efbf7f",
+          "id": "171756e0-d7a7-46e2-94f8-d6a3da022612",
           "type": "image",
-          "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/executive_management/1771226593829_em (3).png",
+          "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/executive_management/1772477013894_em (2).png",
           "alt": "Team member media item 1",
           "order": 0,
-          "createdAt": "2026-02-16T07:23:38.169871+00:00"
+          "createdAt": "2026-03-02T18:43:41.384871+00:00"
         }
       ],
-      "imageUrl": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/executive_management/1771226593829_em (3).png",
+      "imageUrl": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/executive_management/1772477013894_em (2).png",
+      "isPublished": true
+    },
+    {
+      "id": "0c9b57b2-9e9b-4101-b566-82eab9bb173f",
+      "name": "Mr.Mohana Karingula",
+      "role": "Cohort Chief Financial Officer",
+      "title": "Cohort Chief Financial Officer",
+      "bio": "Mohana is a Cohort CFO at YANC, he is an aspiring commerce student from Hyderabad. Having interned in both digital marketing and real estate documentation, he brings a unique blend of creativity and analytical thinking. A two-time state medalist in swimming and a district-level gymnastics achiever, Mohana exemplifies discipline, focus, and versatility. With strong commitment level and a flair for quick learning, he is eager to learn and make his mark in the world of finance and beyond.",
+      "type": "FOUNDER",
+      "is_active": true,
+      "order": 1,
+      "created_at": "2026-02-16T07:10:10.8945+00:00",
+      "updated_at": "2026-03-24T06:37:25.169956+00:00",
+      "mediaItems": [
+        {
+          "id": "29bcea89-f894-4b7b-928b-1b76c531afb1",
+          "type": "image",
+          "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/cohort_founders/1771225773899_tm (3).png",
+          "alt": "Team member media item 1",
+          "order": 0,
+          "createdAt": "2026-02-16T07:10:12.073961+00:00"
+        }
+      ],
+      "imageUrl": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/cohort_founders/1771225773899_tm (3).png",
       "isPublished": true
     },
     {
@@ -473,7 +457,7 @@
       "is_active": true,
       "order": 2,
       "created_at": "2026-02-16T07:12:43.740437+00:00",
-      "updated_at": "2026-02-18T14:54:33.72108+00:00",
+      "updated_at": "2026-03-25T11:23:44.270591+00:00",
       "mediaItems": [
         {
           "id": "2820a2d7-fb21-4fb3-bfc3-f0e248a95342",
@@ -488,6 +472,30 @@
       "isPublished": true
     },
     {
+      "id": "948170c2-44b5-4ec3-b65b-d3a0238217b9",
+      "name": "Mr.Ajay Thota",
+      "role": "Co-Founder & SVP, Technology",
+      "title": "Co-Founder & SVP, Technology",
+      "bio": "Ajay Thota is an IT leader with 20+ years of US experience in leading multiple product development and digital transformation initiatives at MNCs across the globe. He is passionate about building teams by driving cultural change in individuals to become more conscientious and successful at a young age. Ajay holds an MS degree from NIU, USA, and a B.E from Osmania University.",
+      "type": "REGULAR",
+      "is_active": true,
+      "order": 2,
+      "created_at": "2026-02-16T07:23:36.897673+00:00",
+      "updated_at": "2026-03-24T06:36:17.146659+00:00",
+      "mediaItems": [
+        {
+          "id": "f1ced144-5f09-4058-af89-61c766efbf7f",
+          "type": "image",
+          "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/executive_management/1771226593829_em (3).png",
+          "alt": "Team member media item 1",
+          "order": 0,
+          "createdAt": "2026-02-16T07:23:38.169871+00:00"
+        }
+      ],
+      "imageUrl": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/executive_management/1771226593829_em (3).png",
+      "isPublished": true
+    },
+    {
       "id": "bc484cc4-ba5a-4cf8-ace9-85172fa223ba",
       "name": "Mr.Rakesh Naik",
       "role": " General Partner- SVP",
@@ -495,9 +503,9 @@
       "bio": "Rakesh Naik is a seasoned venture capitalist and startup ecosystem enabler with over 25 years of experience in entrepreneurship and investment. As a General Partner at Sri Venture Partners, he plays a pivotal role in identifying and nurturing high-potential startups. Rakesh is also the Founder & CEO of Raksan and serves as the Chief Investor at Moolya Global. His mentorship roles at initiatives like the Atal Innovation Mission underscore his dedication to guiding emerging entrepreneurs and shaping the future of venture capital in India.",
       "type": "ADVISOR",
       "is_active": true,
-      "order": 5,
+      "order": 2,
       "created_at": "2026-02-16T07:37:08.620631+00:00",
-      "updated_at": "2026-02-16T07:37:08.620631+00:00",
+      "updated_at": "2026-03-24T06:36:39.020746+00:00",
       "mediaItems": [
         {
           "id": "ead01cdc-6bef-49b0-b0f0-c01700b9dd45",
@@ -512,198 +520,6 @@
       "isPublished": true
     },
     {
-      "id": "94a8117e-dff0-4e53-9c97-060b3fa3c341",
-      "name": "Mr.Uday Pothalaraju",
-      "role": "Cohort Launch Ambassador",
-      "title": "Cohort Launch Ambassador",
-      "bio": "Uday is a student at BITS Pilani, Hyderabad, driven by curiosity, community, and the belief that ideas can create real-world impact.As YANC’s Cohort Launch Ambassador, he leads the launch of new cohorts from the ground up — building networks, engaging institutions, and inspiring members to join a growing movement.",
-      "type": "FOUNDER",
-      "is_active": true,
-      "order": 6,
-      "created_at": "2026-02-16T07:14:14.244412+00:00",
-      "updated_at": "2026-02-18T14:55:13.081765+00:00",
-      "mediaItems": [
-        {
-          "id": "4b7a84bf-6650-41e7-81ca-8c493b474e4b",
-          "type": "image",
-          "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/cohort_founders/1771226042184_tm (5).png",
-          "alt": "Team member media item 1",
-          "order": 0,
-          "createdAt": "2026-02-16T07:14:15.367591+00:00"
-        }
-      ],
-      "imageUrl": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/cohort_founders/1771226042184_tm (5).png",
-      "isPublished": true
-    },
-    {
-      "id": "0d75195b-6843-4bce-844a-b214ed1a0936",
-      "name": "Ms.Mahima Kalyanam",
-      "role": "Cohort Operations Ambassador",
-      "title": "Cohort Operations Ambassador",
-      "bio": "A recent biotechnology graduate, who aspires to become a scientist in the field of medicine. She is eager to learn more than what is taught in educational institutions and believes that one can learn the most through experiences and failures.",
-      "type": "FOUNDER",
-      "is_active": true,
-      "order": 7,
-      "created_at": "2026-02-16T07:14:52.013561+00:00",
-      "updated_at": "2026-02-18T14:54:05.308523+00:00",
-      "mediaItems": [
-        {
-          "id": "06ab7311-258a-4818-8919-115d14f63d4e",
-          "type": "image",
-          "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/cohort_founders/1771226070211_tm (9).png",
-          "alt": "Team member media item 1",
-          "order": 0,
-          "createdAt": "2026-02-16T07:14:53.107784+00:00"
-        }
-      ],
-      "imageUrl": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/cohort_founders/1771226070211_tm (9).png",
-      "isPublished": true
-    },
-    {
-      "id": "9f779109-c114-432c-a55b-665759872527",
-      "name": "Mr.Nisidh Reddy",
-      "role": "Associate Chief Financial Officer",
-      "title": "Associate Chief Financial Officer",
-      "bio": "Nisidh serves as the Cohort Associate Chief Financial Officer at YANC, where he supports strategic financial planning, designing financial templates, reporting, and cohort-level fiscal oversight. Currently pursuing a degree in Computer Science at GITAM University, Hyderabad, he brings a unique blend of technical acumen and financial insight. He has represented Telangana in national-level chess championships and is a Winner of the Southern Railways chess championship, embodying leadership, discipline, and a growth mindset.",
-      "type": "FOUNDER",
-      "is_active": true,
-      "order": 9,
-      "created_at": "2026-02-16T07:16:05.08395+00:00",
-      "updated_at": "2026-03-03T11:44:59.593301+00:00",
-      "mediaItems": [
-        {
-          "id": "03470685-ab7e-4c54-91b7-62e7b1134e14",
-          "type": "image",
-          "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/cohort_founders/1771226144445_tm (2).png",
-          "alt": "Team member media item 1",
-          "order": 0,
-          "createdAt": "2026-02-16T07:16:06.086778+00:00"
-        }
-      ],
-      "imageUrl": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/cohort_founders/1771226144445_tm (2).png",
-      "isPublished": true
-    },
-    {
-      "id": "0f68d600-b362-4efb-b1ee-c344a6085354",
-      "name": "Ms.Sanviti Reddy",
-      "role": "Cohort Social Media Ambassador",
-      "title": "Cohort Social Media Ambassador",
-      "bio": "A recent graduate who enjoys making videos and taking pictures. She loves being creative and sharing stories through her work. She is excited to learn new things and be part of interesting projects..",
-      "type": "FOUNDER",
-      "is_active": true,
-      "order": 10,
-      "created_at": "2026-02-16T07:18:40.673585+00:00",
-      "updated_at": "2026-02-18T14:54:12.31791+00:00",
-      "mediaItems": [
-        {
-          "id": "d4bb7c77-a006-40c1-b41c-c116bc63cc99",
-          "type": "image",
-          "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/cohort_founders/1771226311152_tm (8).png",
-          "alt": "Team member media item 1",
-          "order": 0,
-          "createdAt": "2026-02-16T07:18:41.731897+00:00"
-        }
-      ],
-      "imageUrl": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/cohort_founders/1771226311152_tm (8).png",
-      "isPublished": true
-    },
-    {
-      "id": "15ad2ec8-ea9e-4bd9-ab9e-f18c5f4e2f6e",
-      "name": "Ms.Ananya Gadapa",
-      "role": "Cohort Operations Ambassador (COA)",
-      "title": "Cohort Operations Ambassador (COA)",
-      "bio": "Ananya is currently pursuing her engineering degree ,Ananya blends strategic thinking with a passion for innovation, creating solutions that connect technology and business. She has experience leading projects from the ground up, ensuring that each one moves smoothly from idea to execution. Known for her creativity and problem-solving mindset, she works closely with teams to turn challenges into opportunities.",
-      "type": "FOUNDER",
-      "is_active": true,
-      "order": 11,
-      "created_at": "2026-02-16T07:19:31.042567+00:00",
-      "updated_at": "2026-02-18T14:54:24.638657+00:00",
-      "mediaItems": [
-        {
-          "id": "3dd976d6-94d6-452b-a016-ad310d1ff74c",
-          "type": "image",
-          "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/cohort_founders/1771226361381_tm (6).png",
-          "alt": "Team member media item 1",
-          "order": 0,
-          "createdAt": "2026-02-16T07:19:32.162567+00:00"
-        }
-      ],
-      "imageUrl": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/cohort_founders/1771226361381_tm (6).png",
-      "isPublished": true
-    },
-    {
-      "id": "db90c312-48cd-4160-b38e-2e6ce1cf63d3",
-      "name": "Ms.Hasini Kanumuru",
-      "role": "Cohort Alumni Ambassador",
-      "title": "Cohort Alumni Ambassador",
-      "bio": "Hasini is a Alumni Ambassador at YANC,She is a dynamic young changemaker with a passion for purposeful innovation and community empowerment. As the founder of Sama and Pratirodha, she embodies an entrepreneurial mindset driven to solve real-world challenges and make an impact. With leadership experience as Secretary General at ACC MUN and accolades in debates, elocution, and performing arts, Hasini seamlessly blends intellect, creativity, and social consciousness. A performer of 16 dance forms, she continues to shine across academic, artistic, and leadership platforms.",
-      "type": "FOUNDER",
-      "is_active": true,
-      "order": 12,
-      "created_at": "2026-02-16T07:20:03.234494+00:00",
-      "updated_at": "2026-03-03T15:30:18.791348+00:00",
-      "mediaItems": [
-        {
-          "id": "9545e01c-1bdc-4b69-9ed7-aeb14eec2d9f",
-          "type": "image",
-          "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/cohort_founders/1771226385176_tm (1).png",
-          "alt": "Team member media item 1",
-          "order": 0,
-          "createdAt": "2026-02-16T07:20:04.333092+00:00"
-        }
-      ],
-      "imageUrl": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/cohort_founders/1771226385176_tm (1).png",
-      "isPublished": true
-    },
-    {
-      "id": "9be9bb45-8008-4faf-b277-0ca1165ee244",
-      "name": "Mr.Ram Charan",
-      "role": "Co-Founder, Yet Another Nerd Creator (YANC)",
-      "title": "Co-Founder, Yet Another Nerd Creator (YANC)",
-      "bio": "Ram Charan currently is an entrepreneur and comes with 20+ years of experience building products in the Software Engineering space working with Fortune 500 companies. He is vividly experienced with the Startup space in the roles of Founding Member, Technology Leadership, and Sustainable Product Innovations. For YANC, he is playing the role of CTO.",
-      "type": "REGULAR",
-      "is_active": true,
-      "order": 14,
-      "created_at": "2026-02-16T07:24:15.967999+00:00",
-      "updated_at": "2026-03-02T18:59:21.919576+00:00",
-      "mediaItems": [
-        {
-          "id": "ebaf95d0-98e0-4b76-b682-2789b413588e",
-          "type": "image",
-          "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/executive_management/1772477762906_em (4).png",
-          "alt": "Team member media item 1",
-          "order": 0,
-          "createdAt": "2026-03-02T18:56:12.306427+00:00"
-        }
-      ],
-      "imageUrl": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/executive_management/1772477762906_em (4).png",
-      "isPublished": true
-    },
-    {
-      "id": "852593d6-1016-41ec-b49c-730299b2df93",
-      "name": "Mr.Swaminathan Gopal",
-      "role": "Founder and CEO",
-      "title": "Founder & Builder",
-      "bio": "Swaminathan brings in over two decades of experience spanning technology, business strategy, and entrepreneurship. A hands-on entrepreneur and an IT executive, he has built high-performing engineering teams and spearheaded businesses from the ground up. He has led technology teams for Fortune 100 companies and is an alumnus of IIM-Calcutta. Whether it's leading startups or optimizing enterprise technology, Swami thrives on turning vision into reality.",
-      "type": "REGULAR",
-      "is_active": true,
-      "order": 15,
-      "created_at": "2026-02-16T07:24:53.67188+00:00",
-      "updated_at": "2026-03-03T15:29:52.99111+00:00",
-      "mediaItems": [
-        {
-          "id": "9ee13bb3-b27c-44a5-944d-bd9a091ef3c3",
-          "type": "image",
-          "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/executive_management/1771226689703_em (1).png",
-          "alt": "Team member media item 1",
-          "order": 0,
-          "createdAt": "2026-02-16T07:24:54.749604+00:00"
-        }
-      ],
-      "imageUrl": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/executive_management/1771226689703_em (1).png",
-      "isPublished": true
-    },
-    {
       "id": "88a14156-728f-4ee9-9083-0a33b8f01164",
       "name": "Mr.Cosme Almeida",
       "role": "Abroad Programmes Director",
@@ -711,9 +527,9 @@
       "bio": "Cosme Almeida is an experienced professional with a demonstrated history of working in the education management industry, around different Continents, managing international accredited projects. Skilled in Marketing Management, Negotiation, Team Management, Intercultural Communication and Business Planning. Strong marketing professional with skills in Management Control and Finance. Financial Brand Valuation Consultant. Basketball Coach. YANC and Cosme Almeida partnership will open the gates for young minds of India and Portugal to explore both the countries for internships, industry exposure, job opportunities, startup incubation, immersive experiences for the youth and more.",
       "type": "MENTOR",
       "is_active": true,
-      "order": 16,
+      "order": 2,
       "created_at": "2026-02-16T07:28:16.368918+00:00",
-      "updated_at": "2026-02-16T07:28:16.368918+00:00",
+      "updated_at": "2026-03-24T06:36:49.775841+00:00",
       "mediaItems": [
         {
           "id": "3ca8321e-a207-432e-8e64-d83059ba96fc",
@@ -735,9 +551,9 @@
       "bio": "Mac Srinivasan is a Global Growth Mentor and the CEO of ‘The Abundant Group’ , with over 35+ years of business experience across 70+ countries. Mac is a Certified Franchise Executive (International Franchise Association, USA) and a highly sought-after keynote speaker who has inspired over 200,000 entrepreneurs in his journey.As the former Global Markets President of BNI, Mac led global expansion and delivered consistent year-over-year growth, even in challenging times of uncertainty. He now dedicates his time to helping entrepreneurs and global franchises scale exponentially, combining strategic insight with deep.Beyond business, Mac is passionate about education, supporting over 1,000s of underprivileged children.Adventurer at heart:a fire-walker, bungee jumper, skydiver …Mac’s passion and purpose fuels his endless energy to help you achieve exponential results.",
       "type": "ADVISOR",
       "is_active": true,
-      "order": 17,
+      "order": 3,
       "created_at": "2026-02-16T07:30:23.550871+00:00",
-      "updated_at": "2026-02-16T07:30:23.550871+00:00",
+      "updated_at": "2026-03-24T06:36:29.800464+00:00",
       "mediaItems": [
         {
           "id": "70db822f-af2e-4547-8e99-5ee907b93b23",
@@ -752,6 +568,78 @@
       "isPublished": true
     },
     {
+      "id": "9be9bb45-8008-4faf-b277-0ca1165ee244",
+      "name": "Mr.Ram Charan",
+      "role": "Co-Founder, Yet Another Nerd Creator (YANC)",
+      "title": "Co-Founder, Yet Another Nerd Creator (YANC)",
+      "bio": "Ram Charan currently is an entrepreneur and comes with 20+ years of experience building products in the Software Engineering space working with Fortune 500 companies. He is vividly experienced with the Startup space in the roles of Founding Member, Technology Leadership, and Sustainable Product Innovations. For YANC, he is playing the role of CTO.",
+      "type": "REGULAR",
+      "is_active": true,
+      "order": 3,
+      "created_at": "2026-02-16T07:24:15.967999+00:00",
+      "updated_at": "2026-03-24T06:36:13.288323+00:00",
+      "mediaItems": [
+        {
+          "id": "ebaf95d0-98e0-4b76-b682-2789b413588e",
+          "type": "image",
+          "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/executive_management/1772477762906_em (4).png",
+          "alt": "Team member media item 1",
+          "order": 0,
+          "createdAt": "2026-03-02T18:56:12.306427+00:00"
+        }
+      ],
+      "imageUrl": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/executive_management/1772477762906_em (4).png",
+      "isPublished": true
+    },
+    {
+      "id": "f5980fa7-ba14-4140-9b7c-7ce91a9dbc3f",
+      "name": "Mr.Lalith Adla",
+      "role": "Cohort Creative Ambassador",
+      "title": "Cohort Creative Ambassador",
+      "bio": "A Creative Brain. Visual Storyteller. Tech Savvy Dreamer. Meet Lalith, a B. Tech CSE student who’s got one foot in code and the other in creativity. He doesn’t just design visuals,he builds stories that vibe, connect, and stay. Lalith blends innovation, teamwork, and design magic to make every project pop. Curious by nature and fearless with ideas, Lalith believes that visuals aren’t just about aesthetics, they are about energy, emotion, and impact. And that’s exactly what he brings to every frame he creates in YANC.",
+      "type": "FOUNDER",
+      "is_active": true,
+      "order": 3,
+      "created_at": "2026-02-16T07:17:59.113943+00:00",
+      "updated_at": "2026-03-25T11:23:46.493148+00:00",
+      "mediaItems": [
+        {
+          "id": "dbcb299c-7979-4b2c-b1dc-177a1495eb2c",
+          "type": "image",
+          "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/cohort_founders/1771226261948_tm (7).png",
+          "alt": "Team member media item 1",
+          "order": 0,
+          "createdAt": "2026-02-16T07:18:00.198253+00:00"
+        }
+      ],
+      "imageUrl": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/cohort_founders/1771226261948_tm (7).png",
+      "isPublished": true
+    },
+    {
+      "id": "852593d6-1016-41ec-b49c-730299b2df93",
+      "name": "Mr.Swaminathan Gopal",
+      "role": "Founder and CEO",
+      "title": "Founder & Builder",
+      "bio": "Swaminathan brings in over two decades of experience spanning technology, business strategy, and entrepreneurship. A hands-on entrepreneur and an IT executive, he has built high-performing engineering teams and spearheaded businesses from the ground up. He has led technology teams for Fortune 100 companies and is an alumnus of IIM-Calcutta. Whether it's leading startups or optimizing enterprise technology, Swami thrives on turning vision into reality.",
+      "type": "REGULAR",
+      "is_active": true,
+      "order": 4,
+      "created_at": "2026-02-16T07:24:53.67188+00:00",
+      "updated_at": "2026-03-24T06:36:14.461256+00:00",
+      "mediaItems": [
+        {
+          "id": "9ee13bb3-b27c-44a5-944d-bd9a091ef3c3",
+          "type": "image",
+          "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/executive_management/1771226689703_em (1).png",
+          "alt": "Team member media item 1",
+          "order": 0,
+          "createdAt": "2026-02-16T07:24:54.749604+00:00"
+        }
+      ],
+      "imageUrl": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/executive_management/1771226689703_em (1).png",
+      "isPublished": true
+    },
+    {
       "id": "7b5d2743-904d-4dba-81ee-e96f4cdd81bc",
       "name": "Dr.Molly Joy",
       "role": "Psychologist & Academic Leader. PhD",
@@ -759,9 +647,9 @@
       "bio": "Dr. Molly Joy is a distinguished psychologist and academic leader with over two decades of experience in higher education and mental health. She served as the Head of the Department of Psychology at reputed colleges. Dr. Molly's research encompasses areas such as educational psychology, organizational behavior, and ecological intelligence, contributing significantly to both academic literature and practical applications. Her dedication to student counseling and curriculum development has positively impacted numerous learners and professionals in the field.",
       "type": "ADVISOR",
       "is_active": true,
-      "order": 18,
+      "order": 4,
       "created_at": "2026-02-16T07:32:47.769648+00:00",
-      "updated_at": "2026-02-16T07:32:47.769648+00:00",
+      "updated_at": "2026-03-24T06:36:31.014228+00:00",
       "mediaItems": [
         {
           "id": "533330b8-45d9-4658-bfdb-2761a0e4e534",
@@ -776,6 +664,30 @@
       "isPublished": true
     },
     {
+      "id": "94a8117e-dff0-4e53-9c97-060b3fa3c341",
+      "name": "Mr.Uday Pothalaraju",
+      "role": "Cohort Launch Ambassador",
+      "title": "Cohort Launch Ambassador",
+      "bio": "Uday is a student at BITS Pilani, Hyderabad, driven by curiosity, community, and the belief that ideas can create real-world impact.As YANC’s Cohort Launch Ambassador, he leads the launch of new cohorts from the ground up — building networks, engaging institutions, and inspiring members to join a growing movement.",
+      "type": "FOUNDER",
+      "is_active": true,
+      "order": 4,
+      "created_at": "2026-02-16T07:14:14.244412+00:00",
+      "updated_at": "2026-03-24T06:37:29.780784+00:00",
+      "mediaItems": [
+        {
+          "id": "4b7a84bf-6650-41e7-81ca-8c493b474e4b",
+          "type": "image",
+          "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/cohort_founders/1771226042184_tm (5).png",
+          "alt": "Team member media item 1",
+          "order": 0,
+          "createdAt": "2026-02-16T07:14:15.367591+00:00"
+        }
+      ],
+      "imageUrl": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/cohort_founders/1771226042184_tm (5).png",
+      "isPublished": true
+    },
+    {
       "id": "1c25043a-0f28-4b43-8e08-80e6df45856c",
       "name": "Mr.Neil Gogte",
       "role": "Chairman:KMIT Group of colleges",
@@ -783,9 +695,9 @@
       "bio": "Neil Gogte is a visionary technologist, entrepreneur, and academic leader with over three decades of experience in IT and education. He is the founder and owner of multiple educational institutions, including engineering and junior colleges like Keshav Memorial and NGIT, shaping thousands of student careers. Neil is also the Founder of Genesis Solutions which trained 70K professionals since 1992. Neil’s leadership continues to impact thousands of young professionals and institutions across India.",
       "type": "ADVISOR",
       "is_active": true,
-      "order": 19,
+      "order": 5,
       "created_at": "2026-02-16T07:33:24.371576+00:00",
-      "updated_at": "2026-02-16T07:33:24.371576+00:00",
+      "updated_at": "2026-03-24T06:36:32.251987+00:00",
       "mediaItems": [
         {
           "id": "02d8c332-f330-4979-939f-1eb7616a6f0e",
@@ -800,6 +712,54 @@
       "isPublished": true
     },
     {
+      "id": "0d75195b-6843-4bce-844a-b214ed1a0936",
+      "name": "Ms.Mahima Kalyanam",
+      "role": "Cohort Operations Ambassador",
+      "title": "Cohort Operations Ambassador",
+      "bio": "A recent biotechnology graduate, who aspires to become a scientist in the field of medicine. She is eager to learn more than what is taught in educational institutions and believes that one can learn the most through experiences and failures.",
+      "type": "FOUNDER",
+      "is_active": true,
+      "order": 5,
+      "created_at": "2026-02-16T07:14:52.013561+00:00",
+      "updated_at": "2026-03-24T06:37:30.972819+00:00",
+      "mediaItems": [
+        {
+          "id": "06ab7311-258a-4818-8919-115d14f63d4e",
+          "type": "image",
+          "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/cohort_founders/1771226070211_tm (9).png",
+          "alt": "Team member media item 1",
+          "order": 0,
+          "createdAt": "2026-02-16T07:14:53.107784+00:00"
+        }
+      ],
+      "imageUrl": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/cohort_founders/1771226070211_tm (9).png",
+      "isPublished": true
+    },
+    {
+      "id": "9f779109-c114-432c-a55b-665759872527",
+      "name": "Mr.Nisidh Reddy",
+      "role": "Associate Chief Financial Officer",
+      "title": "Associate Chief Financial Officer",
+      "bio": "Nisidh serves as the Cohort Associate Chief Financial Officer at YANC, where he supports strategic financial planning, designing financial templates, reporting, and cohort-level fiscal oversight. Currently pursuing a degree in Computer Science at GITAM University, Hyderabad, he brings a unique blend of technical acumen and financial insight. He has represented Telangana in national-level chess championships and is a Winner of the Southern Railways chess championship, embodying leadership, discipline, and a growth mindset.",
+      "type": "FOUNDER",
+      "is_active": true,
+      "order": 6,
+      "created_at": "2026-02-16T07:16:05.08395+00:00",
+      "updated_at": "2026-03-24T06:36:03.301869+00:00",
+      "mediaItems": [
+        {
+          "id": "03470685-ab7e-4c54-91b7-62e7b1134e14",
+          "type": "image",
+          "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/cohort_founders/1771226144445_tm (2).png",
+          "alt": "Team member media item 1",
+          "order": 0,
+          "createdAt": "2026-02-16T07:16:06.086778+00:00"
+        }
+      ],
+      "imageUrl": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/cohort_founders/1771226144445_tm (2).png",
+      "isPublished": true
+    },
+    {
       "id": "b74447f6-ceb3-4574-b674-91429f75a75b",
       "name": "Ms.Sanjana Shah",
       "role": "Executive Director, BNI Hyderabad",
@@ -807,9 +767,9 @@
       "bio": "Sanjana Shah is a dynamic leader and serial entrepreneur based in Hyderabad, currently serving as the Executive Director of BNI Hyderabad. Sanjana leads BNI Hyderabad managing over *4000+* members across 50+ chapters demonstrating trailblazer strength and a powerful example of women’s leadership in entrepreneurship.With over a decade of business experience, she has successfully spearheaded multiple ventures:Her vibrant leadership has earned her prestigious recognition, including the 2023 “Founders Award”. Under her tenure, BNI Hyderabad witnessed remarkable achievements of multiple world records, such as adding 1,000 new members in a single day. She is also celebrated as an international speaker and recipient of the Telangana Stri-Murti Award in 2020. Known for her passion for lifelong learning, networking, and personal development, Sanjana is an adventurous spirit, a dedicated traveler. ",
       "type": "ADVISOR",
       "is_active": true,
-      "order": 21,
+      "order": 6,
       "created_at": "2026-02-16T07:38:46.838956+00:00",
-      "updated_at": "2026-02-16T07:38:46.838956+00:00",
+      "updated_at": "2026-03-24T06:36:33.431227+00:00",
       "mediaItems": [
         {
           "id": "a21c1f9d-71fc-44d2-9b4b-930f239aad92",
@@ -821,6 +781,78 @@
         }
       ],
       "imageUrl": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/advisory_board/1771227522419_ab (6).png",
+      "isPublished": true
+    },
+    {
+      "id": "0f68d600-b362-4efb-b1ee-c344a6085354",
+      "name": "Ms.Sanviti Reddy",
+      "role": "Cohort Social Media Ambassador",
+      "title": "Cohort Social Media Ambassador",
+      "bio": "A recent graduate who enjoys making videos and taking pictures. She loves being creative and sharing stories through her work. She is excited to learn new things and be part of interesting projects..",
+      "type": "FOUNDER",
+      "is_active": true,
+      "order": 7,
+      "created_at": "2026-02-16T07:18:40.673585+00:00",
+      "updated_at": "2026-03-24T06:36:04.583679+00:00",
+      "mediaItems": [
+        {
+          "id": "d4bb7c77-a006-40c1-b41c-c116bc63cc99",
+          "type": "image",
+          "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/cohort_founders/1771226311152_tm (8).png",
+          "alt": "Team member media item 1",
+          "order": 0,
+          "createdAt": "2026-02-16T07:18:41.731897+00:00"
+        }
+      ],
+      "imageUrl": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/cohort_founders/1771226311152_tm (8).png",
+      "isPublished": true
+    },
+    {
+      "id": "15ad2ec8-ea9e-4bd9-ab9e-f18c5f4e2f6e",
+      "name": "Ms.Ananya Gadapa",
+      "role": "Cohort Operations Ambassador (COA)",
+      "title": "Cohort Operations Ambassador (COA)",
+      "bio": "Ananya is currently pursuing her engineering degree ,Ananya blends strategic thinking with a passion for innovation, creating solutions that connect technology and business. She has experience leading projects from the ground up, ensuring that each one moves smoothly from idea to execution. Known for her creativity and problem-solving mindset, she works closely with teams to turn challenges into opportunities.",
+      "type": "FOUNDER",
+      "is_active": true,
+      "order": 8,
+      "created_at": "2026-02-16T07:19:31.042567+00:00",
+      "updated_at": "2026-03-24T06:36:05.818166+00:00",
+      "mediaItems": [
+        {
+          "id": "3dd976d6-94d6-452b-a016-ad310d1ff74c",
+          "type": "image",
+          "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/cohort_founders/1771226361381_tm (6).png",
+          "alt": "Team member media item 1",
+          "order": 0,
+          "createdAt": "2026-02-16T07:19:32.162567+00:00"
+        }
+      ],
+      "imageUrl": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/cohort_founders/1771226361381_tm (6).png",
+      "isPublished": true
+    },
+    {
+      "id": "db90c312-48cd-4160-b38e-2e6ce1cf63d3",
+      "name": "Ms.Hasini Kanumuru",
+      "role": "Cohort Alumni Ambassador",
+      "title": "Cohort Alumni Ambassador",
+      "bio": "Hasini is a Alumni Ambassador at YANC,She is a dynamic young changemaker with a passion for purposeful innovation and community empowerment. As the founder of Sama and Pratirodha, she embodies an entrepreneurial mindset driven to solve real-world challenges and make an impact. With leadership experience as Secretary General at ACC MUN and accolades in debates, elocution, and performing arts, Hasini seamlessly blends intellect, creativity, and social consciousness. A performer of 16 dance forms, she continues to shine across academic, artistic, and leadership platforms.",
+      "type": "FOUNDER",
+      "is_active": true,
+      "order": 9,
+      "created_at": "2026-02-16T07:20:03.234494+00:00",
+      "updated_at": "2026-03-24T06:36:07.049176+00:00",
+      "mediaItems": [
+        {
+          "id": "9545e01c-1bdc-4b69-9ed7-aeb14eec2d9f",
+          "type": "image",
+          "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/cohort_founders/1771226385176_tm (1).png",
+          "alt": "Team member media item 1",
+          "order": 0,
+          "createdAt": "2026-02-16T07:20:04.333092+00:00"
+        }
+      ],
+      "imageUrl": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/team/cohort_founders/1771226385176_tm (1).png",
       "isPublished": true
     }
   ],
@@ -840,5 +872,5 @@
     "mediaItems": []
   },
   "contactInfo": null,
-  "lastUpdated": "2026-03-24T11:48:48.037+05:30"
+  "lastUpdated": "2026-03-31T20:20:22.691+05:30"
 }

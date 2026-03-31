@@ -26,6 +26,10 @@ const ImageVideoGallery: React.FC<ImageVideoGalleryProps> = ({
   const displayMedia = maxVisible !== undefined && media.length > maxVisible 
     ? media.slice(0, maxVisible)
     : media;
+
+  const isTruncated = maxVisible !== undefined && media.length > maxVisible;
+  const canViewMore = Boolean(showViewMore && isTruncated && onViewMoreClick);
+  const canViewLess = Boolean(!isTruncated && onViewLessClick && maxVisible === undefined);
   
   const handleMediaClick = (item: MediaItem, index: number) => {
     if (onMediaClick) {
@@ -54,41 +58,63 @@ const ImageVideoGallery: React.FC<ImageVideoGalleryProps> = ({
   };
 
   return (
-    <div className={getGridClass()}>
-      {displayMedia.map((item, index) => (
-        <div
-          key={item.id}
-          className="relative group cursor-pointer overflow-hidden rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 aspect-square"
-          onClick={() => handleMediaClick(item, index)}
-        >
-          {item.type === "image" ? (
-            <img
-              src={item.src}
-              alt={item.alt}
-              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-              loading="lazy"
-            />
-          ) : (
-            <div className="relative bg-gray-900 rounded-lg overflow-hidden w-full h-full">
-              <video
+    <div className="space-y-4">
+      <div className={getGridClass()}>
+        {displayMedia.map((item, index) => (
+          <div
+            key={item.id}
+            className="relative group cursor-pointer overflow-hidden rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 aspect-square"
+            onClick={() => handleMediaClick(item, index)}
+          >
+            {item.type === "image" ? (
+              <img
                 src={item.src}
+                alt={item.alt}
                 className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                muted
-                preload="metadata"
-                onClick={(e) => e.stopPropagation()}
+                loading="lazy"
               />
-              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/30">
-                <PlayCircle className="text-white w-12 h-12" />
+            ) : (
+              <div className="relative bg-gray-900 rounded-lg overflow-hidden w-full h-full">
+                <video
+                  src={item.src}
+                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  muted
+                  preload="metadata"
+                  onClick={(e) => e.stopPropagation()}
+                />
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/30">
+                  <PlayCircle className="text-white w-12 h-12" />
+                </div>
               </div>
+            )}
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <p className="text-white text-xs truncate">{item.alt}</p>
             </div>
-          )}
-          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <p className="text-white text-xs truncate">{item.alt}</p>
           </div>
+        ))}
+      </div>
+
+      {(canViewMore || canViewLess) && (
+        <div className="flex justify-center">
+          {canViewMore ? (
+            <button
+              type="button"
+              onClick={onViewMoreClick}
+              className="px-4 py-2 text-sm font-medium rounded-lg border border-border bg-card hover:bg-muted transition-colors"
+            >
+              View more ({media.length - (maxVisible ?? 0)} more)
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={onViewLessClick}
+              className="px-4 py-2 text-sm font-medium rounded-lg border border-border bg-card hover:bg-muted transition-colors"
+            >
+              Show less
+            </button>
+          )}
         </div>
-      ))}
-
-
+      )}
     </div>
   );
 };
