@@ -161,6 +161,42 @@
         "mediaId": "fb7af2c2-8891-4f3f-9a6d-46403f84a30f",
         "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/uploads/1774971534275_6.jpg"
       }
+    },
+    {
+      "id": "cb4d00ac-303c-4acc-a04a-c6f218afdb8e",
+      "name": "Mentor 3",
+      "isActive": true,
+      "displayOrder": 3,
+      "createdAt": "2026-03-31T15:54:57.594075+00:00",
+      "updatedAt": "2026-03-31T15:54:57.594075+00:00",
+      "image": {
+        "mediaId": "0b3290af-ddc6-4712-82f4-e4bf87fdc12f",
+        "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/uploads/1774972492714_em (4).png"
+      }
+    },
+    {
+      "id": "98a7b101-c545-4a2f-92b6-af72522e6dbb",
+      "name": "Mentor 4",
+      "isActive": true,
+      "displayOrder": 4,
+      "createdAt": "2026-03-31T15:55:12.273297+00:00",
+      "updatedAt": "2026-03-31T15:55:12.273297+00:00",
+      "image": {
+        "mediaId": "1f4e081d-a2c0-44fb-8882-78d52842669f",
+        "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/uploads/1774972509831_em (1).png"
+      }
+    },
+    {
+      "id": "ee62d4d4-9fba-4cb0-b4a3-68c68507fba0",
+      "name": "Mentor 5",
+      "isActive": true,
+      "displayOrder": 5,
+      "createdAt": "2026-03-31T15:55:25.773425+00:00",
+      "updatedAt": "2026-03-31T15:55:25.773425+00:00",
+      "image": {
+        "mediaId": "18a954a4-8942-457b-aadb-4654e248f780",
+        "url": "https://cudusictxvzcfcbfrxbi.supabase.co/storage/v1/object/public/media/uploads/1774972521853_em (2).png"
+      }
     }
   ],
   "events": [
@@ -898,5 +934,5 @@
     "mediaItems": []
   },
   "contactInfo": null,
-  "lastUpdated": "2026-03-31T21:19:21.368+05:30"
+  "lastUpdated": "2026-04-01T20:22:23.902+05:30"
 }

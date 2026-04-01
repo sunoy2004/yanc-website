@@ -47,6 +47,18 @@ This command:
 - Generates/updates `src/data/content.json`.
 - Builds the production bundle into `dist/`.
 
+**Included CMS endpoints (build-time snapshot):**
+- `GET /api/hero`
+- `GET /api/programs/public`
+- `GET /api/mentor-talks/public`
+- `GET /api/our-mentors` (drives the homepage **Our Mentors** belt)
+- `GET /api/events/public`
+- `GET /api/event-gallery-items/public`
+- `GET /api/team/public`
+- `GET /api/founders/public`
+- `GET /api/testimonials/public`
+- `GET /api/about/public`
+
 ### 0.3 Supabase issues table (minimal)
 
 To enable the **Log Issues** modal, your Supabase project needs an `issues` table. A minimal schema looks like:
@@ -93,6 +105,7 @@ The YANC (Yet Another Networking Club) website is a modern, responsive web appli
 - Responsive design with mobile-first approach
 - Interactive 3D carousel in hero section using Three.js
 - Preloader animation with "Yet Another Networking Club" to "YANC" morphing effect
+- GA4 analytics (gtag) loaded once globally + route-change pageview tracking
 - Integrated chatbot for user assistance
 - Comprehensive navigation with dropdown menus
 - SEO-friendly routing and structure
@@ -198,6 +211,7 @@ src/
 │   │   ├── CoreValuesSection.tsx
 │   │   ├── EventsSection.tsx
 │   │   ├── FoundersSection.tsx
+│   │   ├── HorizontalMentorTalksSection.tsx   # Home: "Our Mentors" horizontal belt (CMS: /api/our-mentors)
 │   │   ├── HorizontalTeamSection.tsx
 │   │   ├── ProgramsSection.tsx
 │   │   └── TestimonialsSection.tsx
@@ -214,6 +228,7 @@ src/
 │   ├── Chatbot.tsx       # Floating chatbot
 │   ├── IssueModal.tsx    # Supabase-backed issue reporting modal
 │   ├── FormInput.tsx     # Shared form input component
+│   ├── AnalyticsTracker.tsx # GA4 route-change tracking (react-router)
 │   ├── Preloader.tsx     # Initial loading animation
 │   ├── ScrollAnimateWrapper.tsx
 │   ├── TeamGrid.tsx
@@ -272,6 +287,7 @@ src/
 │   └── content.ts        # `ContentSchema` types for content.json
 │
 ├── utils/
+│   ├── analytics.ts      # GA4 measurement ID + trackPageView helper (gtag)
 │   ├── productVersion.ts # Centralized version resolution (from content.json/footer)
 │   ├── prefetchImages.ts # Preload hero + CMS images at app start
 │   └── extractImageUrls.ts
@@ -431,7 +447,7 @@ Modifiable content: About Us content, mission/vision statements
 
 | Page Name | Route URL | File Path | Responsibility | Data Source | API Used | Components Used |
 |-----------|-----------|-----------|----------------|-------------|----------|-----------------|
-| Home | `/` | src/pages/Index.tsx | Main landing page with all sections plus bottom CTA | `content.json` (via hooks/lib/cms) | None | Header, Hero, AboutUsSection, CoreValuesSection, EventsSection, FoundersSection, HorizontalTeamSection, Footer, Preloader, Layout, CTA Section |
+| Home | `/` | src/pages/Index.tsx | Main landing page with all sections plus bottom CTA | `content.json` (via hooks/lib/cms) | None | Header, Hero, **HorizontalMentorTalksSection (Our Mentors)**, AboutUsSection, CoreValuesSection, EventsSection, FoundersSection, HorizontalTeamSection, Footer, Preloader, Layout, CTA Section |
 | Sign Up | `/signup` | src/pages/SignUp.tsx | (Legacy) User registration form (currently not in use) | None | None | AuthCard, FormInput, Button, SocialLoginButtons |
 | Sign In | `/signin` | src/pages/SignIn.tsx | (Legacy) User login form (currently not in use) | None | None | AuthCard, FormInput, Button, SocialLoginButtons |
 | FAQ | `/faq` | src/pages/Faq.tsx | Frequently asked questions | None | None | Various UI components |
@@ -664,12 +680,20 @@ Frontend → Index.tsx → Preloader mounts → Animation sequence → onComplet
 - **Model used**: None (uses mock data or external API)
 - **Used by**: src/components/Chatbot.tsx
 
-### CMS API Endpoints (Planned)
-- **Content retrieval**: GET /api/content/{section}
-- **Gallery items**: GET /api/content/gallery-items
-- **Event galleries**: GET /api/content/event-galleries
-- **Mentor talks**: GET /api/content/mentor-talks
-- **Authentication**: POST /api/auth/login
+### CMS API Endpoints (Build-time snapshot)
+The SPA does not call the CMS at runtime. Instead, `scripts/fetchCMS.js` fetches public CMS endpoints at build time and writes a static snapshot to `src/data/content.json`.
+
+Key endpoints currently used:
+- **Hero**: `GET /api/hero`
+- **Programs**: `GET /api/programs/public`
+- **Mentor Talks**: `GET /api/mentor-talks/public`
+- **Our Mentors**: `GET /api/our-mentors` (homepage belt, image + name)
+- **Events**: `GET /api/events/public`
+- **Event Gallery Items (flat)**: `GET /api/event-gallery-items/public`
+- **Team Members**: `GET /api/team/public`
+- **Founders**: `GET /api/founders/public`
+- **Testimonials**: `GET /api/testimonials/public`
+- **About**: `GET /api/about/public`
 
 ### Mock API Endpoints
 At runtime, content is read from the generated `content.json` snapshot rather than from live CMS endpoints. For development and when external APIs are not configured, some behaviors are mocked (notably the chatbot service in `apiService.ts`). Media URLs already point to public Supabase Storage objects; there is no Google Drive or Prisma usage in the current implementation.
@@ -690,6 +714,7 @@ At build time the CMS returns a structured JSON payload that is written to `src/
 - `sections`: reusable section blocks powering multiple pages.
 - `programs`: list of YANC programs.
 - `mentorTalks`: mentor talk cards and media.
+- `ourMentors`: homepage “Our Mentors” belt content (name + image url).
 - `events`: upcoming and past events with metadata.
 - `eventGalleries`: grouped event galleries.
 - `galleryItems`: flat list of gallery `MediaItem`s (image/video).
@@ -1031,6 +1056,10 @@ The website consumes structured content from a generated `content.json` file:
 
 The `ContentSchema` includes a `lastUpdated` ISO timestamp, which is used for version display.
 
+### 17.1.1 Dev vs Build behavior (important)
+- `npm run build`: refreshes CMS content because `prebuild` runs `scripts/fetchCMS.js`.
+- `npm run dev`: does **not** fetch CMS automatically; it uses the committed/local `src/data/content.json` snapshot as-is.
+
 ### 17.2 Footer Build Version
 
 `src/components/Footer.tsx` renders a build/version string in the footer:
@@ -1084,6 +1113,8 @@ These notes summarize small housekeeping and responsive fixes applied to the cod
 - Hero responsiveness: Hero overlay and CTA are in-flow on small screens to avoid overlapping the carousel; absolute layered layout remains on md+.
 - Sections spacing: All major sections now use the shared `.section` utility (in `src/index.css`) so vertical padding is consistent across the site.
 - Gallery improvements: `ImageVideoGallery.tsx` updated to use square aspect thumbnails and responsive default grid (2/3/4+ columns).
+- GA4: global `gtag` script added to `index.html`, with SPA route tracking via `AnalyticsTracker` + `utils/analytics.ts`.
+- Our Mentors: homepage belt now sourced from CMS endpoint `GET /api/our-mentors` via build-time snapshot (`content.json.ourMentors`).
 - Footer cleanup: Social icons now use static images in `src/components/icons/`; links updated to production targets; layout improved for mobile.
 - Removed development banner from About Us section (production UX).
 - Test/debug files identified: consider moving `src/pages/DebugEvents.tsx`, `src/pages/TestEvents.tsx`, `src/pages/TestUpcomingEvents.tsx`, `src/pages/MinimalEventsTest.tsx`, `src/pages/SimpleTest.tsx`, and scripts like `test-hero-api.js` into a `dev/` folder or archiving them.

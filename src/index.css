@@ -1103,6 +1103,20 @@
   }
 }
 
+/* ======================================
+   OUR MENTORS (HOME) OVERRIDES
+   Only affects section#mentor-talks-horizontal
+   ====================================== */
+@layer components {
+  #mentor-talks-horizontal .team-belt {
+    gap: 3rem; /* tighter spacing between mentor cards */
+  }
+
+  #mentor-talks-horizontal .animate-move-left {
+    animation-duration: 52s; /* slightly faster than default 60s */
+  }
+}
+
 @keyframes moveLeft {
   from {
     transform: translateX(0);
